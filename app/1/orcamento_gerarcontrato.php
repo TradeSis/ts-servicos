@@ -86,7 +86,7 @@ if (isset($jsonEntrada['idOrcamento'])) {
             'tituloDemanda' => $row_consulta2['tituloItemOrcamento']
         );
 
-        $demanda = chamaAPI(null, '/services/demanda', json_encode($apiEntrada), 'PUT');
+        $demanda = chamaAPI(null, '/servicos/demanda', json_encode($apiEntrada), 'PUT');
 
         
         

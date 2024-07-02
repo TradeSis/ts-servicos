@@ -33,7 +33,7 @@ function buscaTarefas($idDemanda = null, $idTarefa = null, $idAtendente = null, 
         'statusTarefa' => $statusTarefa,
         'idCliente' => $idCliente
     );
-    $tarefas = chamaAPI(null, '/services/tarefas', json_encode($apiEntrada), 'GET');
+    $tarefas = chamaAPI(null, '/servicos/tarefas', json_encode($apiEntrada), 'GET');
     return $tarefas;
 }
 
@@ -49,7 +49,7 @@ function buscaTarefasGrafico1()
     $apiEntrada = array(
         'idEmpresa' => $idEmpresa,
     );
-    $dadosGrafico1 = chamaAPI(null, '/services/tarefas/grafico1', json_encode($apiEntrada), 'GET');
+    $dadosGrafico1 = chamaAPI(null, '/servicos/tarefas/grafico1', json_encode($apiEntrada), 'GET');
     return $dadosGrafico1;
 }
 function buscaTarefasGrafico2()
@@ -64,7 +64,7 @@ function buscaTarefasGrafico2()
         'idEmpresa' => $idEmpresa
     );
     $dadosGrafico2 = array();
-    $dadosGrafico2 = chamaAPI(null, '/services/tarefas/grafico2', json_encode($apiEntrada), 'GET');
+    $dadosGrafico2 = chamaAPI(null, '/servicos/tarefas/grafico2', json_encode($apiEntrada), 'GET');
     return $dadosGrafico2;
 }
 function buscaTarefasGrafico3()
@@ -80,7 +80,7 @@ function buscaTarefasGrafico3()
     );
     $dadosGrafico3 = array();
 
-    $dadosGrafico3 = chamaAPI(null, '/services/tarefas/grafico3', json_encode($apiEntrada), 'GET');
+    $dadosGrafico3 = chamaAPI(null, '/servicos/tarefas/grafico3', json_encode($apiEntrada), 'GET');
     return $dadosGrafico3;
 }
 
@@ -96,7 +96,7 @@ function buscaTarefasGrafico4()
     );
 
     $dadosGrafico4 = array();
-    $dadosGrafico4 = chamaAPI(null, '/services/tarefas/grafico4', json_encode($apiEntrada), 'GET');
+    $dadosGrafico4 = chamaAPI(null, '/servicos/tarefas/grafico4', json_encode($apiEntrada), 'GET');
     return $dadosGrafico4;
 }
 function buscaHoras($idDemanda)
@@ -113,7 +113,7 @@ function buscaHoras($idDemanda)
         'idEmpresa' => $idEmpresa,
         'idDemanda' => $idDemanda
     );
-    $horas = chamaAPI(null, '/services/horas', json_encode($apiEntrada), 'GET');
+    $horas = chamaAPI(null, '/servicos/horas', json_encode($apiEntrada), 'GET');
     return $horas;
 }
 
@@ -152,7 +152,7 @@ if (isset($_GET['operacao'])) {
             
         );
      
-        $tarefas = chamaAPI(null, '/services/tarefas', json_encode($apiEntrada), 'PUT');
+        $tarefas = chamaAPI(null, '/servicos/tarefas', json_encode($apiEntrada), 'PUT');
       
         if(isset($_GET['redirecionarDemanda'])){
             header('Location: ../demandas/visualizar.php?id=tarefas&&idDemanda=' . $apiEntrada['idDemanda']);
@@ -187,7 +187,7 @@ if (isset($_GET['operacao'])) {
             'horaFinalPrevisto' => $_POST['horaFinalPrevisto']
         );
         
-        $tarefas = chamaAPI(null, '/services/tarefas', json_encode($apiEntrada), 'POST');
+        $tarefas = chamaAPI(null, '/servicos/tarefas', json_encode($apiEntrada), 'POST');
         echo json_encode($apiEntrada);
         return $tarefas;
 
@@ -209,7 +209,7 @@ if (isset($_GET['operacao'])) {
             'acao' => $acao 
         );
     
-        $tarefas = chamaAPI(null, '/services/tarefas/realizado', json_encode($apiEntrada), 'POST');
+        $tarefas = chamaAPI(null, '/servicos/tarefas/realizado', json_encode($apiEntrada), 'POST');
 
         //if (($acao == "stop") || ($acao == "entregue")) {  
             if(isset($_POST['comentario']) && ($_POST['comentario']) !== ""){
@@ -220,7 +220,7 @@ if (isset($_GET['operacao'])) {
                     'idDemanda' => $_POST['idDemanda'],
                     'comentario' => $_POST['comentario'],
                 );
-                $comentario2 = chamaAPI(null, '/services/comentario/cliente', json_encode($apiEntrada2), 'PUT');
+                $comentario2 = chamaAPI(null, '/servicos/comentario/cliente', json_encode($apiEntrada2), 'PUT');
             }
             $idDemanda = $_POST['idDemanda'];
             if(isset($_GET['redirecionarDemanda'])){
@@ -295,7 +295,7 @@ if (isset($_GET['operacao'])) {
         );
 
         $_SESSION['filtro_tarefas'] = $apiEntrada;
-        $tarefas = chamaAPI(null, '/services/tarefas', json_encode($apiEntrada), 'GET');
+        $tarefas = chamaAPI(null, '/servicos/tarefas', json_encode($apiEntrada), 'GET');
 
         echo json_encode($tarefas);
         return $tarefas;
@@ -310,7 +310,7 @@ if (isset($_GET['operacao'])) {
             'idEmpresa' => $idEmpresa,
             'idTarefa' => $idTarefa
         );
-        $tarefas = chamaAPI(null, '/services/tarefas', json_encode($apiEntrada), 'GET');
+        $tarefas = chamaAPI(null, '/servicos/tarefas', json_encode($apiEntrada), 'GET');
 
         echo json_encode($tarefas);
         return $tarefas;

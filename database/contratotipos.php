@@ -22,7 +22,7 @@ function buscaContratoTipos($idContratoTipo=null)
 		'idEmpresa' => $idEmpresa,
 		'idContratoTipo' => $idContratoTipo
 	);
-	$contratotipo = chamaAPI(null, '/services/contratotipos', json_encode($apiEntrada), 'GET');
+	$contratotipo = chamaAPI(null, '/servicos/contratotipos', json_encode($apiEntrada), 'GET');
 
 	//echo json_encode ($contratotipo);
 	return $contratotipo;
@@ -47,7 +47,7 @@ if (isset($_GET['operacao'])) {
 			'idServicoPadrao' => $_POST['idServicoPadrao'],
 		);
 
-		$contratotipo = chamaAPI(null, '/services/contratotipos', json_encode($apiEntrada), 'PUT');
+		$contratotipo = chamaAPI(null, '/servicos/contratotipos', json_encode($apiEntrada), 'PUT');
 	}
 
 	if ($operacao=="alterar") {
@@ -61,7 +61,7 @@ if (isset($_GET['operacao'])) {
 			'idTipoStatus_fila' => $_POST['idTipoStatus_fila'],
 			'idServicoPadrao' => $_POST['idServicoPadrao'],
 		);
-		$contratotipo = chamaAPI(null, '/services/contratotipos', json_encode($apiEntrada), 'POST');
+		$contratotipo = chamaAPI(null, '/servicos/contratotipos', json_encode($apiEntrada), 'POST');
 
 	}
 	if ($operacao=="excluir") {
@@ -69,7 +69,7 @@ if (isset($_GET['operacao'])) {
 			'idEmpresa' => $idEmpresa,
 			'idContratoTipo' => $_POST['idContratoTipo']
 		);
-		$contratotipo = chamaAPI(null, '/services/contratotipos', json_encode($apiEntrada), 'DELETE');
+		$contratotipo = chamaAPI(null, '/servicos/contratotipos', json_encode($apiEntrada), 'DELETE');
 
 	}
 

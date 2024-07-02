@@ -109,7 +109,7 @@ $ocorrencias = buscaTipoOcorrencia();
                 $.ajax({
                     type: 'POST',
                     dataType: 'json',
-                    url: '<?php echo URLROOT ?>/services/database/tipoocorrencia.php?operacao=buscar',
+                    url: '<?php echo URLROOT ?>/servicos/database/tipoocorrencia.php?operacao=buscar',
                     data: {
                         idTipoOcorrencia: idTipoOcorrencia
                     },
