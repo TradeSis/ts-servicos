@@ -1,0 +1,115 @@
+:root{
+    --nav-width: 250px;
+    --nav-left: 0px;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    
+    font-family: sans-serif;
+}
+.diviFrame {
+    padding-left: 0px;
+}
+.diviFrame.mostra {
+    padding-left: 250px;
+}
+
+.iFrame {
+    width: 100%;
+    height: 551px;
+    overflow: hidden;
+    overflow-x: hidden;
+    border: 0px solid #000;
+}
+
+.menuLateral{
+    background-color: #13216A; 
+    width: var(--nav-width);
+    height: 100%;
+    position: fixed;
+    /*left: 30; */
+    left: -250px; /* menu desaparece */  
+    transition: left 0.5s;
+}
+
+.menuLateral .titulo{
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    line-height: 45px;
+    font-size: 24px;
+    border-bottom: 0px solid red;
+}
+
+.menuLateral ul{ /* retira a "bolinha" do marcador de ul e li */
+    list-style: none; 
+}
+
+.menuLateral ul li{ /* distancia entre os links */
+    line-height: 40px;
+    border-bottom: 0px solid white;
+}
+
+.menuLateral ul li a{
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    padding-left: 30px;
+    font-weight: bold; 
+    display: block; /* passa a assumir todo o elemento */
+}
+.menuLateral ul li a:hover{ /* Ao passar o mouse */
+    background-color: #370707;
+    transition: 0.5s;
+}
+
+.menuLateral ul ul li a{
+    font-size: 16px;
+    font-weight: 300;
+    padding-left: 60px;
+    background-color: #13216A;
+}
+
+.menuLateral ul ul{
+    display: none; /* sumir subimenus */
+}
+
+.menuLateral ul .itensNordeste.mostra{ /* mostra ao clicar usando a classe .mostra e JS subimenus */
+    display: block;
+}
+
+.menuLateral ul .itensSudeste.mostra{ 
+    display: block;
+}
+
+.btnAbre{
+   /* position: absolute;*/
+    top: 10px; /*15px*/
+    /*left: 20px;*/
+   /* background-color: black;*/
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btnAbre span{
+    font-size: 35px;
+}
+
+.menuLateral.mostra{
+    left: 0px; /* menu aparece */ 
+    /*left: var(--nav-left);*/
+}
+
+.menuLateral ul li a span{
+    font-size: 30px;
+    position: absolute;
+    right: 30px;
+    transition: 0.4s;
+}
+
+.menuLateral ul li a span.gira{
+    transform: rotate(90deg);
+}
