@@ -261,7 +261,7 @@ if (isset($_SESSION['filtro_tarefas'])) {
   <script src="<?php echo URLROOT ?>/sistema/js/filtroTabela.js"></script>
   
 
-  <script src="<?php echo URLROOT ?>/services/demandas/tarefas.js"></script>
+  <script src="<?php echo URLROOT ?>/servicos/demandas/tarefas.js"></script>
 
   <script>
     buscar($("#FiltroClientes").val(), $("#FiltroUsuario").val(), $("#buscaTarefa").val(), $("#FiltroOcorrencia").val(), $("#FiltroStatusTarefa").val(), $("#FiltroPeriodoInicio").val(), $("#FiltroPeriodoFim").val(), $("#FiltrodataOrdem").val() , $("#buscaTarefa").val());
@@ -340,7 +340,7 @@ if (isset($_SESSION['filtro_tarefas'])) {
       $.ajax({
         type: 'POST',
         dataType: 'html',
-        url: '<?php echo URLROOT ?>/services/database/tarefas.php?operacao=filtrar',
+        url: '<?php echo URLROOT ?>/servicos/database/tarefas.php?operacao=filtrar',
         beforeSend: function() {
           $("#dados").html("Carregando...");
         },

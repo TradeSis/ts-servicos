@@ -203,7 +203,7 @@ include_once '../header.php';
 
     <?php include_once ROOT . "/vendor/footer_js.php"; ?>
 
-    <script src="<?php echo URLROOT ?>/services/demandas/tarefas.js"></script>
+    <script src="<?php echo URLROOT ?>/servicos/demandas/tarefas.js"></script>
     <script>
         //Lucas 10112023 ID 965  Adicionado script para botão de clonar
 

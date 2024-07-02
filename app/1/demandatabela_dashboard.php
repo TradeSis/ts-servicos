@@ -9,7 +9,7 @@ if (isset($LOG_CAMINHO)) {
   $identificacao = date("dmYHis") . "-PID" . getmypid() . "-" . "demandatabelaDashboard_select";
   if (isset($LOG_NIVEL)) {
     if ($LOG_NIVEL >= 1) {
-      $arquivo = fopen(defineCaminhoLog() . "services_selectDashboard_" . date("dmY") . ".log", "a");
+      $arquivo = fopen(defineCaminhoLog() . "servicos_selectDashboard_" . date("dmY") . ".log", "a");
     }
   }
 
@@ -27,7 +27,7 @@ fwrite($arquivo, $identificacao . "-INICIO->"  . "\n");
 
 $mes = $jsonEntrada["mes"];
 $ano = $jsonEntrada["ano"];
-$dia = date("t", mktime(0,0,0,$mes,'01',$ano)); // Mágica, plim!
+$dia = date("t", mktime(0,0,0,$mes,'01',$ano)); // Mï¿½gica, plim!
 $sqldti = $ano."-".$mes."-"."01";
 $mesprox = $mes + 1;
 $anoprox = $ano;

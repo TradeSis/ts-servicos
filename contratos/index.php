@@ -274,7 +274,7 @@ if (isset($_SESSION['filtro_contrato'])) {
             $.ajax({
                 type: 'POST',
                 dataType: 'html',
-                url: '<?php echo URLROOT ?>/services/database/contratos.php?operacao=filtrar',
+                url: '<?php echo URLROOT ?>/servicos/database/contratos.php?operacao=filtrar',
                 beforeSend: function() {
                     $("#dados").html("Carregando...");
                 },

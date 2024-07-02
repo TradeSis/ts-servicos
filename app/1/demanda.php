@@ -15,7 +15,7 @@ if (isset($LOG_CAMINHO)) {
   $identificacao = date("dmYHis") . "-PID" . getmypid() . "-" . "demanda_select";
   if (isset($LOG_NIVEL)) {
     if ($LOG_NIVEL >= 1) {
-      $arquivo = fopen(defineCaminhoLog() . "services_select_" . date("dmY") . ".log", "a");
+      $arquivo = fopen(defineCaminhoLog() . "servicos_select_" . date("dmY") . ".log", "a");
     }
   }
 

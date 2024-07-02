@@ -183,7 +183,7 @@
         $.ajax({
             type: 'POST',
             dataType: 'json',
-            url: '<?php echo URLROOT ?>/services/database/tarefas.php?operacao=buscar',
+            url: '<?php echo URLROOT ?>/servicos/database/tarefas.php?operacao=buscar',
             data: {
                 idTarefa: idTarefa
             },

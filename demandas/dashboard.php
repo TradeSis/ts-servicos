@@ -304,7 +304,7 @@ if ($usuario["idCliente"] == null) {
         $.ajax({
           type: 'POST',
           dataType: 'html',
-          url: '<?php echo URLROOT ?>/services/database/demanda.php?operacao=dashboard',
+          url: '<?php echo URLROOT ?>/servicos/database/demanda.php?operacao=dashboard',
           beforeSend: function() {
             $("#dados").html("Carregando...");
           },
@@ -343,7 +343,7 @@ if ($usuario["idCliente"] == null) {
         $.ajax({
           type: 'POST',
           dataType: 'html',
-          url: '<?php echo URLROOT ?>/services/database/demanda.php?operacao=dashboard',
+          url: '<?php echo URLROOT ?>/servicos/database/demanda.php?operacao=dashboard',
           beforeSend: function() {
             $("#dados").html("Carregando...");
           },
@@ -424,7 +424,7 @@ if ($usuario["idCliente"] == null) {
         $.ajax({
           type: 'POST',
           dataType: 'json',
-          url: '<?php echo URLROOT ?>/services/database/demanda.php?operacao=dashboardtabela',
+          url: '<?php echo URLROOT ?>/servicos/database/demanda.php?operacao=dashboardtabela',
           data: {
             card: card,
             idCliente: $("#FiltroCliente").val(),

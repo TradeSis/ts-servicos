@@ -203,7 +203,7 @@ $contratos = buscaContratosAbertos();
                     </div>
                     <div class="modal-footer">
                         <button type="submit"
-                            formaction="<?php echo URLROOT ?>/services/database/demanda.php?operacao=inserirChat"
+                            formaction="<?php echo URLROOT ?>/servicos/database/demanda.php?operacao=inserirChat"
                             class="btn btn-success"><i class="bi bi-sd-card-fill"></i>&#32;Cadastrar</button>
                     </div>
                 </form>

@@ -24,7 +24,7 @@ function buscaContratoStatus($idContratoStatus=null)
 		'idEmpresa' => $idEmpresa,
 		'idContratoStatus' => $idContratoStatus,
 	);
-	$contratoStatus = chamaAPI(null, '/services/contratostatus', json_encode($apiEntrada), 'GET');
+	$contratoStatus = chamaAPI(null, '/servicos/contratostatus', json_encode($apiEntrada), 'GET');
 
 	//echo json_encode ($contratoStatus);
 	return $contratoStatus;
@@ -45,7 +45,7 @@ if (isset($_GET['operacao'])) {
 			'mudaStatusPara' => $_POST['mudaStatusPara']
 		);
 		
-		$contratoStatus = chamaAPI(null, '/services/contratostatus', json_encode($apiEntrada), 'PUT');
+		$contratoStatus = chamaAPI(null, '/servicos/contratostatus', json_encode($apiEntrada), 'PUT');
 	}
 
 	if ($operacao=="alterar") {
@@ -56,7 +56,7 @@ if (isset($_GET['operacao'])) {
 			'nomeContratoStatus' => $_POST['nomeContratoStatus'],
 			'mudaStatusPara' => $_POST['mudaStatusPara']
 		);
-		$contratoStatus = chamaAPI(null, '/services/contratostatus', json_encode($apiEntrada), 'POST');
+		$contratoStatus = chamaAPI(null, '/servicos/contratostatus', json_encode($apiEntrada), 'POST');
 
 	}
 	if ($operacao=="excluir") {
@@ -64,7 +64,7 @@ if (isset($_GET['operacao'])) {
 			'idEmpresa' => $idEmpresa,
 			'idContratoStatus' => $_POST['idContratoStatus']
 		);
-		$contratoStatus = chamaAPI(null, '/services/contratostatus', json_encode($apiEntrada), 'DELETE');
+		$contratoStatus = chamaAPI(null, '/servicos/contratostatus', json_encode($apiEntrada), 'DELETE');
 
 	}
 

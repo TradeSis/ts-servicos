@@ -23,7 +23,7 @@ function buscaMensagem($idDemanda, $idUsuario, $idMensagem = null)
 		'idUsuario' => $idUsuario,
 		'idEmpresa' => $idEmpresa
 	);
-	$mensagem = chamaAPI(null, '/services/mensagem', json_encode($apiEntrada), 'GET');
+	$mensagem = chamaAPI(null, '/servicos/mensagem', json_encode($apiEntrada), 'GET');
 	return $mensagem;
 }
 function buscaChat($INidUsuario=null, $OUTidUsuario=null)
@@ -40,7 +40,7 @@ function buscaChat($INidUsuario=null, $OUTidUsuario=null)
 		'OUTidUsuario' => $OUTidUsuario,
 		'idEmpresa' => $idEmpresa
 	);
-	$chat = chamaAPI(null, '/services/chat', json_encode($apiEntrada), 'GET');
+	$chat = chamaAPI(null, '/servicos/chat', json_encode($apiEntrada), 'GET');
 	return $chat;
 }
 
@@ -82,7 +82,7 @@ if (isset($_GET['operacao'])) {
 
 		);
 
-		$mensagem = chamaAPI(null, '/services/mensagem', json_encode($apiEntrada), 'PUT');
+		$mensagem = chamaAPI(null, '/servicos/mensagem', json_encode($apiEntrada), 'PUT');
 		//header('Location: ../demandas/visualizar.php?id=mensagem&&idDemanda=' . $apiEntrada['idDemanda']);
 	}
 
@@ -94,7 +94,7 @@ if (isset($_GET['operacao'])) {
 			'chat' => $_POST['chat']
 		);
 
-		$chat = chamaAPI(null, '/services/chat', json_encode($apiEntrada), 'PUT');
+		$chat = chamaAPI(null, '/servicos/chat', json_encode($apiEntrada), 'PUT');
 		//header('Location: ../demandas/visualizar.php?id=mensagem&&idDemanda=' . $apiEntrada['idDemanda']);
 	}
 

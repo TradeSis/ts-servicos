@@ -131,7 +131,7 @@ $tiposstatus = buscaTipoStatus();
         // Logica para Visualizar via Modal
         async function popTipoStatus(idTipoStatus) {
 
-            const dados = await fetch("<?php echo URLROOT ?>/services/database/tipostatus.php?operacao=GET_JSON&idTipoStatus=" + idTipoStatus);
+            const dados = await fetch("<?php echo URLROOT ?>/servicos/database/tipostatus.php?operacao=GET_JSON&idTipoStatus=" + idTipoStatus);
             const resposta = await dados.json();
             alert(JSON.stringify(resposta, null, 2));
             //const popTipoStatus = new bootstrap.Modal(document.getElementById("popTipoStatus"));
@@ -165,7 +165,7 @@ $tiposstatus = buscaTipoStatus();
                 console.log(dadosFormEdit[0] + " - " + dadosFormEdit[1]);
             }*/
 
-            const dados = await fetch("<?php echo URLROOT ?>/services/database/tipostatus.php?operacao=JSON_alterar", {
+            const dados = await fetch("<?php echo URLROOT ?>/servicos/database/tipostatus.php?operacao=JSON_alterar", {
                 method: "POST",
                 body: dadosForm
             });
@@ -177,7 +177,7 @@ $tiposstatus = buscaTipoStatus();
 
             editForm.reset();
             popTipoStatusModal.hide();
-            top.window.location = "<?php echo URLROOT ?>/services/?tab=configuracao&stab=tipostatus";
+            top.window.location = "<?php echo URLROOT ?>/servicos/?tab=configuracao&stab=tipostatus";
 
         });
     </script>
