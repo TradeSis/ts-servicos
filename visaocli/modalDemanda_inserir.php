@@ -59,7 +59,7 @@
                         <div class="col-md-6">
                             <div class="container-fluid p-0">
                                 <div class="col">
-                                    <span class="tituloEditor">Descrição</span>
+                                    <span class="tituloEditor">Descriï¿½ï¿½o</span>
                                 </div>
                                 <!-- lucas 27022024 - id853 nova chamada editor quill -->
                                 <div id="ql-toolbarClienteDemandaInserir">
@@ -96,7 +96,7 @@
 
                             <div class="row mt-4">
                                 <div class="col-sm-6 col-md-6">
-                                    <label class="form-label ts-label">Previsão</label>
+                                    <label class="form-label ts-label">Previsï¿½o</label>
                                     <input type="time" class="form-control ts-input" name="horasPrevisao" value="<?php echo $demanda['horasPrevisao'] ?>" disabled>
                                 </div>
                                 <div class="col-sm-6 col-md-6">
@@ -108,11 +108,11 @@
 
                             <div class="row mt-3">
                                 <div class="col-sm-6 col-md-6">
-                                    <label class="form-label ts-label">Previsão Inicio</label>
+                                    <label class="form-label ts-label">Previsï¿½o Inicio</label>
                                     <input type="date" class="form-control ts-input" name="dataPrevisaoInicio" value="<?php echo $demanda['dataPrevisaoInicio'] ?>" disabled>
                                 </div>
                                 <div class="col-sm-6 col-md-6">
-                                    <label class="form-label ts-label">Previsão Entrega</label>
+                                    <label class="form-label ts-label">Previsï¿½o Entrega</label>
                                     <input type="date" class="form-control ts-input" name="dataPrevisaoEntrega" value="<?php echo $demanda['dataPrevisaoEntrega'] ?>" disabled>
                                 </div>
                             </div>
@@ -120,7 +120,7 @@
                             <div class="row mt-3">
                                 <!-- lucas 21112023 ID 688 - removido campo tamanho -->
                                 <div class="col-sm-6 col-md-6">
-                                    <label class="form-label ts-label">Serviço</label>
+                                    <label class="form-label ts-label">Serviï¿½o</label>
                                     <select class="form-select ts-input" name="idServico" disabled>
                                         <option value="<?php echo null ?>">
                                             <?php echo "Selecione" ?>
@@ -134,7 +134,7 @@
                                 </div>
 
                                 <div class="col-sm-6 col-md-6">
-                                    <label class="form-label ts-label">Responsável</label>
+                                    <label class="form-label ts-label">Responsï¿½vel</label>
                                     <select class="form-select ts-input" name="idAtendente" disabled>
                                         <option value="<?php echo null ?>">
                                             <?php echo "Selecione" ?>
@@ -187,7 +187,7 @@
         $.ajax({
             type: 'POST',
             dataType: 'html',
-            url: '<?php echo URLROOT ?>/services/database/contratos.php?operacao=buscar',
+            url: '<?php echo URLROOT ?>/servicos/database/contratos.php?operacao=buscar',
             beforeSend: function() {
                 $("#selectContratos").html("Carregando...");
             },

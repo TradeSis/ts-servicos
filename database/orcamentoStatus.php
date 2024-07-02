@@ -22,7 +22,7 @@ function buscaOrcamentoStatus($idOrcamentoStatus=null)
 		'idEmpresa' => $idEmpresa,
 		'idOrcamentoStatus' => $idOrcamentoStatus
 	);
-	$orcamentoStatus = chamaAPI(null, '/services/orcamentostatus', json_encode($apiEntrada), 'GET');
+	$orcamentoStatus = chamaAPI(null, '/servicos/orcamentostatus', json_encode($apiEntrada), 'GET');
 
 	//echo json_encode ($orcamentoStatus);
 	return $orcamentoStatus;
@@ -42,7 +42,7 @@ if (isset($_GET['operacao'])) {
 			'nomeOrcamentoStatus' => $_POST['nomeOrcamentoStatus']
 		);
 		
-		$orcamentoStatus = chamaAPI(null, '/services/orcamentostatus', json_encode($apiEntrada), 'PUT');
+		$orcamentoStatus = chamaAPI(null, '/servicos/orcamentostatus', json_encode($apiEntrada), 'PUT');
 	}
 
 	if ($operacao=="alterar") {
@@ -52,7 +52,7 @@ if (isset($_GET['operacao'])) {
 			'idOrcamentoStatus' => $_POST['idOrcamentoStatus'],
 			'nomeOrcamentoStatus' => $_POST['nomeOrcamentoStatus']
 		);
-		$orcamentoStatus = chamaAPI(null, '/services/orcamentostatus', json_encode($apiEntrada), 'POST');
+		$orcamentoStatus = chamaAPI(null, '/servicos/orcamentostatus', json_encode($apiEntrada), 'POST');
 
 	}
 	if ($operacao=="excluir") {
@@ -60,7 +60,7 @@ if (isset($_GET['operacao'])) {
 			'idEmpresa' => $idEmpresa,
 			'idOrcamentoStatus' => $_POST['idOrcamentoStatus']
 		);
-		$orcamentoStatus = chamaAPI(null, '/services/orcamentostatus', json_encode($apiEntrada), 'DELETE');
+		$orcamentoStatus = chamaAPI(null, '/servicos/orcamentostatus', json_encode($apiEntrada), 'DELETE');
 
 	}
 
@@ -73,7 +73,7 @@ if (isset($_GET['operacao'])) {
             'idEmpresa' => $idEmpresa,
             'idOrcamentoStatus' => $idOrcamentoStatus
         );
-        $orcamentoStatus = chamaAPI(null, '/services/orcamentostatus', json_encode($apiEntrada), 'GET');
+        $orcamentoStatus = chamaAPI(null, '/servicos/orcamentostatus', json_encode($apiEntrada), 'GET');
 
         echo json_encode($orcamentoStatus);
         return $orcamentoStatus;

@@ -216,7 +216,7 @@
         $.ajax({
             type: 'POST',
             dataType: 'html',
-            url: '<?php echo URLROOT ?>/services/database/contratos.php?operacao=buscar',
+            url: '<?php echo URLROOT ?>/servicos/database/contratos.php?operacao=buscar',
             beforeSend: function() {
                 $("#selectContratos").html("Carregando...");
             },

@@ -27,7 +27,7 @@ function buscaTipoOcorrencia($ocorrenciaInicial=null,$idTipoOcorrencia=null)
 		'idTipoOcorrencia' => $idTipoOcorrencia,
 	
 	);
-	$tipoocorrencia = chamaAPI(null, '/services/tipoocorrencia', json_encode($apiEntrada), 'GET');
+	$tipoocorrencia = chamaAPI(null, '/servicos/tipoocorrencia', json_encode($apiEntrada), 'GET');
 	return $tipoocorrencia;
 }
 
@@ -44,7 +44,7 @@ if (isset($_GET['operacao'])) {
 			'idEmpresa' => $idEmpresa,
 			'nomeTipoOcorrencia' => $_POST['nomeTipoOcorrencia']
 		);
-		$tipoocorrencia = chamaAPI(null, '/services/tipoocorrencia', json_encode($apiEntrada), 'PUT');
+		$tipoocorrencia = chamaAPI(null, '/servicos/tipoocorrencia', json_encode($apiEntrada), 'PUT');
 	}
 
 	if ($operacao=="alterar") {
@@ -54,14 +54,14 @@ if (isset($_GET['operacao'])) {
 			'ocorrenciaInicial' => $_POST['ocorrenciaInicial'],
 			'nomeTipoOcorrencia' => $_POST['nomeTipoOcorrencia']
 		);
-		$tipoocorrencia = chamaAPI(null, '/services/tipoocorrencia', json_encode($apiEntrada), 'POST');
+		$tipoocorrencia = chamaAPI(null, '/servicos/tipoocorrencia', json_encode($apiEntrada), 'POST');
 	}
 	if ($operacao=="excluir") {
 		$apiEntrada = array(
 			'idEmpresa' => $idEmpresa,
 			'idTipoOcorrencia' => $_POST['idTipoOcorrencia']
 		);
-		$tipoocorrencia = chamaAPI(null, '/services/tipoocorrencia', json_encode($apiEntrada), 'DELETE');
+		$tipoocorrencia = chamaAPI(null, '/servicos/tipoocorrencia', json_encode($apiEntrada), 'DELETE');
 	}
 	if ($operacao == "buscar") {
 
@@ -69,7 +69,7 @@ if (isset($_GET['operacao'])) {
 		$apiEntrada = array(
 			'idTipoOcorrencia' => $_POST['idTipoOcorrencia']
 		);
-		$ocorrencia = chamaAPI(null, '/services/tipoocorrencia', json_encode($apiEntrada), 'GET');
+		$ocorrencia = chamaAPI(null, '/servicos/tipoocorrencia', json_encode($apiEntrada), 'GET');
 
 		echo json_encode($ocorrencia);
 		return $ocorrencia;

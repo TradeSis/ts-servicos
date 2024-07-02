@@ -126,7 +126,7 @@ if (isset($jsonEntrada['idOrcamento'])) {
                     }
                     
                 $corpoEmail .= "
-                    <p><a href='https://meucontrole.pro/services/'>https://meucontrole.pro/services/</a></p>
+                    <p><a href='https://meucontrole.pro/servicos/'>https://meucontrole.pro/servicos/</a></p>
                 </body>
                 </html>";
     

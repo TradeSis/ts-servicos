@@ -11,7 +11,7 @@ if (isset($LOG_CAMINHO)) {
     $identificacao = date("dmYHis") . "-PID" . getmypid() . "-" . "demanda_inserir";
     if (isset($LOG_NIVEL)) {
         if ($LOG_NIVEL >= 1) {
-            $arquivo = fopen(defineCaminhoLog() . "services_inserir" . date("dmY") . ".log", "a");
+            $arquivo = fopen(defineCaminhoLog() . "servicos_inserir" . date("dmY") . ".log", "a");
         }
     }
 
@@ -151,7 +151,7 @@ if (isset($jsonEntrada['tituloDemanda'])) {
             
                 <p>$descricao</p>
             
-                <p><a href='https://meucontrole.pro/services/'>https://meucontrole.pro/services/</a></p>
+                <p><a href='https://meucontrole.pro/servicos/'>https://meucontrole.pro/servicos/</a></p>
             </body>
             </html>";
 
