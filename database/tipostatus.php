@@ -26,7 +26,7 @@ function buscaTipoStatus($statusInicial=null, $idTipoStatus=null)
 		'idTipoStatus' => $idTipoStatus,
 		
 	);
-	$tipostatus = chamaAPI(null, '/services/tipostatus', json_encode($apiEntrada), 'GET');
+	$tipostatus = chamaAPI(null, '/servicos/tipostatus', json_encode($apiEntrada), 'GET');
 	return $tipostatus;
 }
 
@@ -45,7 +45,7 @@ if (isset($_GET['operacao'])) {
 		);
 		
 		
-		$tipostatus = chamaAPI(null, '/services/tipostatus', json_encode($apiEntrada), 'GET');
+		$tipostatus = chamaAPI(null, '/servicos/tipostatus', json_encode($apiEntrada), 'GET');
 		echo json_encode($tipostatus);
 		return $tipostatus;
 	}
@@ -59,7 +59,7 @@ if (isset($_GET['operacao'])) {
 			'mudaPosicaoPara' => $_POST['mudaPosicaoPara'],
 			'mudaStatusPara' => $_POST['mudaStatusPara']
 		);
-		$tipostatus = chamaAPI(null, '/services/tipostatus', json_encode($apiEntrada), 'POST');
+		$tipostatus = chamaAPI(null, '/servicos/tipostatus', json_encode($apiEntrada), 'POST');
 		echo json_encode($tipostatus);
 		
 		return;
@@ -72,7 +72,7 @@ if (isset($_GET['operacao'])) {
 		);
 		
 		
-		$tipostatus = chamaAPI(null, '/services/tipostatus', json_encode($apiEntrada), 'GET');
+		$tipostatus = chamaAPI(null, '/servicos/tipostatus', json_encode($apiEntrada), 'GET');
 		echo json_encode($tipostatus);
 		return $tipostatus;
 	}
@@ -85,7 +85,7 @@ if (isset($_GET['operacao'])) {
 			'mudaPosicaoPara' => $_POST['mudaPosicaoPara'],
 			'mudaStatusPara' => $_POST['mudaStatusPara']
 		);
-		$tipostatus = chamaAPI(null, '/services/tipostatus', json_encode($apiEntrada), 'POST');
+		$tipostatus = chamaAPI(null, '/servicos/tipostatus', json_encode($apiEntrada), 'POST');
 		echo json_encode($tipostatus);
 		
 		return;
@@ -99,7 +99,7 @@ if (isset($_GET['operacao'])) {
 			'mudaPosicaoPara' => $_POST['mudaPosicaoPara'],
 			'mudaStatusPara' => $_POST['mudaStatusPara']
 		);
-		$tipostatus = chamaAPI(null, '/services/tipostatus', json_encode($apiEntrada), 'PUT');
+		$tipostatus = chamaAPI(null, '/servicos/tipostatus', json_encode($apiEntrada), 'PUT');
 	}
 
 	if ($operacao=="alterar") {
@@ -110,7 +110,7 @@ if (isset($_GET['operacao'])) {
 			'mudaPosicaoPara' => $_POST['mudaPosicaoPara'],
 			'mudaStatusPara' => $_POST['mudaStatusPara']
 		);
-		$tipostatus = chamaAPI(null, '/services/tipostatus', json_encode($apiEntrada), 'POST');
+		$tipostatus = chamaAPI(null, '/servicos/tipostatus', json_encode($apiEntrada), 'POST');
 
 	}
 	if ($operacao=="excluir") {
@@ -118,7 +118,7 @@ if (isset($_GET['operacao'])) {
 			'idEmpresa' => $idEmpresa,
 			'idTipoStatus' => $_POST['idTipoStatus']
 		);
-		$tipostatus = chamaAPI(null, '/services/tipostatus', json_encode($apiEntrada), 'DELETE');
+		$tipostatus = chamaAPI(null, '/servicos/tipostatus', json_encode($apiEntrada), 'DELETE');
 	}
 
 /*

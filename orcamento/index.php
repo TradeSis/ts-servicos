@@ -176,7 +176,7 @@ if (isset($_SESSION['filtro_orcamento'])) {
             $.ajax({
                 type: 'POST',
                 dataType: 'html',
-                url: '<?php echo URLROOT ?>/services/database/orcamento.php?operacao=filtrar',
+                url: '<?php echo URLROOT ?>/servicos/database/orcamento.php?operacao=filtrar',
                 beforeSend: function() {
                     $("#dados").html("Carregando...");
                 },

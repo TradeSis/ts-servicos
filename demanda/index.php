@@ -590,7 +590,7 @@ if (isset($_SESSION['filtro_demanda'])) {
             $.ajax({
                 type: 'POST',
                 dataType: 'html',
-                url: '<?php echo URLROOT ?>/services/database/demanda.php?operacao=filtrar',
+                url: '<?php echo URLROOT ?>/servicos/database/demanda.php?operacao=filtrar',
                 beforeSend: function() {
                     $("#dados").html("Carregando...");
                 },

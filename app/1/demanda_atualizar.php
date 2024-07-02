@@ -18,7 +18,7 @@ if (isset($LOG_CAMINHO)) {
     $identificacao = date("dmYHis") . "-PID" . getmypid() . "-" . "demanda_atualizar";
     if (isset($LOG_NIVEL)) {
         if ($LOG_NIVEL >= 1) {
-            $arquivo = fopen(defineCaminhoLog() . "services_" . date("dmY") . ".log", "a");
+            $arquivo = fopen(defineCaminhoLog() . "servicos_" . date("dmY") . ".log", "a");
         }
     }
 }
@@ -244,7 +244,7 @@ if (isset($jsonEntrada['idDemanda'])) {
             }
 
             $corpoEmail .= "
-                <p><a href='https://meucontrole.pro/services/'>https://meucontrole.pro/services/</a></p>
+                <p><a href='https://meucontrole.pro/servicos/'>https://meucontrole.pro/servicos/</a></p>
             </body>
             </html>";
 

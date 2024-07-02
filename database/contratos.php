@@ -3,7 +3,7 @@
 // Lucas 21032023 - adicionado operação filtrar, idCliente e idContratoStatus
 // Lucas 20032023 - buscaContratos ganhou parametro idCliente
 // Lucas 20022023 - buscaContratos ganhou parametro idContratoStatus
-// Lucas 14022023 - linha 96, modificado segundo parametro da chamda da api, adicionado "/tsservices/contrato/finalizar";
+// Lucas 14022023 - linha 96, modificado segundo parametro da chamda da api, adicionado "/tsservicos/contrato/finalizar";
 // Lucas 09022023 - corrigido erro de sintaxa - "hora" para "horas"
 // Helio 01022023 - compatibilidade com conectaMysql
 // Helio 01022023 alterado para include_once
@@ -36,7 +36,7 @@ function buscaContratos($idContrato = null, $idContratoStatus = null, $idCliente
 		'idCliente' => $idCliente,
 		
 	);
-	$contrato = chamaAPI(null, '/services/contrato', json_encode($apiEntrada), 'GET');
+	$contrato = chamaAPI(null, '/servicos/contrato', json_encode($apiEntrada), 'GET');
 
 	return $contrato;
 }
@@ -53,7 +53,7 @@ function buscaContratosAbertos($idCliente=null)
 		'statusContrato' => $statusContrato, 
 		'idCliente' => $idCliente,
 	);
-	$contrato = chamaAPI(null, '/services/contrato', json_encode($apiEntrada), 'GET');
+	$contrato = chamaAPI(null, '/servicos/contrato', json_encode($apiEntrada), 'GET');
 
 	return $contrato;
 }
@@ -71,7 +71,7 @@ function buscaCardsContrato($idContratoTipo = null)
 		'idEmpresa' => $idEmpresa,
 		'idContratoTipo' => $idContratoTipo
 	);
-	$cards = chamaAPI(null, '/services/contrato/totais', json_encode($apiEntrada), 'GET');
+	$cards = chamaAPI(null, '/servicos/contrato/totais', json_encode($apiEntrada), 'GET');
 
 	return $cards;
 }
@@ -103,7 +103,7 @@ if (isset($_GET['operacao'])) {
 			
 		);
 		
-		$contratos = chamaAPI(null, '/services/contrato', json_encode($apiEntrada), 'PUT');
+		$contratos = chamaAPI(null, '/servicos/contrato', json_encode($apiEntrada), 'PUT');
 
 		header('Location: ../contratos/index.php?tipo='.$_POST['idContratoTipo']);
 	}
@@ -124,7 +124,7 @@ if (isset($_GET['operacao'])) {
 			'idContratoTipo' => $_POST['idContratoTipo'],
 			'idServico' => $_POST['idServico']
 		);
-		$contratos = chamaAPI(null, '/services/contrato', json_encode($apiEntrada), 'POST');
+		$contratos = chamaAPI(null, '/servicos/contrato', json_encode($apiEntrada), 'POST');
 		header('Location: ../contratos/index.php?tipo='.$_POST['idContratoTipo']);
 	}
 
@@ -138,7 +138,7 @@ if (isset($_GET['operacao'])) {
 			'idContratoTipo' => $_POST['idContratoTipo'],
 
 		);
-		$contratos = chamaAPI(null, '/services/contrato/finalizar', json_encode($apiEntrada), 'POST');
+		$contratos = chamaAPI(null, '/servicos/contrato/finalizar', json_encode($apiEntrada), 'POST');
 
 		header('Location: ../contratos/index.php?tipo='.$_POST['idContratoTipo']);
 	}
@@ -148,7 +148,7 @@ if (isset($_GET['operacao'])) {
 			'idContrato' => $_POST['idContrato'],
 
 		);
-		$contratos = chamaAPI(null, '/services/contrato', json_encode($apiEntrada), 'DELETE');
+		$contratos = chamaAPI(null, '/servicos/contrato', json_encode($apiEntrada), 'DELETE');
 
 		header('Location: ../contratos/index.php');
 	}
@@ -170,7 +170,7 @@ if (isset($_GET['operacao'])) {
 			'statusContrato' => $statusContrato, 
 			'idContratoTipo' => $idContratoTipo
         );
-        $contrato = chamaAPI(null, '/services/contrato', json_encode($apiEntrada), 'GET');
+        $contrato = chamaAPI(null, '/servicos/contrato', json_encode($apiEntrada), 'GET');
 
         echo json_encode($contrato);
         return $contrato;
@@ -217,7 +217,7 @@ if (isset($_GET['operacao'])) {
 		
 		$_SESSION['filtro_contrato'] = $apiEntrada;
 		
-		$contrato = chamaAPI(null, '/services/contrato', json_encode($apiEntrada), 'GET');
+		$contrato = chamaAPI(null, '/servicos/contrato', json_encode($apiEntrada), 'GET');
 
 		echo json_encode($contrato);
 		return $contrato;

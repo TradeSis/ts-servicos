@@ -9,7 +9,7 @@ if (isset($LOG_CAMINHO)) {
   $identificacao = date("dmYHis") . "-PID" . getmypid() . "-" . "demanda_dashboard";
   if (isset($LOG_NIVEL)) {
     if ($LOG_NIVEL >= 1) {
-      $arquivo = fopen(defineCaminhoLog() . "services_dashboard_" . date("dmY") . ".log", "a");
+      $arquivo = fopen(defineCaminhoLog() . "servicos_dashboard_" . date("dmY") . ".log", "a");
     }
   }
 }

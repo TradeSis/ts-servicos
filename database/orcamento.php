@@ -21,7 +21,7 @@ function buscaOrcamentos($idOrcamento = null, $statusOrcamento = null, $idClient
 		'idCliente' => $idCliente,
 		
 	);
-	$orcamento = chamaAPI(null, '/services/orcamento', json_encode($apiEntrada), 'GET');
+	$orcamento = chamaAPI(null, '/servicos/orcamento', json_encode($apiEntrada), 'GET');
 
 	return $orcamento;
 }
@@ -37,7 +37,7 @@ function buscaOrcamentoItens($idOrcamento = null, $idItemOrcamento = null)
 		'idOrcamento' => $idOrcamento,
 		'idItemOrcamento' => $idItemOrcamento,
 	);
-	$orcamento = chamaAPI(null, '/services/orcamentoitens', json_encode($apiEntrada), 'GET');
+	$orcamento = chamaAPI(null, '/servicos/orcamentoitens', json_encode($apiEntrada), 'GET');
 
 	return $orcamento;
 }
@@ -63,7 +63,7 @@ if (isset($_GET['operacao'])) {
 			'idServico' => $_POST['idServico']
 		);
 		
-		$orcamentos = chamaAPI(null, '/services/orcamento', json_encode($apiEntrada), 'PUT');
+		$orcamentos = chamaAPI(null, '/servicos/orcamento', json_encode($apiEntrada), 'PUT');
 
 	}
 
@@ -80,7 +80,7 @@ if (isset($_GET['operacao'])) {
 			'acao' => $acao
 		);
 		
-		$orcamentos = chamaAPI(null, '/services/orcamento/atualizar', json_encode($apiEntrada), 'POST');
+		$orcamentos = chamaAPI(null, '/servicos/orcamento/atualizar', json_encode($apiEntrada), 'POST');
 
 		if($acao == "pedir") {
 			echo json_encode($orcamentos);
@@ -103,7 +103,7 @@ if (isset($_GET['operacao'])) {
 			'statusOrcamento' => $_POST['idOrcamentoStatus'],
 			'idServico' => $_POST['idServico']
 		);
-		$orcamentos = chamaAPI(null, '/services/orcamento', json_encode($apiEntrada), 'POST');
+		$orcamentos = chamaAPI(null, '/servicos/orcamento', json_encode($apiEntrada), 'POST');
 	}
 
 	if ($operacao == "buscar") {
@@ -116,7 +116,7 @@ if (isset($_GET['operacao'])) {
             'idCliente' => $idCliente,
 			'statusOrcamento' => '1', //Aberto
         );
-        $orcamento = chamaAPI(null, '/services/orcamento', json_encode($apiEntrada), 'GET');
+        $orcamento = chamaAPI(null, '/servicos/orcamento', json_encode($apiEntrada), 'GET');
 
         echo json_encode($orcamento);
         return $orcamento;
@@ -150,7 +150,7 @@ if (isset($_GET['operacao'])) {
 		
 		$_SESSION['filtro_orcamento'] = $apiEntrada;
 		
-		$orcamento = chamaAPI(null, '/services/orcamento', json_encode($apiEntrada), 'GET');
+		$orcamento = chamaAPI(null, '/servicos/orcamento', json_encode($apiEntrada), 'GET');
 
 		echo json_encode($orcamento);
 		return $orcamento;
@@ -166,7 +166,7 @@ if (isset($_GET['operacao'])) {
 			'horas' => $_POST['horas']
 		);
 		
-		$orcamentos = chamaAPI(null, '/services/orcamentoitens', json_encode($apiEntrada), 'PUT');
+		$orcamentos = chamaAPI(null, '/servicos/orcamentoitens', json_encode($apiEntrada), 'PUT');
 		echo json_encode($orcamentos);
         return $orcamentos;
 
@@ -181,7 +181,7 @@ if (isset($_GET['operacao'])) {
 			'tituloItemOrcamento' => $_POST['tituloItemOrcamento'],
 			'horas' => $_POST['horas']
 		);
-		$orcamentos = chamaAPI(null, '/services/orcamentoitens', json_encode($apiEntrada), 'POST');
+		$orcamentos = chamaAPI(null, '/servicos/orcamentoitens', json_encode($apiEntrada), 'POST');
 		echo json_encode($orcamentos);
         return $orcamentos;
 	}
@@ -191,7 +191,7 @@ if (isset($_GET['operacao'])) {
 			'idItemOrcamento' => $_POST['idItemOrcamento'],
 			'idOrcamento' => $_POST['idOrcamento']
 		);
-		$orcamentos = chamaAPI(null, '/services/orcamentoitens', json_encode($apiEntrada), 'DELETE');
+		$orcamentos = chamaAPI(null, '/servicos/orcamentoitens', json_encode($apiEntrada), 'DELETE');
 		echo json_encode($orcamentos);
         return $orcamentos;
 	}
@@ -210,7 +210,7 @@ if (isset($_GET['operacao'])) {
             'idOrcamento' => $idOrcamento,
             'idItemOrcamento' => $idItemOrcamento
         );
-        $orcamento = chamaAPI(null, '/services/orcamentoitens', json_encode($apiEntrada), 'GET');
+        $orcamento = chamaAPI(null, '/servicos/orcamentoitens', json_encode($apiEntrada), 'GET');
 
         echo json_encode($orcamento);
         return $orcamento;
@@ -223,7 +223,7 @@ if (isset($_GET['operacao'])) {
             'idOrcamento' => $_POST["idOrcamento"],
             'idSolicitante' => $_POST["idSolicitante"]
         );
-        $orcamento = chamaAPI(null, '/services/orcamento/contrato', json_encode($apiEntrada), 'POST');
+        $orcamento = chamaAPI(null, '/servicos/orcamento/contrato', json_encode($apiEntrada), 'POST');
 
     }
 
