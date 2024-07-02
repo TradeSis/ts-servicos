@@ -129,36 +129,36 @@ $nivelMenu = $nivelMenuLogin['nivelMenu'];
                         $getTab = '';
                     } ?>
                     <select class="form-select mt-2" id="subtabServices" style="color:#000; width:160px;text-align:center; ">
-                        <option value="<?php echo URLROOT ?>/services/?tab=dashboard" 
+                        <option value="<?php echo URLROOT ?>/servicos/?tab=dashboard" 
                         <?php if ($getTab == "dashboard") {echo " selected ";} ?>>Dashboard</option>
 
-                        <option value="<?php echo URLROOT ?>/services/?tab=agenda" 
+                        <option value="<?php echo URLROOT ?>/servicos/?tab=agenda" 
                         <?php if ($getTab == "agenda") {echo " selected ";} ?>>Agenda</option>
 
-                        <option value="<?php echo URLROOT ?>/services/?tab=execucao" 
+                        <option value="<?php echo URLROOT ?>/servicos/?tab=execucao" 
                         <?php if ($getTab == "execucao") {echo " selected ";} ?>>Execução</option>
 
-                        <option value="<?php echo URLROOT ?>/services/?tab=demandas" 
+                        <option value="<?php echo URLROOT ?>/servicos/?tab=demandas" 
                         <?php if ($getTab == "demandas") {echo " selected ";} ?>>Demandas</option>
 
-                        <option value="<?php echo URLROOT ?>/services/?tab=contratos" 
+                        <option value="<?php echo URLROOT ?>/servicos/?tab=contratos" 
                         <?php if ($getTab == "contratos") {echo " selected ";} ?>>Contratos</option>
 
-                        <option value="<?php echo URLROOT ?>/services/?tab=projetos" 
+                        <option value="<?php echo URLROOT ?>/servicos/?tab=projetos" 
                         <?php if ($getTab == "projetos") {echo " selected ";} ?>>Projetos</option>
 
                         
 
-                        <option value="<?php echo URLROOT ?>/services/?tab=melhorias" 
+                        <option value="<?php echo URLROOT ?>/servicos/?tab=melhorias" 
                         <?php if ($getTab == "melhorias") {echo " selected ";} ?>>Melhorias</option>
 
-                        <option value="<?php echo URLROOT ?>/services/?tab=rotinas" 
+                        <option value="<?php echo URLROOT ?>/servicos/?tab=rotinas" 
                         <?php if ($getTab == "rotinas") {echo " selected ";} ?>>Rotinas</option>
 
-                        <option value="<?php echo URLROOT ?>/services/?tab=orcamentos" 
+                        <option value="<?php echo URLROOT ?>/servicos/?tab=orcamentos" 
                         <?php if ($getTab == "orcamentos") {echo " selected ";} ?>>Orçamentos</option>
 
-                        <option value="<?php echo URLROOT ?>/services/?tab=configuracao" 
+                        <option value="<?php echo URLROOT ?>/servicos/?tab=configuracao" 
                         <?php if ($getTab == "configuracao") {echo " selected ";} ?>>Configurações</option>
                     </select>
                 </div>
@@ -230,7 +230,7 @@ $nivelMenu = $nivelMenuLogin['nivelMenu'];
 
             if ($src !== "") { ?>
                 <div class="container-fluid p-0 m-0">
-                    <iframe class="row p-0 m-0 ts-iframe" src="<?php echo URLROOT ?>/services/<?php echo $src ?>"></iframe>
+                    <iframe class="row p-0 m-0 ts-iframe" src="<?php echo URLROOT ?>/servicos/<?php echo $src ?>"></iframe>
                 </div>
             <?php } ?>
 

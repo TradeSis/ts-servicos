@@ -9,7 +9,7 @@ if (isset($LOG_CAMINHO)) {
     $identificacao = date("dmYHis") . "-PID" . getmypid() . "-" . "contratochecklist_tarefa";
     if (isset($LOG_NIVEL)) {
         if ($LOG_NIVEL >= 1) {
-            $arquivo = fopen(defineCaminhoLog() . "services_" . date("dmY") . ".log", "a");
+            $arquivo = fopen(defineCaminhoLog() . "servicos_" . date("dmY") . ".log", "a");
         }
     }
 }
@@ -48,7 +48,7 @@ if (isset($jsonEntrada['idChecklist'])) {
         'idContratoTipo' => $dados['idContratoTipo'],
     );  
     echo json_encode($apiEntrada);
-    $demanda = chamaAPI(null, '/services/demanda', json_encode($apiEntrada), 'PUT');
+    $demanda = chamaAPI(null, '/servicos/demanda', json_encode($apiEntrada), 'PUT');
     
     $sql = "DELETE FROM contratochecklist WHERE idChecklist = $idChecklist AND idContrato = $idContrato";
 
