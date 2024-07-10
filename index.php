@@ -3,10 +3,14 @@
 //Gabriel 05102023 ID 575 Demandas/Comentarios - Layout de chat
 include_once __DIR__ . "/../config.php";
 include_once "header.php";
-include_once ROOT . "/sistema/database/loginAplicativo.php";
-$nivelMenuLogin = buscaLoginAplicativo($_SESSION['idLogin'], 'Services');
-$configuracao = 1;
-$nivelMenu = $nivelMenuLogin['nivelMenu'];
+
+if(!isset($_SESSION['nomeAplicativo']) || isset($_SESSION['nomeAplicativo']) && $_SESSION['nomeAplicativo'] !== 'Services'){
+    $_SESSION['nomeAplicativo'] = 'Services';
+    include_once ROOT . "/sistema/database/loginAplicativo.php";
+
+    $nivelMenuLogin = buscaLoginAplicativo($_SESSION['idLogin'], $_SESSION['nomeAplicativo']);
+    $_SESSION['nivelMenu'] = $nivelMenuLogin['nivelMenu'];
+}
 
 ?>
 
@@ -41,7 +45,7 @@ $nivelMenu = $nivelMenuLogin['nivelMenu'];
                             $tab = $_GET['tab'];
                         }
 
-                        if ($nivelMenu >= 1) {
+                        if ($_SESSION['nivelMenu'] >= 1) {
                             if ($tab == '') {
                                 $tab = 'dashboard';
                             } ?>
@@ -54,7 +58,7 @@ $nivelMenu = $nivelMenuLogin['nivelMenu'];
                             </li>
                         <?php }
 
-                        if ($nivelMenu >= 2) {
+                        if ($_SESSION['nivelMenu'] >= 2) {
                         ?>
                             <li class="nav-item mr-1">
                                 <a class="nav-link <?php if ($tab == "agenda") {echo " active ";} ?>" 
@@ -62,56 +66,56 @@ $nivelMenu = $nivelMenuLogin['nivelMenu'];
                             </li>
 
                         <?php }
-                        if ($nivelMenu >= 2) { ?>
+                        if ($_SESSION['nivelMenu'] >= 2) { ?>
                             <li class="nav-item mr-1">
                                 <a class="nav-link <?php if ($tab == "execucao") {echo " active ";} ?>"
                                 href="?tab=execucao" role="tab">Execução</a>
                             </li>
                         <?php }
-                        if ($nivelMenu >= 2) { ?>
+                        if ($_SESSION['nivelMenu'] >= 2) { ?>
                             <li class="nav-item mr-1">
                                 <a class="nav-link <?php if ($tab == "demandas") {echo " active ";} ?>" 
                                 href="?tab=demandas" role="tab">Demandas</a>
                             </li>
                         <?php }
-                        if ($nivelMenu >= 1) { ?>
+                        if ($_SESSION['nivelMenu'] >= 1) { ?>
                             <li class="nav-item mr-1">
                                 <a class="nav-link <?php if ($tab == "fila") {echo " active ";} ?>" 
                                 href="?tab=fila" role="tab">Fila de Atendimento</a>
                             </li>                            
                         <?php }
-                        if ($nivelMenu >= 2) { ?>
+                        if ($_SESSION['nivelMenu'] >= 2) { ?>
                             <li class="nav-item mr-1">
                                 <a class="nav-link <?php if ($tab == "contratos") {echo " active ";} ?>" 
                                 href="?tab=contratos" role="tab">Contratos</a>
                             </li>
                         <?php }
-                        if ($nivelMenu >= 2) { ?>
+                        if ($_SESSION['nivelMenu'] >= 2) { ?>
                             <li class="nav-item mr-1">
                                 <a class="nav-link <?php if ($tab == "projetos") {echo " active ";} ?>" 
                                 href="?tab=projetos" role="tab">Projetos</a>
                             </li>
                         <?php }
                         
-                        if ($nivelMenu >= 2) { ?>
+                        if ($_SESSION['nivelMenu'] >= 2) { ?>
                             <li class="nav-item mr-1">
                                 <a class="nav-link <?php if ($tab == "melhorias") {echo " active ";} ?>" 
                                 href="?tab=melhorias" role="tab">Melhorias</a>
                             </li>
                         <?php }
-                        if ($nivelMenu >= 2) { ?>
+                        if ($_SESSION['nivelMenu'] >= 2) { ?>
                             <li class="nav-item mr-1">
                                 <a class="nav-link <?php if ($tab == "Orcamentos") {echo " active ";} ?>" 
                                 href="?tab=orcamentos" role="tab">Orçamentos</a>
                             </li>
-                        <?php /*}
-                        if ($nivelMenu >= 1) { ?>
+                        <?php /* }
+                        if ($_SESSION['nivelMenu'] >= 1) { ?>
                             <li class="nav-item mr-1">
                                 <a class="nav-link <?php if ($tab == "orcamento") {echo " active ";} ?>" 
                                 href="?tab=orcamento" role="tab">Orçamentos</a>
                             </li>
-                        <?php */}
-                        if ($nivelMenu >= 4) { ?>
+                        <?php */ }
+                        if ($_SESSION['nivelMenu'] >= 4) { ?>
                             <li class="nav-item mr-1">
                                 <a class="nav-link <?php if ($tab == "configuracao") {echo " active ";} ?>" 
                                 href="?tab=configuracao" role="tab" data-toggle="tooltip" data-placement="top" title="Configurações"><i class="bi bi-gear"></i> Configurações</a>
@@ -129,34 +133,56 @@ $nivelMenu = $nivelMenuLogin['nivelMenu'];
                         $getTab = '';
                     } ?>
                     <select class="form-select mt-2" id="subtabServices" style="color:#000; width:160px;text-align:center; ">
+
+                        <?php if ($_SESSION['nivelMenu'] >= 1) { ?>
                         <option value="<?php echo URLROOT ?>/servicos/?tab=dashboard" 
                         <?php if ($getTab == "dashboard") {echo " selected ";} ?>>Dashboard</option>
+                        <?php }
 
+                        if ($_SESSION['nivelMenu'] >= 2) { ?>
                         <option value="<?php echo URLROOT ?>/servicos/?tab=agenda" 
                         <?php if ($getTab == "agenda") {echo " selected ";} ?>>Agenda</option>
+                        <?php }
 
+                        if ($_SESSION['nivelMenu'] >= 2) { ?>
                         <option value="<?php echo URLROOT ?>/servicos/?tab=execucao" 
                         <?php if ($getTab == "execucao") {echo " selected ";} ?>>Execução</option>
+                        <?php }
 
+                        if ($_SESSION['nivelMenu'] >= 2) { ?>
                         <option value="<?php echo URLROOT ?>/servicos/?tab=demandas" 
                         <?php if ($getTab == "demandas") {echo " selected ";} ?>>Demandas</option>
+                        <?php }
 
+                        if ($_SESSION['nivelMenu'] >= 1) { ?>
+                        <option value="<?php echo URLROOT ?>/servicos/?tab=fila" 
+                        <?php if ($getTab == "fila") {echo " selected ";} ?>>Fila de Atendimento</option>
+                        <?php }
+
+                        if ($_SESSION['nivelMenu'] >= 2) { ?>
                         <option value="<?php echo URLROOT ?>/servicos/?tab=contratos" 
                         <?php if ($getTab == "contratos") {echo " selected ";} ?>>Contratos</option>
+                        <?php }
 
+                        if ($_SESSION['nivelMenu'] >= 2) { ?>
                         <option value="<?php echo URLROOT ?>/servicos/?tab=projetos" 
                         <?php if ($getTab == "projetos") {echo " selected ";} ?>>Projetos</option>
+                        <?php }
 
-                        
-
+                        if ($_SESSION['nivelMenu'] >= 2) { ?>
                         <option value="<?php echo URLROOT ?>/servicos/?tab=melhorias" 
                         <?php if ($getTab == "melhorias") {echo " selected ";} ?>>Melhorias</option>
-
+                        <?php }
+                        
+                        if ($_SESSION['nivelMenu'] >= 1) { ?>
                         <option value="<?php echo URLROOT ?>/servicos/?tab=orcamentos" 
                         <?php if ($getTab == "orcamentos") {echo " selected ";} ?>>Orçamentos</option>
+                        <?php }
 
+                        if ($_SESSION['nivelMenu'] >= 4) { ?>
                         <option value="<?php echo URLROOT ?>/servicos/?tab=configuracao" 
                         <?php if ($getTab == "configuracao") {echo " selected ";} ?>>Configurações</option>
+                        <?php } ?>
                     </select>
                 </div>
              
