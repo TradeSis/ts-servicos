@@ -4,8 +4,8 @@
 include_once __DIR__ . "/../config.php";
 include_once "header.php";
 
-if(!isset($_SESSION['nomeAplicativo']) || isset($_SESSION['nomeAplicativo']) && $_SESSION['nomeAplicativo'] !== 'Services'){
-    $_SESSION['nomeAplicativo'] = 'Services';
+if(!isset($_SESSION['nomeAplicativo']) || isset($_SESSION['nomeAplicativo']) && $_SESSION['nomeAplicativo'] !== 'Servicos'){
+    $_SESSION['nomeAplicativo'] = 'Servicos';
     include_once ROOT . "/sistema/database/loginAplicativo.php";
 
     $nivelMenuLogin = buscaLoginAplicativo($_SESSION['idLogin'], $_SESSION['nomeAplicativo']);
@@ -173,7 +173,7 @@ if(!isset($_SESSION['nomeAplicativo']) || isset($_SESSION['nomeAplicativo']) && 
                         <option value="<?php echo URLROOT ?>/servicos/?tab=melhorias" 
                         <?php if ($getTab == "melhorias") {echo " selected ";} ?>>Melhorias</option>
                         <?php }
-                        
+
                         if ($_SESSION['nivelMenu'] >= 1) { ?>
                         <option value="<?php echo URLROOT ?>/servicos/?tab=orcamentos" 
                         <?php if ($getTab == "orcamentos") {echo " selected ";} ?>>Orçamentos</option>
