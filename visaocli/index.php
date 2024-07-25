@@ -80,7 +80,7 @@ if ($usuario["idCliente"] == null) {
                                               
             <div class="col-8 col-md-8 text-end">
                 <?php 
-                    if ($idContratoTipo == "contratos" && $usuario["idCliente"] != null) {
+                     if ($idContratoTipo == "contratos" || $idContratoTipo == "Orcamentos") {
                 ?> 
                 <button type="button" class="ms-4 btn btn-success ml-4" data-bs-toggle="modal" data-bs-target="#inserirDemandaCliente"><i class="bi bi-plus-square"></i>&nbsp Novo</button>
                 <?php 

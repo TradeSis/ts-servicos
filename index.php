@@ -101,16 +101,16 @@ $nivelMenu = $nivelMenuLogin['nivelMenu'];
                         <?php }
                         if ($nivelMenu >= 2) { ?>
                             <li class="nav-item mr-1">
-                                <a class="nav-link <?php if ($tab == "rotinas") {echo " active ";} ?>" 
-                                href="?tab=rotinas" role="tab">Rotinas</a>
+                                <a class="nav-link <?php if ($tab == "Orcamentos") {echo " active ";} ?>" 
+                                href="?tab=orcamentos" role="tab">Orçamentos</a>
                             </li>
-                        <?php }
+                        <?php /*}
                         if ($nivelMenu >= 1) { ?>
                             <li class="nav-item mr-1">
                                 <a class="nav-link <?php if ($tab == "orcamento") {echo " active ";} ?>" 
                                 href="?tab=orcamento" role="tab">Orçamentos</a>
                             </li>
-                        <?php }
+                        <?php */}
                         if ($nivelMenu >= 4) { ?>
                             <li class="nav-item mr-1">
                                 <a class="nav-link <?php if ($tab == "configuracao") {echo " active ";} ?>" 
@@ -152,9 +152,6 @@ $nivelMenu = $nivelMenuLogin['nivelMenu'];
                         <option value="<?php echo URLROOT ?>/servicos/?tab=melhorias" 
                         <?php if ($getTab == "melhorias") {echo " selected ";} ?>>Melhorias</option>
 
-                        <option value="<?php echo URLROOT ?>/servicos/?tab=rotinas" 
-                        <?php if ($getTab == "rotinas") {echo " selected ";} ?>>Rotinas</option>
-
                         <option value="<?php echo URLROOT ?>/servicos/?tab=orcamentos" 
                         <?php if ($getTab == "orcamentos") {echo " selected ";} ?>>Orçamentos</option>
 
@@ -183,17 +180,14 @@ $nivelMenu = $nivelMenuLogin['nivelMenu'];
                 $src = "demandas/?tipo=projetos";
                 $title = "Serviços/Atividades";
             }
-            if ($tab == "orcamento") {
-                $src = "orcamento/";
-                $title = "Serviços/OrÃ§amentos";
-            }
+            
             if ($tab == "melhorias") {
                 $src = "contratos/?tipo=melhorias";
                 $title = "Serviços/Melhorias";
             }
-            if ($tab == "rotinas") {
-                $src = "contratos/?tipo=rotinas";
-                $title = "Serviços/Rotinas";
+            if ($tab == "orcamentos") {
+                $src = "contratos/?tipo=orcamentos";
+                $title = "Serviços/Orçamentos";
             }
 
             if ($tab == "contratos") {
