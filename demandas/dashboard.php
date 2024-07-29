@@ -18,6 +18,7 @@ $usuario = buscaUsuarios(null, $_SESSION['idLogin']);
 // paliativo
 if (isset($usuario)) {
   if ($usuario["idUsuario"] == null) {
+      echo "Usuario não encontrado!" ."<HR>";
       return;
   } 
 } else {
