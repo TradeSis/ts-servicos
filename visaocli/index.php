@@ -23,6 +23,17 @@ if (isset($_GET["idContratoTipo"])) {
 $contratoTipo = buscaContratoTipos();
 $usuario = buscaUsuarios(null, $_SESSION['idLogin']);
 
+// Helio 29/07/2024 - quando está gravanbco novo login, não está gravando o usuario no mysql
+// paliativo
+if (isset($usuario)) {
+    if ($usuario["idUsuario"] == null) {
+        echo "Usuario não encontrado!" ."<HR>";
+        return;
+    } 
+} else {
+    return;
+}
+
 //echo json_encode(buscaDemandas(null, TIPOSTATUS_FILA, null, $usuario['idUsuario']))."<HR>";
 if ($usuario["idCliente"] == null) {
     $clientes = buscaClientes($usuario["idCliente"]);
