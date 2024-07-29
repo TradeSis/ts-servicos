@@ -23,6 +23,15 @@ if (isset($_GET["idContratoTipo"])) {
 $contratoTipo = buscaContratoTipos();
 $usuario = buscaUsuarios(null, $_SESSION['idLogin']);
 
+echo json_encode($usuario) . "<HR>";
+if (isset($usuario)) {
+    if ($usuario["idUsuario"] == null) {
+        return;
+    } 
+} else {
+    return;
+}
+
 //echo json_encode(buscaDemandas(null, TIPOSTATUS_FILA, null, $usuario['idUsuario']))."<HR>";
 if ($usuario["idCliente"] == null) {
     $clientes = buscaClientes($usuario["idCliente"]);
