@@ -205,20 +205,23 @@ $statusEncerrar = array(
                 <div class="modal-content" style="background-color: #F1F2F4;">
                 
                     <div class="container">
-                        <?php if (isset($demanda['tituloContrato'])) { ?>
-                            <div class="row pb-1">
-                                <!-- gabriel 05022024 id738 - adicionado select para alterar contrato -->
-                                <div class="col-md-9 d-flex">
-                                    <span class="ts-subTitulo"><strong><?php echo $demanda['nomeContrato'] ?>: </strong></span>
-                                    <select class="form-select ts-input ts-selectDemandaModalVisualizar" name="idContrato" id="idContrato" autocomplete="off">
-                                    <option value="<?php echo $demanda['idContrato'] ?>"><?php echo $demanda['tituloContrato'] ?> </option>
-                                    <?php foreach ($contratos as $contrato) { ?>
-                                        <option value="<?php echo $contrato['idContrato'] ?>"><?php echo $contrato['tituloContrato'] ?></option>
-                                    <?php } ?>
-                                    </select>
-                                </div>
+                        <div class="row pb-1">
+                            <?php if (isset($demanda['tituloContrato'])) { ?>
+                            <!-- gabriel 05022024 id738 - adicionado select para alterar contrato -->
+                            <div class="col-md-9 d-flex">
+                                <span class="ts-subTitulo"><strong><?php echo $demanda['nomeContrato'] ?>: </strong></span>
+                                <select class="form-select ts-input ts-selectDemandaModalVisualizar" name="idContrato" id="idContrato" autocomplete="off">
+                                <option value="<?php echo $demanda['idContrato'] ?>"><?php echo $demanda['tituloContrato'] ?> </option>
+                                <?php foreach ($contratos as $contrato) { ?>
+                                    <option value="<?php echo $contrato['idContrato'] ?>"><?php echo $contrato['tituloContrato'] ?></option>
+                                <?php } ?>
+                                </select>
                             </div>
-                        <?php } ?>
+                            <?php } ?>
+                            <div class="col-md-3 d-flex">
+                                <span class="ts-subTitulo"><strong>Demanda Superior: </strong> <?php echo $demanda['idDemandaSuperior'] ?></span>
+                            </div>
+                        </div>
                         <div class="row g-3">
                             <div class="col-md-9 d-flex">
                                 <span class="ts-tituloPrincipalModal"><?php echo $demanda['idDemanda'] ?></span>
