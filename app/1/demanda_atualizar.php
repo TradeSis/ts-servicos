@@ -203,6 +203,48 @@ if (isset($jsonEntrada['idDemanda'])) {
         
     }
 
+    //SUBDEMANDA
+    if ($jsonEntrada['acao'] == "subdemanda") {
+
+        $idLogin = $jsonEntrada['idLogin'];
+
+        //busca dados solicitante    
+        $sql_solicitante = "SELECT idUsuario FROM usuario WHERE idLogin = $idLogin";
+        $buscar_solicitante = mysqli_query($conexao, $sql_solicitante);
+        $row_solicitante = mysqli_fetch_array($buscar_solicitante, MYSQLI_ASSOC);
+        $idSolicitante = $row_solicitante['idUsuario']; 
+
+        $idCliente = CLIENTE_TRADESIS; 
+
+        //busca dados demanda    
+        $sql2 = "SELECT * FROM demanda WHERE idDemanda = $idDemanda";
+        $buscar2 = mysqli_query($conexao, $sql2);
+        $row = mysqli_fetch_array($buscar2, MYSQLI_ASSOC);
+
+        $prioridade = isset($row['prioridade'])  && $row['prioridade'] !== "" && $row['prioridade'] !== "null" ? "'". $row['prioridade']."'"  : "null";
+        $tituloDemanda = isset($row['tituloDemanda'])  && $row['tituloDemanda'] !== "" && $row['tituloDemanda'] !== "null" ? "'". $row['tituloDemanda']."'"  : "null";
+        $descricao = isset($row['descricao'])  && $row['descricao'] !== "" && $row['descricao'] !== "null" ? "'". $row['descricao']."'"  : "null";
+        $dataAbertura = isset($row['dataAbertura'])  && $row['dataAbertura'] !== "" && $row['dataAbertura'] !== "null" ? "'". $row['dataAbertura']."'"  : "null";
+        $idTipoStatus = isset($row['idTipoStatus'])  && $row['idTipoStatus'] !== "" && $row['idTipoStatus'] !== "null" ? "'". $row['idTipoStatus']."'"  : "null";
+        $posicao = isset($row['posicao'])  && $row['posicao'] !== "" && $row['posicao'] !== "null" ? "'". $row['posicao']."'"  : "null";
+        $statusDemanda = isset($row['statusDemanda'])  && $row['statusDemanda'] !== "" && $row['statusDemanda'] !== "null" ? "'". $row['statusDemanda']."'"  : "null";
+        $idServico = isset($row['idServico'])  && $row['idServico'] !== "" && $row['idServico'] !== "null" ? "'". $row['idServico']."'"  : "null";
+        $idContrato = isset($row['idContrato'])  && $row['idContrato'] !== "" && $row['idContrato'] !== "null" ? "'". $row['idContrato']."'"  : "null";
+        $idContratoTipo = isset($row['idContratoTipo'])  && $row['idContratoTipo'] !== "" && $row['idContratoTipo'] !== "null" ? "'". $row['idContratoTipo']."'"  : "null";
+        $idAtendente = isset($row['idAtendente'])  && $row['idAtendente'] !== "" && $row['idAtendente'] !== "null" ? "'". $row['idAtendente']."'"  : "null";
+        $horasPrevisao = isset($row['horasPrevisao'])  && $row['horasPrevisao'] !== "" && $row['horasPrevisao'] !== "null" ? "'". $row['horasPrevisao']."'"  : "null";
+        $dataPrevisaoEntrega = isset($row['dataPrevisaoEntrega'])  && $row['dataPrevisaoEntrega'] !== "" && $row['dataPrevisaoEntrega'] !== "null" ? "'". $row['dataPrevisaoEntrega']."'"  : "null";
+        $dataPrevisaoInicio = isset($row['dataPrevisaoInicio'])  && $row['dataPrevisaoInicio'] !== "" && $row['dataPrevisaoInicio'] !== "null" ? "'". $row['dataPrevisaoInicio']."'"  : "null";
+        $tempoCobrado = isset($row['tempoCobrado'])  && $row['tempoCobrado'] !== "" && $row['tempoCobrado'] !== "null" ? "'". $row['tempoCobrado']."'"  : "null";
+        $tempoCobradoDigitado = isset($row['tempoCobradoDigitado'])  && $row['tempoCobradoDigitado'] !== "" && $row['tempoCobradoDigitado'] !== "null" ? "'". $row['tempoCobradoDigitado']."'"  : "null";
+
+        $sql = "INSERT INTO demanda (prioridade, tituloDemanda, descricao, dataAbertura, idTipoStatus, posicao, statusDemanda, idCliente, idSolicitante, idServico, idContrato, 
+        idContratoTipo, horasPrevisao, idAtendente, dataPrevisaoEntrega, dataPrevisaoInicio, tempoCobrado, tempoCobradoDigitado, idDemandaSuperior)
+        VALUES ($prioridade, $tituloDemanda, $descricao, $dataAbertura, $idTipoStatus, $posicao, $statusDemanda, $idCliente, $idSolicitante, $idServico, $idContrato, 
+        $idContratoTipo, $horasPrevisao, $idAtendente, $dataPrevisaoEntrega, $dataPrevisaoInicio, $tempoCobrado, $tempoCobradoDigitado, $idDemanda)";
+    
+    }
+
     //LOG
     if (isset($LOG_NIVEL)) {
         if ($LOG_NIVEL >= 3) {

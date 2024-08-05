@@ -2,6 +2,7 @@
 
 function montaKanban($kanbanDemanda)
 {
+    if($kanbanDemanda['idDemandaSuperior'] == null) {
 	$dataAtual = date("d/m/Y"); 
     $hr = '';
     $dataNaTela = '';
@@ -36,7 +37,7 @@ function montaKanban($kanbanDemanda)
     } else {
         if ($dataPrevisaoInicio != null) {
             $hr = '<hr class="mt-2 mb-0">';
-            $dataNaTela= '<span class="ts-cardDataPrevisao">' . ' Previsão: ' . $dataPrevisaoInicio . '</span>';
+            $dataNaTela= '<span class="ts-cardDataPrevisao">' . ' Previsï¿½o: ' . $dataPrevisaoInicio . '</span>';
         }
     
     }
@@ -70,6 +71,7 @@ function montaKanban($kanbanDemanda)
 		'</span>';
 		
 	return $kanban;
+}
 }
 
 ?>
