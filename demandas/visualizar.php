@@ -217,9 +217,11 @@ $statusEncerrar = array(
                                 </select>
                             </div>
                             <?php } ?>
+                            <?php if ($demanda['idDemandaSuperior'] !== null) { ?>
                             <div class="col-md-3 d-flex">
                                 <span class="ts-subTitulo"><strong>Demanda Superior: </strong> <?php echo $demanda['idDemandaSuperior'] ?></span>
                             </div>
+                            <?php } ?>
                         </div>
                         <div class="row g-3">
                             <div class="col-md-9 d-flex">
