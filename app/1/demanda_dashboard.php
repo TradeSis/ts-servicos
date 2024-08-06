@@ -74,6 +74,8 @@ $backlog = $row["Backlog"];
 $sql_abertasnomes = "SELECT COUNT(demanda.idDemanda) AS AbertasNoMes FROM demanda ";
 
 $where = " where ";
+$sql_abertasnomes = $sql_abertasnomes . $where . " demanda.idDemandaSuperior IS NULL";
+$where = " and ";
 if (isset($jsonEntrada["idContratoTipo"])) {
   $sql_abertasnomes = $sql_abertasnomes . $where . " demanda.idContratoTipo = " . "'" . $jsonEntrada["idContratoTipo"] . "'";
   $where = " and ";
@@ -96,6 +98,8 @@ $abertasnomes = $row["AbertasNoMes"];
 $sql_fechadasdomes = "SELECT COUNT(demanda.idDemanda) AS FechadasDoMes FROM demanda ";
 
 $where = " where ";
+$sql_fechadasdomes = $sql_fechadasdomes . $where . " demanda.idDemandaSuperior IS NULL";
+$where = " and ";
 if (isset($jsonEntrada["idContratoTipo"])) {
   $sql_fechadasdomes = $sql_fechadasdomes . $where . " demanda.idContratoTipo = " . "'" . $jsonEntrada["idContratoTipo"] . "'";
   $where = " and ";
@@ -118,6 +122,8 @@ $fechadasdomes = $row["FechadasDoMes"];
 $sql_fechadasnomes = "SELECT COUNT(demanda.idDemanda) AS FechadasNoMes FROM demanda ";
 
 $where = " where ";
+$sql_fechadasnomes = $sql_fechadasnomes . $where . " demanda.idDemandaSuperior IS NULL";
+$where = " and ";
 if (isset($jsonEntrada["idContratoTipo"])) {
   $sql_fechadasnomes = $sql_fechadasnomes . $where . " demanda.idContratoTipo = " . "'" . $jsonEntrada["idContratoTipo"] . "'";
   $where = " and ";
@@ -141,7 +147,7 @@ $totaisTabela = array();
 
 $sql_grafico = " SELECT demanda.idTipoStatus, tipostatus.nomeTipoStatus, count(*) as Total 
 FROM demanda, tipostatus 
-where demanda.idTipoStatus = tipostatus.idTipoStatus and 
+where demanda.idTipoStatus = tipostatus.idTipoStatus and demanda.idDemandaSuperior IS NULL and 
     (tipostatus.mudaStatusPara > 0 or (tipostatus.mudaStatusPara = 0 and demanda.dataFechamento >= '$sqldti' AND demanda.dataFechamento < '$sqldtf')) ";
 $where = " and ";
 if (isset($jsonEntrada["idContratoTipo"])) {
