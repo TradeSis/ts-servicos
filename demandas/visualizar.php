@@ -190,7 +190,7 @@ $statusEncerrar = array(
                             <button type="submit" form="my-form" class="btn btn-success">Atualizar</button>
                         </div>
                         <?php
-                        if ($usuario['idCliente'] == null) { ?>
+                        if ($usuario['idCliente'] == null && $demanda['idDemandaSuperior'] == null) { ?>
                         <div class="modal-footer">
                             <div class="col align-self-start pl-0">
                                 <button type="button" data-bs-toggle="modal" data-bs-target="#subdemandaModal" class="btn btn-info">Criar Subdemanda</button>
