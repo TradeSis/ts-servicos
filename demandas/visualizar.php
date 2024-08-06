@@ -219,7 +219,7 @@ $statusEncerrar = array(
                             <?php } ?>
                             <?php if ($demanda['idDemandaSuperior'] !== null) { ?>
                             <div class="col-md-3 d-flex">
-                                <span class="ts-subTitulo"><strong>Demanda Superior: </strong> <?php echo $demanda['idDemandaSuperior'] ?></span>
+                                <span class="ts-subTitulo"><strong>Superior: </strong> <?php echo $demanda['idDemandaSuperior'] ?></span>
                             </div>
                             <?php } ?>
                         </div>
