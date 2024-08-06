@@ -36,7 +36,7 @@ function montaKanban($kanbanDemanda)
     } else {
         if ($dataPrevisaoInicio != null) {
             $hr = '<hr class="mt-2 mb-0">';
-            $dataNaTela= '<span class="ts-cardDataPrevisao">' . ' Previs„o: ' . $dataPrevisaoInicio . '</span>';
+            $dataNaTela= '<span class="ts-cardDataPrevisao">' . ' Previs√£o: ' . $dataPrevisaoInicio . '</span>';
         }
     
     }

@@ -59,6 +59,8 @@ $sql = "SELECT demanda.*, contratotipos.*, cliente.nomeCliente, tipostatus.nomeT
         LEFT JOIN tipostatus ON demanda.idTipoStatus = tipostatus.idTipoStatus
         LEFT JOIN contratotipos  on  demanda.idContratoTipo = contratotipos.idContratoTipo ";
 $where = " where ";
+  $sql = $sql . $where . " demanda.idDemandaSuperior IS NULL";
+  $where = " and ";
 if (isset($jsonEntrada["idDemanda"]) && $jsonEntrada["idDemanda"] !== "") {
   $sql = $sql . $where . " demanda.idDemanda = " . $jsonEntrada["idDemanda"];
   $where = " and ";
