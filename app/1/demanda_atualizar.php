@@ -220,7 +220,7 @@ if (isset($jsonEntrada['idDemanda'])) {
         $row = mysqli_fetch_array($buscar2, MYSQLI_ASSOC);
 
         $prioridade = isset($row['prioridade'])  && $row['prioridade'] !== "" && $row['prioridade'] !== "null" ? "'". $row['prioridade']."'"  : "null";
-        $tituloDemanda = isset($row['tituloDemanda'])  && $row['tituloDemanda'] !== "" && $row['tituloDemanda'] !== "null" ? "'(Superior) ". $row['tituloDemanda']."'"  : "null";
+        $tituloDemanda = isset($row['tituloDemanda'])  && $row['tituloDemanda'] !== "" && $row['tituloDemanda'] !== "null" ? "'(". $idDemanda .") ". $row['tituloDemanda']."'"  : "null";
         $descricao = isset($row['descricao'])  && $row['descricao'] !== "" && $row['descricao'] !== "null" ? "'". $row['descricao']."'"  : "null";
         $dataAbertura = isset($row['dataAbertura'])  && $row['dataAbertura'] !== "" && $row['dataAbertura'] !== "null" ? "'". $row['dataAbertura']."'"  : "null";
         $idTipoStatus = isset($row['idTipoStatus'])  && $row['idTipoStatus'] !== "" && $row['idTipoStatus'] !== "null" ? "'". $row['idTipoStatus']."'"  : "null";
