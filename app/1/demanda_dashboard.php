@@ -49,6 +49,8 @@ $demanda = array();
 $sql_backlog = "SELECT COUNT(demanda.idDemanda) AS Backlog FROM demanda ";
 
 $where = " where ";
+$sql = $sql . $where . " demanda.idDemandaSuperior IS NULL";
+$where = " and ";
 if (isset($jsonEntrada["idContratoTipo"])) {
   $sql_backlog = $sql_backlog . $where . " demanda.idContratoTipo = " . "'" . $jsonEntrada["idContratoTipo"] . "'";
   $where = " and ";
