@@ -214,8 +214,6 @@ if (isset($jsonEntrada['idDemanda'])) {
         $row_solicitante = mysqli_fetch_array($buscar_solicitante, MYSQLI_ASSOC);
         $idSolicitante = $row_solicitante['idUsuario']; 
 
-        $idCliente = CLIENTE_TRADESIS; 
-
         //busca dados demanda    
         $sql2 = "SELECT * FROM demanda WHERE idDemanda = $idDemanda";
         $buscar2 = mysqli_query($conexao, $sql2);
@@ -228,6 +226,7 @@ if (isset($jsonEntrada['idDemanda'])) {
         $idTipoStatus = isset($row['idTipoStatus'])  && $row['idTipoStatus'] !== "" && $row['idTipoStatus'] !== "null" ? "'". $row['idTipoStatus']."'"  : "null";
         $posicao = isset($row['posicao'])  && $row['posicao'] !== "" && $row['posicao'] !== "null" ? "'". $row['posicao']."'"  : "null";
         $statusDemanda = isset($row['statusDemanda'])  && $row['statusDemanda'] !== "" && $row['statusDemanda'] !== "null" ? "'". $row['statusDemanda']."'"  : "null";
+        $idCliente = isset($row['idCliente'])  && $row['idCliente'] !== "" && $row['idCliente'] !== "null" ? "'". $row['idCliente']."'"  : "null";
         $idServico = isset($row['idServico'])  && $row['idServico'] !== "" && $row['idServico'] !== "null" ? "'". $row['idServico']."'"  : "null";
         $idContrato = isset($row['idContrato'])  && $row['idContrato'] !== "" && $row['idContrato'] !== "null" ? "'". $row['idContrato']."'"  : "null";
         $idContratoTipo = isset($row['idContratoTipo'])  && $row['idContratoTipo'] !== "" && $row['idContratoTipo'] !== "null" ? "'". $row['idContratoTipo']."'"  : "null";

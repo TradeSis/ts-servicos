@@ -110,7 +110,7 @@ if(isset($jsonEntrada['idUsuario'])){
     $row_consulta = mysqli_fetch_array($buscar_consulta, MYSQLI_ASSOC);
     $idCliente = $row_consulta['idCliente'];
     if($idCliente != null){
-      $sql = $sql . $where . " demanda.idCliente = ". $idCliente . " ";
+      $sql = $sql . $where . " demanda.idCliente = ". $idCliente . " and demanda.idDemandaSuperior IS NULL ";
     }
   }
 }
