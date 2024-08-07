@@ -213,6 +213,15 @@ if (isset($jsonEntrada['idDemanda'])) {
         $buscar_solicitante = mysqli_query($conexao, $sql_solicitante);
         $row_solicitante = mysqli_fetch_array($buscar_solicitante, MYSQLI_ASSOC);
         $idSolicitante = $row_solicitante['idUsuario']; 
+        
+        $idTipoStatus = TIPOSTATUS_FILA;
+
+        //Busca dados tipostatus    
+        $sql_consultaStatus = "SELECT * FROM tipostatus WHERE idTipoStatus = $idTipoStatus";
+        $buscar_consultaStatus = mysqli_query($conexao, $sql_consultaStatus);
+        $row_consultaStatus = mysqli_fetch_array($buscar_consultaStatus, MYSQLI_ASSOC);
+        $posicao = $row_consultaStatus["mudaPosicaoPara"];
+        $statusDemanda = $row_consultaStatus["mudaStatusPara"];
 
         //busca dados demanda    
         $sql2 = "SELECT * FROM demanda WHERE idDemanda = $idDemanda";
@@ -223,9 +232,6 @@ if (isset($jsonEntrada['idDemanda'])) {
         $tituloDemanda = isset($row['tituloDemanda'])  && $row['tituloDemanda'] !== "" && $row['tituloDemanda'] !== "null" ? "'(". $idDemanda .") ". $row['tituloDemanda']."'"  : "null";
         $descricao = isset($row['descricao'])  && $row['descricao'] !== "" && $row['descricao'] !== "null" ? "'". $row['descricao']."'"  : "null";
         $dataAbertura = isset($row['dataAbertura'])  && $row['dataAbertura'] !== "" && $row['dataAbertura'] !== "null" ? "'". $row['dataAbertura']."'"  : "null";
-        $idTipoStatus = isset($row['idTipoStatus'])  && $row['idTipoStatus'] !== "" && $row['idTipoStatus'] !== "null" ? "'". $row['idTipoStatus']."'"  : "null";
-        $posicao = isset($row['posicao'])  && $row['posicao'] !== "" && $row['posicao'] !== "null" ? "'". $row['posicao']."'"  : "null";
-        $statusDemanda = isset($row['statusDemanda'])  && $row['statusDemanda'] !== "" && $row['statusDemanda'] !== "null" ? "'". $row['statusDemanda']."'"  : "null";
         $idCliente = isset($row['idCliente'])  && $row['idCliente'] !== "" && $row['idCliente'] !== "null" ? "'". $row['idCliente']."'"  : "null";
         $idServico = isset($row['idServico'])  && $row['idServico'] !== "" && $row['idServico'] !== "null" ? "'". $row['idServico']."'"  : "null";
         $idContrato = isset($row['idContrato'])  && $row['idContrato'] !== "" && $row['idContrato'] !== "null" ? "'". $row['idContrato']."'"  : "null";
