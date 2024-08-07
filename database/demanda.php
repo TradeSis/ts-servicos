@@ -240,6 +240,7 @@ if (isset($_GET['operacao'])) {
 			'idEmpresa' => $_SESSION['idEmpresa'],
 			'idDemanda' => $_POST['idDemanda'],
 			'idAtendente' => $_POST['idAtendente'],//utilizado quando ação for encaminhar
+			'idLogin' => $_POST['idLogin'],//utilizado quando ação for subdemanda
 			'comentario' => $comentario,
 			'acao' => $acao
 		);
