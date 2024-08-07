@@ -14,6 +14,16 @@ include_once(ROOT . '/cadastros/database/usuario.php');
 
 $contratotipos = buscaContratoTipos();
 $usuario = buscaUsuarios(null, $_SESSION['idLogin']);
+// Helio 29/07/2024 - quando está gravanbco novo login, não está gravando o usuario no mysql
+// paliativo
+if (isset($usuario)) {
+  if ($usuario["idUsuario"] == null) {
+      echo "Usuario não encontrado!" ."<HR>";
+      return;
+  } 
+} else {
+  return;
+}
 
 if ($usuario["idCliente"] == null) {
   $clientes = buscaClientes($usuario["idCliente"]);
