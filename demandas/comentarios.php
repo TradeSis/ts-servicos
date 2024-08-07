@@ -85,24 +85,26 @@ include_once '../header.php';
                 <div class="row">
 
                     <div class="col-md-11">
-                        <div class="clearfix"></div>
-                        <p>
-                            <?php echo $comentario['comentario'] ?>
-                        </p>
-                        <p>
-                            <?php if ($comentario['pathAnexo'] != '') { ?>
-                                <span>anexo:</span>
-                                <a target="_blank" href="<?php echo $comentario['pathAnexo'] ?>"><?php echo $comentario['nomeAnexo'] ?></a>
-                                <span class="float-right">
-                                    <a href="<?php echo $comentario['pathAnexo'] ?>">
-                                        <i class="bi bi-file-earmark-arrow-down-fill" style="font-size: 2rem;"></i>
-                                    </a>
-                                </span>
-
-                            <?php } else {  ?>
-                                <a target="_blank" href="<?php echo $comentario['pathAnexo'] ?>"><?php echo $comentario['nomeAnexo'] ?></a>
-                            <?php } ?>
-                        </p>
+                        <div class="ts-comentario">
+                            <div class="clearfix"></div>
+                            <p>
+                                <?php echo $comentario['comentario'] ?>
+                            </p>
+                            <p>
+                                <?php if ($comentario['pathAnexo'] != '') { ?>
+                                    <span>anexo:</span>
+                                    <a target="_blank" href="<?php echo $comentario['pathAnexo'] ?>"><?php echo $comentario['nomeAnexo'] ?></a>
+                                    <span class="float-right">
+                                        <a href="<?php echo $comentario['pathAnexo'] ?>">
+                                            <i class="bi bi-file-earmark-arrow-down-fill" style="font-size: 2rem;"></i>
+                                        </a>
+                                    </span>
+    
+                                <?php } else {  ?>
+                                    <a target="_blank" href="<?php echo $comentario['pathAnexo'] ?>"><?php echo $comentario['nomeAnexo'] ?></a>
+                                <?php } ?>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
