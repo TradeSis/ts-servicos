@@ -30,6 +30,7 @@
                         <input type="hidden" class="form-control" name="idCliente" value="<?php echo $demanda['idCliente'] ?>">
                         <input type="hidden" class="form-control" name="idUsuario" value="<?php echo $usuario['idUsuario'] ?>">
                         <input type="hidden" class="form-control" name="tipoStatusDemanda" value="<?php echo $demanda['idTipoStatus'] ?>">
+                        <input type="hidden" class="form-control" name="origem" value="<?php echo $origem ?>" readonly>
                     </div>
                     <div class="col-md-3 mt-2">
                         <label class='form-label ts-label'>Reponsável</label>

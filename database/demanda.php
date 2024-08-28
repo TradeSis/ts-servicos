@@ -235,12 +235,14 @@ if (isset($_GET['operacao'])) {
         }
 
 		$comentario = isset($_POST["comentario"]) && $_POST["comentario"] !== "" ? $_POST["comentario"] : null;
+		$idAtendente = isset($_POST["idAtendente"]) && $_POST["idAtendente"] !== "" ? $_POST["idAtendente"] : null;
+		$idLogin = isset($_POST["idLogin"]) && $_POST["idLogin"] !== "" ? $_POST["idLogin"] : null;
 
 		$apiEntrada = array(
 			'idEmpresa' => $_SESSION['idEmpresa'],
 			'idDemanda' => $_POST['idDemanda'],
-			'idAtendente' => $_POST['idAtendente'],//utilizado quando ação for encaminhar
-			'idLogin' => $_POST['idLogin'],//utilizado quando ação for subdemanda
+			'idAtendente' => $idAtendente,//utilizado quando ação for encaminhar
+			'idLogin' => $idLogin,//utilizado quando ação for subdemanda
 			'comentario' => $comentario,
 			'acao' => $acao
 		);
@@ -257,7 +259,12 @@ if (isset($_GET['operacao'])) {
 		}
 		
 		$demanda = chamaAPI(null, '/servicos/demanda/atualizar', json_encode($apiEntrada), 'POST');
-		header('Location: ../demandas/visualizar.php?idDemanda=' . $apiEntrada['idDemanda']);
+		if ($_POST['origem'] == "demandas") {
+			header('Location: ../demandas/visualizar.php?idDemanda=' . $apiEntrada['idDemanda']);
+		}
+		if ($_POST['origem'] == "visaocli")  {
+			header('Location: ../visaocli/visualizar.php?idDemanda=' . $apiEntrada['idDemanda'] . '&&' . $_POST['idTipoContrato']);
+		}
 
 	}
 	

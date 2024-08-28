@@ -52,6 +52,7 @@ $url_idTipoContrato = explode("&", $url_parametros);
 
 
 
+$origem = "visaocli";
 ?>
 
 <!doctype html>
@@ -77,7 +78,7 @@ $url_idTipoContrato = explode("&", $url_parametros);
                                 <input type="number" min="1" max="99" class="form-control ts-inputSemBorda border-bottom" name="prioridade" value="<?php echo $demanda['prioridade'] ?>">
                             </div>
                             <div class="col-md-2 border-start d-flex me-2">
-                                <!-- Lucas 10062024 - adicionado condição para voltar ao programa de dashboard -->
+                                <!-- Lucas 10062024 - adicionado condiï¿½ï¿½o para voltar ao programa de dashboard -->
                                 <?php if($url_idTipoContrato[2] == 'dashboard'){ ?>
                                     <a href="../demandas/dashboard.php" role="button" class="btn-close"></a>
                                 <?php } else{?>
