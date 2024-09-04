@@ -23,7 +23,7 @@ function montaKanban($kanbanDemanda)
         $atendenteNaTela = '<span class="ts-cardDataPrevisao">' . ' ' . $kanbanDemanda['nomeAtendente'] . '</span>';
     }
 
-    if ($kanbanDemanda['idTipoStatus'] == TIPOSTATUS_RESPONDIDO || $kanbanDemanda['idTipoStatus'] == TIPOSTATUS_AGENDADO || $kanbanDemanda['idTipoStatus'] == TIPOSTATUS_PAUSADO) {
+    if ($kanbanDemanda['idTipoStatus'] == TIPOSTATUS_RESPONDIDO || $kanbanDemanda['idTipoStatus'] == TIPOSTATUS_AGENDADO ) {
         $hr = '<hr class="mt-2 mb-0">';
         $statusDemandaNaTela = '<span class="ts-cardStatusDemanda">' . ' ' . $kanbanDemanda['nomeTipoStatus'] . '</span>';
     }
