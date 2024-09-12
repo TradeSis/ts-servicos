@@ -12,10 +12,12 @@ include_once '../database/contratos.php';
 include_once '../database/tarefas.php';
 include_once '../database/tipostatus.php';
 include_once '../database/tipoocorrencia.php';
+include_once '../database/demandachecklist.php';
 
 include_once(ROOT . '/cadastros/database/clientes.php');
 include_once(ROOT . '/cadastros/database/usuario.php');
 include_once(ROOT . '/cadastros/database/servicos.php');
+
 
 $usuario = buscaUsuarios(null, $_SESSION['idLogin']);
 
@@ -38,11 +40,14 @@ $cliente = buscaClientes($demanda["idCliente"]);
 $clientes = buscaClientes();
 $contratos = buscaContratosAbertos($demanda["idCliente"]);
 $horasReal = buscaTotalHorasReal(null, $idDemanda);
-if($horasReal['totalHorasReal'] !== null){
-	$totalHorasReal = date('H:i', strtotime($horasReal['totalHorasReal']));
-}else{
-	$totalHorasReal = "00:00";
+if ($horasReal['totalHorasReal'] !== null) {
+    $totalHorasReal = date('H:i', strtotime($horasReal['totalHorasReal']));
+} else {
+    $totalHorasReal = "00:00";
 }
+
+$demandaschecklist = buscaChecklistDemanda($idDemanda);
+
 //Lucas 22112023 id 688 - Removido visão do cliente ($ClienteSession)
 
 if ($demanda['dataFechamento'] == null) {
@@ -193,36 +198,36 @@ $origem = "demandas";
                         </div>
                         <?php
                         if ($usuario['idCliente'] == null && $demanda['idDemandaSuperior'] == null) { ?>
-                        <div class="modal-footer">
-                            <div class="col align-self-start pl-0">
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#subdemandaModal" class="btn btn-info">Criar Subdemanda</button>
+                            <div class="modal-footer">
+                                <div class="col align-self-start pl-0">
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#subdemandaModal" class="btn btn-info">Criar Subdemanda</button>
+                                </div>
                             </div>
-                        </div>
                         <?php } ?>
                 </div>
             </div>
 
             <div class="modal-dialog modal-dialog-scrollable modal-fullscreen"> <!-- Modal 1 -->
                 <div class="modal-content" style="background-color: #F1F2F4;">
-                
+
                     <div class="container">
                         <div class="row pb-1">
                             <?php if (isset($demanda['tituloContrato'])) { ?>
-                            <!-- gabriel 05022024 id738 - adicionado select para alterar contrato -->
-                            <div class="col-md-9 d-flex">
-                                <span class="ts-subTitulo"><strong><?php echo $demanda['nomeContrato'] ?>: </strong></span>
-                                <select class="form-select ts-input ts-selectDemandaModalVisualizar" name="idContrato" id="idContrato" autocomplete="off">
-                                <option value="<?php echo $demanda['idContrato'] ?>"><?php echo $demanda['tituloContrato'] ?> </option>
-                                <?php foreach ($contratos as $contrato) { ?>
-                                    <option value="<?php echo $contrato['idContrato'] ?>"><?php echo $contrato['tituloContrato'] ?></option>
-                                <?php } ?>
-                                </select>
-                            </div>
+                                <!-- gabriel 05022024 id738 - adicionado select para alterar contrato -->
+                                <div class="col-md-9 d-flex">
+                                    <span class="ts-subTitulo"><strong><?php echo $demanda['nomeContrato'] ?>: </strong></span>
+                                    <select class="form-select ts-input ts-selectDemandaModalVisualizar" name="idContrato" id="idContrato" autocomplete="off">
+                                        <option value="<?php echo $demanda['idContrato'] ?>"><?php echo $demanda['tituloContrato'] ?> </option>
+                                        <?php foreach ($contratos as $contrato) { ?>
+                                            <option value="<?php echo $contrato['idContrato'] ?>"><?php echo $contrato['tituloContrato'] ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
                             <?php } ?>
                             <?php if ($demanda['idDemandaSuperior'] !== null) { ?>
-                            <div class="col-md-3 d-flex">
-                                <span class="ts-subTitulo"><strong>Superior: </strong> <?php echo $demanda['idDemandaSuperior'] ?></span>
-                            </div>
+                                <div class="col-md-3 d-flex">
+                                    <span class="ts-subTitulo"><strong>Superior: </strong> <?php echo $demanda['idDemandaSuperior'] ?></span>
+                                </div>
                             <?php } ?>
                         </div>
                         <div class="row g-3">
@@ -248,11 +253,13 @@ $origem = "demandas";
                             <div class="col-md-5 d-flex">
                                 <span class="ts-subTitulo"><strong>Serviço: </strong></span>
                                 <select class="form-select ts-input ts-selectDemandaModalVisualizar" name="idServico" id="idServico" autocomplete="off">
-                                <?php foreach ($servicos as $servico) { ?>
-                                    <option <?php if ($servico['idServico'] == $demanda['idServico']) { echo "selected"; } ?>
-                                        value="<?php echo $servico['idServico'] ?>"><?php echo $servico['nomeServico'] ?>
-                                    </option>
-                                <?php } ?>
+                                    <?php foreach ($servicos as $servico) { ?>
+                                        <option <?php if ($servico['idServico'] == $demanda['idServico']) {
+                                                    echo "selected";
+                                                } ?>
+                                            value="<?php echo $servico['idServico'] ?>"><?php echo $servico['nomeServico'] ?>
+                                        </option>
+                                    <?php } ?>
                                 </select>
                             </div>
                         </div>
@@ -264,6 +271,7 @@ $origem = "demandas";
                     <div class="row mt-1">
                         <div id="ts-tabs">
                             <div class="tab whiteborder" id="tab-demanda">Demanda</div>
+                            <div class="tab" id="tab-demandachecklist">Checklist</div>
                             <div class="tab" id="tab-tarefas">Tarefas</div>
                             <div class="line"></div>
                         </div>
@@ -273,6 +281,9 @@ $origem = "demandas";
                         <div id="ts-tabs">
                             <div class="tabContent" style="margin-top: -10px;">
                                 <?php include_once 'demanda_descricao.php'; ?>
+                            </div>
+                            <div class="tabContent p-0" style="margin-top: -10px;">
+                                <?php include_once 'demandachecklist.php'; ?>
                             </div>
                             <div class="tabContent p-0" style="margin-top: -10px;">
                                 <?php include_once 'visualizar_tarefa.php'; ?>
@@ -313,6 +324,10 @@ $origem = "demandas";
         <!--Gabriel 11102023 ID 596 modal Alterar tarefa via include -->
         <!--Lucas 18102023 ID 602 alterado nome do arquivo para modalTarefa_alterar -->
         <?php include 'modalTarefa_alterar.php'; ?>
+
+        <!--------- MODAIS CHECKLIST --------->
+        <?php include_once '../demandas/modaisChecklistDemanda.php' ?>
+
     </div><!--container-fluid-->
 
     <!-- LOCAL PARA COLOCAR OS JS -->
@@ -320,8 +335,12 @@ $origem = "demandas";
     <?php include_once ROOT . "/vendor/footer_js.php"; ?>
 
     <script src="visualizar.js"></script>
+    <script src="demandachecklist.js"></script>
 
     <script>
+        // lucas 28082024 - adicionado idDemanda para usar no refreshPage dos modais checklist
+        var idDemanda = <?php echo $idDemanda ?>;
+
         var myModal = new bootstrap.Modal(document.getElementById("modalDemandaVizualizar"), {});
         document.onreadystatechange = function() {
             myModal.show();
@@ -337,8 +356,11 @@ $origem = "demandas";
 
             var urlParams = new URLSearchParams(window.location.search);
             var id = urlParams.get('id');
-            if (id === 'tarefas') {
+            if (id === 'demandachecklist') {
                 showTabsContent(1);
+            }
+            if (id === 'tarefas') {
+                showTabsContent(2);
             }
         }
 
@@ -412,7 +434,6 @@ $origem = "demandas";
             var newUrl = url + '?id=' + tab + '&&idDemanda=' + idDemanda;
             window.location.href = newUrl;
         }
-
     </script>
 
 </body>
