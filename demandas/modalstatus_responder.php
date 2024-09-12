@@ -27,6 +27,10 @@
                             <input type="hidden" class="form-control" name="idCliente" value="<?php echo $demanda['idCliente'] ?>" readonly>
                             <input type="hidden" class="form-control" name="idUsuario" value="<?php echo $usuario['idUsuario'] ?>" readonly>
                             <input type="hidden" class="form-control" name="tipoStatusDemanda" value="<?php echo $demanda['idTipoStatus'] ?>" readonly>
+                            <input type="hidden" class="form-control" name="origem" value="<?php echo $origem ?>" readonly>
+                            <?php if (isset($url_idTipoContrato[2])) { ?>
+                                <input type="hidden" class="form-control" name="idTipoContrato" value="<?php echo $url_idTipoContrato[2] ?>" readonly>
+                            <?php } ?>
                         </div>
                 </div>
                 <div class="modal-footer">

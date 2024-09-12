@@ -57,6 +57,8 @@ $statusEncerrar = array(
     TIPOSTATUS_RESPONDIDO,
     TIPOSTATUS_AGENDADO
 );
+
+$origem = "demandas";
 ?>
 
 <!doctype html>
