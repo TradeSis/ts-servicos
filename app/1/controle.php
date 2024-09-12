@@ -164,6 +164,10 @@ if ($metodo == "GET") {
       include 'demandatabela_dashboard.php';
       break;
 
+    case "demandachecklist":
+      include 'demandachecklist.php';
+      break;
+
     default:
       $jsonSaida = json_decode(
         json_encode(
@@ -275,6 +279,10 @@ if ($metodo == "PUT") {
 
     case "contratochecklist":
       include 'contratochecklist_inserir.php';
+      break;
+
+    case "demandachecklist":
+      include 'demandachecklist_inserir.php';
       break;
      
     default:
@@ -424,6 +432,10 @@ if ($metodo == "POST") {
       include 'contratochecklist_tarefa.php';
       break;
 
+    case "demandachecklist":
+        include 'demandachecklist_alterar.php';
+        break;
+
     default:
       $jsonSaida = json_decode(
         json_encode(
@@ -468,6 +480,10 @@ if ($metodo == "DELETE") {
       
     case "contratochecklist":
       include 'contratochecklist_excluir.php';
+      break;
+
+    case "demandachecklist":
+      include 'demandachecklist_excluir.php';
       break;
 
     default:
