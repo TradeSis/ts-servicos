@@ -252,11 +252,16 @@
             data: formData,
             processData: false,
             contentType: false,
-            success: refreshPage,
+            success: function (response) {
+                var msg = JSON.parse(response);
+                console.log(msg);
+                if (msg.status == 200) {
+                    window.location.reload();
+                } else {
+                    alert(msg.retorno); 
+                }
+            }
         });
     });
 
-    function refreshPage() {
-        window.location.reload();
-    }
 </script>
