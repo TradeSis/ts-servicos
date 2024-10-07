@@ -252,11 +252,19 @@
             data: formData,
             processData: false,
             contentType: false,
-            success: refreshPage,
+            success: function (response) {
+                try {
+                    var msg = JSON.parse(response);
+                    if (msg.status === 200) {
+                        window.location.href = '../visaocli/index.php?idContratoTipo=' + idContratoTipo;
+                    } else {
+                        alert(msg.retorno); 
+                    }
+                } catch (e) {
+                    alert("Erro ao conectar MYSQL.");
+                }
+            }
         });
     });
 
-    function refreshPage() {
-        window.location.reload();
-    }
 </script>
