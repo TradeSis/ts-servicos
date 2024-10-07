@@ -156,7 +156,7 @@ if (isset($_GET['operacao'])) {
 				'tituloDemanda' => $_POST['tituloDemanda'],
 				'descricao' => $_POST['descricao'],
 				'idServico' => $_POST['idServico'], //SERVICOS_PADRAO,
-				'idTipoStatus' => $_POST['idTipoStatus'], //TIPOSTATUS_FILA,
+				//'idTipoStatus' => $_POST['idTipoStatus'], //TIPOSTATUS_FILA,
 				'idContrato' => $_POST['idContrato'],
 				'idContratoTipo' => $_POST['idContratoTipo'],
 				'horasPrevisao' => $_POST['horasPrevisao'],
@@ -186,9 +186,8 @@ if (isset($_GET['operacao'])) {
 
 		//Gabriel 29052024 removido enviar email antes de cadastrar demanda, ajustado em api
 		
-		if($acao == 'visaocli'){
-		 header('Location: ../visaocli/index.php?idContratoTipo=' . $_POST['idContratoTipo']);
-		}
+		echo json_encode($demanda);
+		return $demanda;
 	}
 
 	//Gabriel 05102023 ID 575 inserir com mensagens do chat
