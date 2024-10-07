@@ -35,6 +35,7 @@ if (isset($jsonEntrada['idDemanda'])) {
     $idDemanda = $jsonEntrada['idDemanda'];
     $comentario = $jsonEntrada['comentario'];
     $idUsuario = $jsonEntrada['idUsuario'];
+    $interno = $jsonEntrada['interno'];
     
     $enviaEmailComentario = $jsonEntrada['enviaEmailComentario'];
 
@@ -71,7 +72,7 @@ if (isset($jsonEntrada['idDemanda'])) {
     $dataComentario = date('H:i d/m/Y');
 
     //Gabriel 28052024 removido $anexos pois nao esta sendo enviado do database
-    $sql = "INSERT INTO comentario(idDemanda, comentario, idUsuario, dataComentario) VALUES ($idDemanda,'$comentario',$idUsuario,CURRENT_TIMESTAMP())";
+    $sql = "INSERT INTO comentario(idDemanda, comentario, idUsuario, dataComentario, interno) VALUES ($idDemanda,'$comentario',$idUsuario,CURRENT_TIMESTAMP(), $interno)";
 
     
     //Envio de Email
@@ -113,11 +114,13 @@ if (isset($jsonEntrada['idDemanda'])) {
         );
     }
     
-    if ($idUsuario !== $idSolicitante) {
-        $arrayPara[] = array(
-            'email' => $emailSolicitante,
-            'nome' => $nomeSolicitante
-        );
+    if ($interno == "0") {
+        if ($idUsuario !== $idSolicitante) {
+            $arrayPara[] = array(
+                'email' => $emailSolicitante,
+                'nome' => $nomeSolicitante
+            );
+        }
     }
     //gabriel 03062024 id 999 adicionado $idEmpresa
     $envio = emailEnviar(null, null,$arrayPara,$tituloEmail,$corpoEmail,$idEmpresa,null);

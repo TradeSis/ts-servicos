@@ -60,7 +60,8 @@ $statusEncerrar = array(
     TIPOSTATUS_PAUSADO,
     TIPOSTATUS_RETORNO,
     TIPOSTATUS_RESPONDIDO,
-    TIPOSTATUS_AGENDADO
+    TIPOSTATUS_AGENDADO,
+    TIPOSTATUS_REVISAR
 );
 
 $origem = "demandas";
@@ -182,6 +183,10 @@ $origem = "demandas";
                             <?php }
                             if ($demanda['idTipoStatus'] == TIPOSTATUS_REALIZADO || $demanda['idTipoStatus'] == TIPOSTATUS_VALIDADO) { ?>
                                 <button type="button" data-bs-toggle="modal" data-bs-target="#reabrirModal" class="btn btn-sm btn-warning">Reabrir</button>
+                            <?php } ?>
+
+                            <?php if (in_array($demanda['idTipoStatus'], $statusEncerrar) && $demanda['idTipoStatus'] !== TIPOSTATUS_REVISAR) { ?>
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#revisarModal" class="btn btn-sm btn-info">Revisão</button>
                             <?php } ?>
 
                             <?php if (in_array($demanda['idTipoStatus'], $statusEncerrar)) { ?>
@@ -317,6 +322,9 @@ $origem = "demandas";
 
         <!--------- MODAL ENTREGAR --------->
         <?php include_once 'modalstatus_entregar.php' ?>
+
+        <!--------- MODAL REVISAR --------->
+        <?php include_once 'modalstatus_revisar.php' ?>
 
         <!--------- MODAL DEVOLVER --------->
         <?php include_once 'modalstatus_devolver.php' ?>

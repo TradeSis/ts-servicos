@@ -34,6 +34,12 @@
                         </div>
                 </div>
                 <div class="modal-footer">
+                    <?php if ($_SESSION['administradora'] == 1) { ?>
+                        <div class="mt-2 form-check form-switch">
+                            <input class="form-check-input" type="checkbox" name="interno" id="interno" value="1">
+                            <label class="form-check-label" for="interno">Interno</label>
+                        </div>
+                    <?php } ?>
                     <!-- lucas 22092023 ID 358 Modificado nome do botao-->
                     <button type="submit" formaction="../database/demanda.php?operacao=atualizar&acao=responder" class="btn btn-warning">Responder</button>
                 </div>

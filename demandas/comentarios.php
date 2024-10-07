@@ -42,13 +42,22 @@ include_once '../header.php';
                     <input type="hidden" name="tipoStatusDemanda" value="<?php echo $idTipoStatus ?>" />
 
                     <div class="row mt-2">
-                        <div class="col-md">
+                        <div class="col-md-9">
                             <input type="file" id="myFile" class="custom-file-upload" name="nomeAnexo" onchange="myFunction()" style="color:#567381; display:none">
                             <label for="myFile">
                                 <a class="btn btn-primary"><i class="bi bi-file-earmark-arrow-down-fill" style="color:#fff"></i>&#32;<h7 style="color: #fff;">Anexos</h7></a>
 
                             </label>
                         </div>
+                        <?php if ($_SESSION['administradora'] == 1) { ?>
+                        <div class="col-1">
+                            <div class="mt-2 form-check form-switch">
+                                <input type="hidden" name="interno" value="0">
+                                <input class="form-check-input" type="checkbox" name="interno" id="interno" value="1">
+                                <label class="form-check-label" for="interno">Interno</label>
+                            </div>
+                        </div>
+                        <?php } ?>
                         <div class="col-md">
                             <!-- Lucas 22112023 id 688 - Removido visão do cliente -->
                             <button type="submit" formaction="../database/demanda.php?operacao=comentar" class="btn btn-success" style="float: right;">Salvar</button>
@@ -65,7 +74,11 @@ include_once '../header.php';
 </div>
 
 <div class="container mt-3 col-md-12">
-    <?php foreach ($comentarios as $comentario) {  ?>
+    <?php foreach ($comentarios as $comentario) {  
+        if ($comentario['interno'] == 1 && $_SESSION['administradora'] != 1) {
+            continue;
+        }
+    ?>
 
         <div class="row">
             <div class="col ms-2 pe-0" style="margin-bottom: -10px;">
