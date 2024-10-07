@@ -97,7 +97,7 @@
                             <div class="row mt-4">
                                 <div class="col-sm-6 col-md-6">
                                     <label class="form-label ts-label">Previsão</label>
-                                    <input type="time" class="form-control ts-input" name="horasPrevisao" value="<?php echo $demanda['horasPrevisao'] ?>" disabled>
+                                    <input type="time" class="form-control ts-input" name="horasPrevisao" value="<?php echo isset($demanda['horasPrevisao']) && $demanda['horasPrevisao'] !== "null" ? $demanda['horasPrevisao']  : null; ?>" disabled>
                                 </div>
                                 <div class="col-sm-6 col-md-6">
                                     <label class="form-label ts-label">tempo Cobrado</label>
@@ -109,11 +109,11 @@
                             <div class="row mt-3">
                                 <div class="col-sm-6 col-md-6">
                                     <label class="form-label ts-label">Previsão Inicio</label>
-                                    <input type="date" class="form-control ts-input" name="dataPrevisaoInicio" value="<?php echo $demanda['dataPrevisaoInicio'] ?>" disabled>
+                                    <input type="date" class="form-control ts-input" name="dataPrevisaoInicio" value="<?php echo isset($demanda['dataPrevisaoInicio']) && $demanda['dataPrevisaoInicio'] !== "null" ? $demanda['dataPrevisaoInicio']  : null; ?>" disabled>
                                 </div>
                                 <div class="col-sm-6 col-md-6">
                                     <label class="form-label ts-label">Previsão Entrega</label>
-                                    <input type="date" class="form-control ts-input" name="dataPrevisaoEntrega" value="<?php echo $demanda['dataPrevisaoEntrega'] ?>" disabled>
+                                    <input type="date" class="form-control ts-input" name="dataPrevisaoEntrega" value="<?php echo isset($demanda['dataPrevisaoEntrega']) && $demanda['dataPrevisaoEntrega'] !== "null" ? $demanda['dataPrevisaoEntrega']  : null;  ?>" disabled>
                                 </div>
                             </div>
 
@@ -182,7 +182,7 @@
     $('select[name="idCliente"]').on('change', function() {
         var idCliente = this.value;
         //lucas 28032024 - adicionado idContratoTipo
-        var idContratoTipo = "<?php echo $_GET["idContratoTipo"] ?>";
+        var idContratoTipo = "<?php echo isset($_GET["idContratoTipo"]) && $_GET["idContratoTipo"] !== "null" ? $_GET["idContratoTipo"]  : null; ?>";
 
         $.ajax({
             type: 'POST',
