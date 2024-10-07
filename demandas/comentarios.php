@@ -53,7 +53,7 @@ include_once '../header.php';
                         <div class="col-1">
                             <div class="mt-2 form-check form-switch">
                                 <input type="hidden" name="interno" value="0">
-                                <input class="form-check-input" type="checkbox" name="interno" id="interno" value="1">
+                                <input class="form-check-input" type="checkbox" name="interno" id="interno" value="1" checked>
                                 <label class="form-check-label" for="interno">Interno</label>
                             </div>
                         </div>

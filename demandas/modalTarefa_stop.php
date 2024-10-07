@@ -48,7 +48,7 @@
              <button type="submit" id="revisarFormbutton" class="btn btn-info float-left">Revisão</button>
            </div>
            <div class="mt-2 form-check form-switch">
-               <input class="form-check-input" type="checkbox" name="interno" id="interno" value="1">
+               <input class="form-check-input" type="checkbox" name="interno" id="interno" value="1" checked>
                <label class="form-check-label" for="interno">Interno</label>
            </div>
            <!-- gabriel 13102023 id 596 fix ao dar stop vai para demanda -->
