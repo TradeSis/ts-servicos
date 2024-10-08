@@ -90,6 +90,9 @@ include_once '../header.php';
                         <strong><?php echo $comentario['nomeUsuario'] ?></strong> &#32;
 
                         &#32;<?php echo date('H:i d/m/Y', strtotime($comentario['dataComentario'])) ?>
+                        <?php if ($comentario['interno'] == 1) { ?>
+                            &#32; (Interno)
+                        <?php } ?>
                 </p>
             </div>
         </div>

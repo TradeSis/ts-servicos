@@ -37,7 +37,7 @@ if (isset($jsonEntrada['idDemanda'])) {
     $idUsuario = $jsonEntrada['idUsuario'];
     $interno = $jsonEntrada['interno'];
     
-    $enviaEmailComentario = $jsonEntrada['enviaEmailComentario'];
+    $enviaEmailComentario  = isset($jsonEntrada['enviaEmailComentario'])  && $jsonEntrada['enviaEmailComentario'] !== "" && $jsonEntrada['enviaEmailComentario'] !== "null" ? "'". $jsonEntrada['enviaEmailComentario']."'"  : "''";
 
 	//Gabriel 29052024 select unico para melhora de performance, busca demanda e dados do usuario
     //Busca dados Demanda e Usuario

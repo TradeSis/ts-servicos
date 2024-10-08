@@ -220,6 +220,7 @@ if (isset($_GET['operacao'])) {
                     'idUsuario' => $_POST['idUsuario'],
                     'idCliente' => $_POST['idCliente'],
                     'idDemanda' => $_POST['idDemanda'],
+                    'comentario' => $comentario,
                     'interno' => $interno
                 );
                 $comentario2 = chamaAPI(null, '/servicos/comentario', json_encode($apiEntrada2), 'PUT');

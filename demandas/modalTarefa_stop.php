@@ -40,6 +40,10 @@
              <button type="submit" formaction="../database/tarefas.php?operacao=realizado&acao=entregue&redirecionarDemanda" class="btn btn-warning float-left">Entregar</button>
              <button type="submit" formaction="../database/tarefas.php?operacao=realizado&acao=revisar&redirecionarDemanda" class="btn btn-info float-left">Revisão</button>
            </div>
+           <div class="mt-2 form-check form-switch">
+               <input class="form-check-input" type="checkbox" name="interno" id="interno" value="1" checked>
+               <label class="form-check-label" for="interno">Interno</label>
+           </div>
            <button type="submit" formaction="../database/tarefas.php?operacao=realizado&acao=stop&redirecionarDemanda" class="btn btn-danger">Stop</button>
          <?php } else { ?>
            <div class="col align-self-start pl-0">
