@@ -20,6 +20,7 @@ include_once '../header.php';
                     } ?>
                     <input type="hidden" class="form-control ts-label" name="idCliente" value="<?php echo $usuario['idCliente'] ?>" readonly>
                     <input type="hidden" class="form-control ts-label" name="idUsuario" value="<?php echo $usuario['idUsuario'] ?>" readonly>
+                    <input type="hidden" class="form-control" name="origem" value="<?php echo $origem ?>" readonly>
                     <!-- <input type="text" class="form-control ts-input" value="<?php echo $_SESSION['usuario'] ?> - <?php echo $nomeCliente ?>" readonly> -->
                 </div>
                 <div class="form-group">

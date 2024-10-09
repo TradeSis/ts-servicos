@@ -165,6 +165,25 @@ if (isset($jsonEntrada['idDemanda'])) {
 
     }
 
+    //RETORNADO
+    if ($jsonEntrada['acao'] == "retornado") {
+
+        $enviarTradesis = 0;
+        $enviaEmail = 1;
+        $idTipoStatus = TIPOSTATUS_RETORNADO;
+        $nomeStatusEmail = 'Retornado';
+
+        //Busca dados tipostatus     
+        $sql_consultaStatus = "SELECT * FROM tipostatus WHERE idTipoStatus = $idTipoStatus";
+        $buscar_consultaStatus = mysqli_query($conexao, $sql_consultaStatus);
+        $row_consultaStatus = mysqli_fetch_array($buscar_consultaStatus, MYSQLI_ASSOC);
+        $posicao = $row_consultaStatus["mudaPosicaoPara"];
+        $statusDemanda = $row_consultaStatus["mudaStatusPara"];
+
+        $sql = "UPDATE demanda SET posicao=$posicao, idTipoStatus=$idTipoStatus, statusDemanda=$statusDemanda, dataAtualizacaoAtendente=CURRENT_TIMESTAMP() WHERE idDemanda = $idDemanda;";
+
+    }
+
     //DEVOLVER
     if ($jsonEntrada['acao'] == "devolver") {
         

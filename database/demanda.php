@@ -279,20 +279,27 @@ if (isset($_GET['operacao'])) {
 		if(isset($enviaEmailComentario)){
 			$enviaEmailComentario = $_POST['enviaEmailComentario'];
 		}
+		$interno = isset($_POST["interno"]) && $_POST["interno"] !== "" ? $_POST["interno"] : 0;
 
 		$apiEntrada = array(
 			'idEmpresa' => $_SESSION['idEmpresa'],
 			'idUsuario' => $_POST['idUsuario'],
 			'idCliente' => $_POST['idCliente'],
 			'idDemanda' => $_POST['idDemanda'],
-			'interno' => $_POST['interno'],
+			'interno' => $interno,
 			'comentario' => $_POST['comentario'],
 			'enviaEmailComentario' => $enviaEmailComentario
 
 		);
 
 		$comentario = chamaAPI(null, '/servicos/comentario', json_encode($apiEntrada), 'PUT');
-		header('Location: ../demandas/visualizar.php?idDemanda=' . $apiEntrada['idDemanda']);
+		
+		if ($_POST['origem'] == "demandas") {
+			header('Location: ../demandas/visualizar.php?idDemanda=' . $apiEntrada['idDemanda']);
+		}
+		if ($_POST['origem'] == "visaocli")  {
+			header('Location: ../visaocli/visualizar.php?idDemanda=' . $apiEntrada['idDemanda'] . '&&' . $_POST['idTipoContrato']);
+		}
 	}
 
 	if ($operacao == "descricao") {

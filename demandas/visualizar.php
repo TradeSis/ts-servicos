@@ -61,7 +61,8 @@ $statusEncerrar = array(
     TIPOSTATUS_RETORNO,
     TIPOSTATUS_RESPONDIDO,
     TIPOSTATUS_AGENDADO,
-    TIPOSTATUS_REVISAR
+    TIPOSTATUS_REVISAR,
+    TIPOSTATUS_RETORNADO
 );
 
 $origem = "demandas";
@@ -187,6 +188,10 @@ $origem = "demandas";
 
                             <?php if (in_array($demanda['idTipoStatus'], $statusEncerrar) && $demanda['idTipoStatus'] !== TIPOSTATUS_REVISAR) { ?>
                                 <button type="button" data-bs-toggle="modal" data-bs-target="#revisarModal" class="btn btn-sm btn-info">Revisão</button>
+                            <?php } ?>
+
+                            <?php if (in_array($demanda['idTipoStatus'], $statusEncerrar) && $demanda['idTipoStatus'] == TIPOSTATUS_REVISAR) { ?>
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#retornadoModal" class="btn btn-sm btn-info">Retornar</button>
                             <?php } ?>
 
                             <?php if (in_array($demanda['idTipoStatus'], $statusEncerrar)) { ?>
@@ -328,6 +333,9 @@ $origem = "demandas";
 
         <!--------- MODAL DEVOLVER --------->
         <?php include_once 'modalstatus_devolver.php' ?>
+
+        <!--------- MODAL RETORNADO --------->
+        <?php include_once 'modalstatus_retornado.php' ?>
 
         <!--Gabriel 11102023 ID 596 modal Alterar tarefa via include -->
         <!--Lucas 18102023 ID 602 alterado nome do arquivo para modalTarefa_alterar -->
