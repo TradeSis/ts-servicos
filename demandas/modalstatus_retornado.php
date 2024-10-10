@@ -1,26 +1,26 @@
-   <!--------- MODAL REABRIR --------->
-   <div class="modal" id="reabrirModal" tabindex="-1" role="dialog" aria-labelledby="reabrirModalLabel" aria-hidden="true">
+   <!--------- MODAL DEVOLVER --------->
+   <div class="modal" id="retornadoModal" tabindex="-1" role="dialog" aria-labelledby="retornadoModalLabel" aria-hidden="true">
        <div class="modal-dialog modal-lg">
            <div class="modal-content">
                <div class="modal-header">
                    <!-- lucas 22092023 ID 358 Modificado titulo do modal-->
-                   <h5 class="modal-title" id="exampleModalLabel">Chamado - <?php echo $demanda['tituloDemanda'] ?></h5>
+                   <h5 class="modal-title" id="exampleModalLabel">Retornar chamado - <?php echo $demanda['tituloDemanda'] ?></h5>
                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                </div>
                <div class="modal-body">
                    <form method="post">
                        <div class="container-fluid p-0">
                         <!-- lucas 27022024 - id853 nova chamada editor quill -->
-                           <div id="ql-toolbarReabrir">
+                           <div id="ql-toolbarRetornado">
                                <?php include ROOT."/sistema/quilljs/ql-toolbar-min.php"  ?>
-                               <input type="file" id="anexarReabrir" class="custom-file-upload" name="nomeAnexo" onchange="uploadFileReabrir()" style=" display:none">
-                               <label for="anexarReabrir">
+                               <input type="file" id="anexarRetornado" class="custom-file-upload" name="nomeAnexo" onchange="uploadFileRetornado()" style=" display:none">
+                               <label for="anexarRetornado">
                                    <a class="btn p-0 ms-1"><i class="bi bi-paperclip"></i></a>
                                </label>
                            </div>
-                           <div id="ql-editorReabrir" style="height:30vh !important">
+                           <div id="ql-editorRetornado" style="height:30vh !important">
                            </div>
-                           <textarea style="display: none" id="quill-reabrir" name="comentario"></textarea>
+                           <textarea style="display: none" id="quill-retornado" name="comentario"></textarea>
                        </div>
                        <div class="col-md">
                            <input type="hidden" class="form-control" name="idDemanda" value="<?php echo $demanda['idDemanda'] ?>" readonly>
@@ -41,33 +41,33 @@
                         </div>
                     <?php } ?>
                    <!-- lucas 22092023 ID 358 Modificado nome do botao-->
-                   <button type="submit" formaction="../database/demanda.php?operacao=atualizar&acao=retornar" class="btn btn-warning">Reabrir</button>
+                   <button type="submit" formaction="../database/demanda.php?operacao=atualizar&acao=retornado" class="btn btn-warning">Retornar</button>
                </div>
                </form>
            </div>
        </div>
    </div>
 
-   <!-- lucas 27022024 - id853 nova chamada editor quill -->
-   <!-- gabriel 27052024 - id981 removido modalstatus.js para evitar redundancia do script -->
-   <script>
-    var quillReabrir = new Quill('#ql-editorReabrir', {
+    <!-- lucas 27022024 - id853 nova chamada editor quill -->
+    <!-- gabriel 27052024 - id981 removido modalstatus.js para evitar redundancia do script -->
+    <script>
+    var quillRetornado = new Quill('#ql-editorRetornado', {
         modules: {
-            toolbar: '#ql-toolbarReabrir'
+            toolbar: '#ql-toolbarRetornado'
         },
         placeholder: 'Digite o texto...',
         theme: 'snow'
     });
 
-    quillReabrir.on('text-change', function(delta, oldDelta, source) {
-        $('#quill-reabrir').val(quillReabrir.container.firstChild.innerHTML);
+    quillRetornado.on('text-change', function (delta, oldDelta, source) {
+        $('#quill-retornado').val(quillRetornado.container.firstChild.innerHTML);
     });
 
-    async function uploadFileReabrir() {
+    async function uploadFileRetornado() {
 
         let endereco = '/tmp/';
         let formData = new FormData();
-        var custombutton = document.getElementById("anexarReabrir");
+        var custombutton = document.getElementById("anexarRetornado");
         var arquivo = custombutton.files[0]["name"];
 
         formData.append("arquivo", custombutton.files[0]);
@@ -80,14 +80,14 @@
             body: formData
         });
 
-        const range = this.quillReabrir.getSelection(true)
+        const range = this.quillRetornado.getSelection(true)
 
-        this.quillReabrir.insertText(range.index, arquivo, 'user');
-        this.quillReabrir.setSelection(range.index, arquivo.length);
-        this.quillReabrir.theme.tooltip.edit('link', destino);
-        this.quillReabrir.theme.tooltip.save();
+        this.quillRetornado.insertText(range.index, arquivo, 'user');
+        this.quillRetornado.setSelection(range.index, arquivo.length);
+        this.quillRetornado.theme.tooltip.edit('link', destino);
+        this.quillRetornado.theme.tooltip.save();
 
-        this.quillReabrir.setSelection(range.index + destino.length);
+        this.quillRetornado.setSelection(range.index + destino.length);
 
     }
-   </script>
+    </script>

@@ -194,18 +194,20 @@ if (isset($_GET['operacao'])) {
     }
 
     if ($operacao == "realizado") {
-        // Operações de : REALIZADO, START, STOP e ENTREGUE
+        // Operações de : REALIZADO, REVISAR, START, STOP e ENTREGUE
         $acao = "realizado";
         if (isset($_GET['acao'])) {
             $acao = $_GET['acao'];
         }
 
 		$comentario = isset($_POST["comentario"]) && $_POST["comentario"] !== "" ? $_POST["comentario"] : null;
+		$interno = isset($_POST["interno"]) && $_POST["interno"] !== "" ? $_POST["interno"] : 0;
 
         $apiEntrada = array(
             'idEmpresa' => $idEmpresa,
             'idTarefa' => $_POST['idTarefa'],
             'comentario' => $comentario,
+            'interno' => $interno,
             'acao' => $acao 
         );
     
@@ -218,9 +220,10 @@ if (isset($_GET['operacao'])) {
                     'idUsuario' => $_POST['idUsuario'],
                     'idCliente' => $_POST['idCliente'],
                     'idDemanda' => $_POST['idDemanda'],
-                    'comentario' => $_POST['comentario'],
+                    'comentario' => $comentario,
+                    'interno' => $interno
                 );
-                $comentario2 = chamaAPI(null, '/servicos/comentario/cliente', json_encode($apiEntrada2), 'PUT');
+                $comentario2 = chamaAPI(null, '/servicos/comentario', json_encode($apiEntrada2), 'PUT');
             }
             $idDemanda = $_POST['idDemanda'];
             if(isset($_GET['redirecionarDemanda'])){

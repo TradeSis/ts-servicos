@@ -229,6 +229,40 @@ if (isset($jsonEntrada['idTarefa'])) {
         
     }
 
+    //ação : REVISAR
+    if ($jsonEntrada['acao'] == "revisar") {
+
+        $enviaEmail = 1;
+
+        $sql = "UPDATE tarefa SET horaFinalReal = $horaFinalReal  WHERE idTarefa = $idTarefa";
+        $atualizar = mysqli_query($conexao, $sql);
+
+        if ($idDemanda !== "null") {
+            $idTipoStatus = TIPOSTATUS_REVISAR;
+            $nomeStatusEmail = 'Revisão';
+            //Busca dados Tipostatus    
+            $sql_consultaStatus = "SELECT * FROM tipostatus WHERE idTipoStatus = $idTipoStatus";
+            $buscar_consultaStatus = mysqli_query($conexao, $sql_consultaStatus);
+            $row_consultaStatus = mysqli_fetch_array($buscar_consultaStatus, MYSQLI_ASSOC);
+            $posicao = $row_consultaStatus["mudaPosicaoPara"];
+            $statusDemanda = $row_consultaStatus["mudaStatusPara"];
+
+            $sql_update_demanda = "UPDATE demanda SET posicao=$posicao, idTipoStatus=$idTipoStatus, dataAtualizacaoAtendente=CURRENT_TIMESTAMP(), dataFechamento = CURRENT_TIMESTAMP(), statusDemanda=$statusDemanda ";
+            if ($tempoCobradoDigitado == "0") {
+                $totalHorasReal = buscaHorasRealizado($conexao, $idDemanda, $tempoCobradoDigitado);
+                $tempoCobrado = $totalHorasReal;
+                if (strtotime($totalHorasReal) < strtotime('00:30:00')) {
+                    $tempoCobrado = '00:30:00';
+                }
+                
+                $tempoCobrado = "'" . $tempoCobrado . "'";
+                $sql_update_demanda = $sql_update_demanda . ",tempoCobrado = $tempoCobrado ";
+            }
+            $sql_update_demanda = $sql_update_demanda . " WHERE idDemanda = $idDemanda";
+        }
+        
+    }
+
     //LOG
     if (isset($LOG_NIVEL)) {
         if ($LOG_NIVEL >= 3) {
