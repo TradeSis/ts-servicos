@@ -236,6 +236,7 @@ if (isset($_GET['operacao'])) {
 		$comentario = isset($_POST["comentario"]) && $_POST["comentario"] !== "" ? $_POST["comentario"] : null;
 		$idAtendente = isset($_POST["idAtendente"]) && $_POST["idAtendente"] !== "" ? $_POST["idAtendente"] : null;
 		$idLogin = isset($_POST["idLogin"]) && $_POST["idLogin"] !== "" ? $_POST["idLogin"] : null;
+		$interno = isset($_POST["interno"]) && $_POST["interno"] !== "" ? $_POST["interno"] : 0;
 
 		$apiEntrada = array(
 			'idEmpresa' => $_SESSION['idEmpresa'],
@@ -243,6 +244,7 @@ if (isset($_GET['operacao'])) {
 			'idAtendente' => $idAtendente,//utilizado quando ação for encaminhar
 			'idLogin' => $idLogin,//utilizado quando ação for subdemanda
 			'comentario' => $comentario,
+			'interno' => $interno,
 			'acao' => $acao
 		);
 
@@ -252,6 +254,7 @@ if (isset($_GET['operacao'])) {
 				'idUsuario' => $_POST['idUsuario'],
 				'idCliente' => $_POST['idCliente'],
 				'idDemanda' => $_POST['idDemanda'],
+				'interno' => $interno,
 				'comentario' => $_POST['comentario'],
 			);
 			$comentario2 = chamaAPI(null, '/servicos/comentario/cliente', json_encode($apiEntrada2), 'PUT');
@@ -275,19 +278,27 @@ if (isset($_GET['operacao'])) {
 		if(isset($enviaEmailComentario)){
 			$enviaEmailComentario = $_POST['enviaEmailComentario'];
 		}
+		$interno = isset($_POST["interno"]) && $_POST["interno"] !== "" ? $_POST["interno"] : 0;
 
 		$apiEntrada = array(
 			'idEmpresa' => $_SESSION['idEmpresa'],
 			'idUsuario' => $_POST['idUsuario'],
 			'idCliente' => $_POST['idCliente'],
 			'idDemanda' => $_POST['idDemanda'],
+			'interno' => $interno,
 			'comentario' => $_POST['comentario'],
 			'enviaEmailComentario' => $enviaEmailComentario
 
 		);
 
 		$comentario = chamaAPI(null, '/servicos/comentario', json_encode($apiEntrada), 'PUT');
-		header('Location: ../demandas/visualizar.php?idDemanda=' . $apiEntrada['idDemanda']);
+		
+		if ($_POST['origem'] == "demandas") {
+			header('Location: ../demandas/visualizar.php?idDemanda=' . $apiEntrada['idDemanda']);
+		}
+		if ($_POST['origem'] == "visaocli")  {
+			header('Location: ../visaocli/visualizar.php?idDemanda=' . $apiEntrada['idDemanda'] . '&&' . $_POST['idTipoContrato']);
+		}
 	}
 
 	if ($operacao == "descricao") {

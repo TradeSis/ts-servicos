@@ -151,9 +151,17 @@ if ($usuario["idCliente"] == null) {
                     <?php foreach (buscaDemandas(null, TIPOSTATUS_FAZENDO, null, $usuario['idUsuario'], $usuario["idCliente"], $idContratoTipo) as $kanbanDemanda) : ?>
                         <?php echo montaKanban($kanbanDemanda); ?>
                     <?php endforeach; ?>
+                    <?php foreach (buscaDemandas(null, TIPOSTATUS_RETORNADO, null, $usuario['idUsuario'], $usuario["idCliente"], $idContratoTipo) as $kanbanDemanda) : ?>
+                        <?php echo montaKanban($kanbanDemanda); ?>
+                    <?php endforeach; ?>
+
+                    <?php foreach (buscaDemandas(null, TIPOSTATUS_REVISAR, null, $usuario['idUsuario'], $usuario["idCliente"], $idContratoTipo) as $kanbanDemanda) : ?>
+                        <?php echo montaKanban($kanbanDemanda); ?>
+                    <?php endforeach; ?>
                     <?php foreach (buscaDemandas(null, TIPOSTATUS_PAUSADO, null, $usuario['idUsuario'], $usuario["idCliente"], $idContratoTipo) as $kanbanDemanda) : ?>
                         <?php echo montaKanban($kanbanDemanda); ?>
                     <?php endforeach; ?>
+
                 </div>
             </div>
 

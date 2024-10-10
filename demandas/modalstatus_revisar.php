@@ -1,5 +1,5 @@
 <!--------- MODAL ENTREGAR --------->
-<div class="modal" id="entregarModal" tabindex="-1" role="dialog" aria-labelledby="entregarModalLabel" aria-hidden="true">
+<div class="modal" id="revisarModal" tabindex="-1" role="dialog" aria-labelledby="revisarModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -11,16 +11,16 @@
                 <form method="post">
                     <div class="container-fluid p-0">
                         <!-- lucas 27022024 - id853 nova chamada editor quill -->
-                        <div id="ql-toolbarEntregar">
+                        <div id="ql-toolbarRevisar">
                             <?php include ROOT."/sistema/quilljs/ql-toolbar-min.php"  ?>
-                            <input type="file" id="anexarEntregar" class="custom-file-upload" name="nomeAnexo" onchange="uploadFileEntregar()" style=" display:none">
-                            <label for="anexarEntregar">
+                            <input type="file" id="anexarRevisar" class="custom-file-upload" name="nomeAnexo" onchange="uploadFileRevisar()" style=" display:none">
+                            <label for="anexarRevisar">
                                 <a class="btn p-0 ms-1"><i class="bi bi-paperclip"></i></a>
                             </label>
                         </div>
-                        <div id="ql-editorEntregar" style="height:30vh !important">
+                        <div id="ql-editorRevisar" style="height:30vh !important">
                         </div>
-                        <textarea style="display: none" id="quill-entregar" name="comentario"></textarea>
+                        <textarea style="display: none" id="quill-revisar" name="comentario"></textarea>
                     </div>
                     <div class="col-md">
                         <input type="hidden" class="form-control" name="idDemanda" value="<?php echo $demanda['idDemanda'] ?>" readonly>
@@ -37,12 +37,12 @@
             <div class="modal-footer">
                 <?php if ($_SESSION['administradora'] == 1) { ?>
                     <div class="mt-2 form-check form-switch">
-                        <input class="form-check-input" type="checkbox" name="interno" id="interno" value="1">
+                        <input class="form-check-input" type="checkbox" name="interno" id="interno" value="1" checked>
                         <label class="form-check-label" for="interno">Interno</label>
                     </div>
                 <?php } ?>
                 <!-- lucas 22092023 ID 358 Modificado nome do botao-->
-                <button type="submit" formaction="../database/demanda.php?operacao=atualizar&acao=entregar" class="btn btn-warning">Entregar</button>
+                <button type="submit" formaction="../database/demanda.php?operacao=atualizar&acao=revisar" class="btn btn-info">Revisão</button>
             </div>
             </form>
         </div>
@@ -52,23 +52,23 @@
 <!-- lucas 27022024 - id853 nova chamada editor quill -->
 <!-- gabriel 27052024 - id981 removido modalstatus.js para evitar redundancia do script -->
 <script>
-var quillEntregar = new Quill('#ql-editorEntregar', {
+var quillRevisar = new Quill('#ql-editorRevisar', {
     modules: {
-        toolbar: '#ql-toolbarEntregar'
+        toolbar: '#ql-toolbarRevisar'
     },
     placeholder: 'Digite o texto...',
     theme: 'snow'
 });
 
-quillEntregar.on('text-change', function(delta, oldDelta, source) {
-    $('#quill-entregar').val(quillEntregar.container.firstChild.innerHTML);
+quillRevisar.on('text-change', function(delta, oldDelta, source) {
+    $('#quill-revisar').val(quillRevisar.container.firstChild.innerHTML);
 });
 
-async function uploadFileEntregar() {
+async function uploadFileRevisar() {
 
     let endereco = '/tmp/';
     let formData = new FormData();
-    var custombutton = document.getElementById("anexarEntregar");
+    var custombutton = document.getElementById("anexarRevisar");
     var arquivo = custombutton.files[0]["name"];
 
     formData.append("arquivo", custombutton.files[0]);
@@ -81,14 +81,14 @@ async function uploadFileEntregar() {
         body: formData
     });
 
-    const range = this.quillEntregar.getSelection(true)
+    const range = this.quillRevisar.getSelection(true)
 
-    this.quillEntregar.insertText(range.index, arquivo, 'user');
-    this.quillEntregar.setSelection(range.index, arquivo.length);
-    this.quillEntregar.theme.tooltip.edit('link', destino);
-    this.quillEntregar.theme.tooltip.save();
+    this.quillRevisar.insertText(range.index, arquivo, 'user');
+    this.quillRevisar.setSelection(range.index, arquivo.length);
+    this.quillRevisar.theme.tooltip.edit('link', destino);
+    this.quillRevisar.theme.tooltip.save();
 
-    this.quillEntregar.setSelection(range.index + destino.length);
+    this.quillRevisar.setSelection(range.index + destino.length);
 
 }
 </script>
