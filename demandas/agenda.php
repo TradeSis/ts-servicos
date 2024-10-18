@@ -350,7 +350,14 @@ $demandas = buscaDemandasAbertas();
                         $colorIndex++;
 
                         if ($tarefa['idDemanda'] !== null) {
-                            $tituloTarefa = empty($tarefa['tituloTarefa']) ? $tarefa['tituloDemanda'] . " (" . $tarefa['nomeUsuario'] . ")" : $tarefa['tituloTarefa'];
+                            //$tituloTarefa = empty($tarefa['tituloTarefa']) ? $tarefa['tituloDemanda'] . " (" . $tarefa['nomeUsuario'] . ")" : $tarefa['tituloTarefa'];
+                            if ($tarefa['tituloTarefa']==null) {
+                                $tituloTarefa = $tarefa['tituloDemanda'] . " (" . $tarefa['nomeUsuario'] . ")";
+                            } else {
+                                $tituloTarefa = $tarefa['tituloTarefa'] .' - '. $tarefa['tituloDemanda'] . " (" . $tarefa['nomeUsuario'] . ")";
+                            }
+                            
+
                         } else {
                             $tituloTarefa = empty($tarefa['tituloTarefa']) ? $tarefa['tituloTarefa'] . " (" . $tarefa['nomeUsuario'] . ")" : $tarefa['tituloTarefa'];
                         }
