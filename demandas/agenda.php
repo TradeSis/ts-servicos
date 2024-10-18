@@ -35,6 +35,7 @@ if (isset($_SESSION['filtro_agenda'])) {
     $idCliente = $filtroEntrada['idCliente'];
 }
 $tarefas = buscaTarefas(null, null, $idAtendente, $statusTarefa, $idCliente);
+//echo json_encode($tarefas) . "<HR>";
 
 $demandas = buscaDemandasAbertas();
 
@@ -347,19 +348,22 @@ $demandas = buscaDemandasAbertas();
                     foreach ($tarefas as $tarefa) {
                         $color = $colors[$colorIndex % count($colors)];
                         $colorIndex++;
-                        
+                        $tituloTarefa = '';
+                        if ($tarefa['nomeTipoOcorrencia'] !== null) {
+                            $tituloTarefa = '('.$tarefa['nomeTipoOcorrencia'].') ';
+                        }
 
                         if ($tarefa['idDemanda'] !== null) {
                             //$tituloTarefa = empty($tarefa['tituloTarefa']) ? $tarefa['tituloDemanda'] . " (" . $tarefa['nomeUsuario'] . ")" : $tarefa['tituloTarefa'];
                             if ($tarefa['tituloTarefa']==null) {
-                                $tituloTarefa = $tarefa['tituloDemanda'] . " (" . $tarefa['nomeUsuario'] . ")";
+                                $tituloTarefa .= "(" . $tarefa['nomeUsuario'] . ") " . $tarefa['tituloDemanda'] ;
                             } else {
-                                $tituloTarefa = $tarefa['tituloTarefa'] .' - '. $tarefa['tituloDemanda'] . " (" . $tarefa['nomeUsuario'] . ")";
+                                $tituloTarefa .= "(" . $tarefa['nomeUsuario'] . ") " . $tarefa['tituloTarefa'] .' - '. $tarefa['tituloDemanda'] ;
                             }
                             
 
                         } else {
-                            $tituloTarefa = empty($tarefa['tituloTarefa']) ? $tarefa['tituloTarefa'] . " (" . $tarefa['nomeUsuario'] . ")" : $tarefa['tituloTarefa'];
+                            $tituloTarefa = empty($tarefa['tituloTarefa']) ? "(" . $tarefa['nomeUsuario'] . ")" . $tarefa['tituloTarefa']  : $tarefa['tituloTarefa'];
                         }
                         if ($tarefa['tituloContrato'] !== null) {
                             $tituloTarefa = $tituloTarefa . '/' . $tarefa['tituloContrato'];
