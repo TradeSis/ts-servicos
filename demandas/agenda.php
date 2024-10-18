@@ -36,7 +36,6 @@ if (isset($_SESSION['filtro_agenda'])) {
 }
 $tarefas = buscaTarefas(null, null, $idAtendente, $statusTarefa, $idCliente);
 
-
 $demandas = buscaDemandasAbertas();
 
 
@@ -348,6 +347,7 @@ $demandas = buscaDemandasAbertas();
                     foreach ($tarefas as $tarefa) {
                         $color = $colors[$colorIndex % count($colors)];
                         $colorIndex++;
+                        
 
                         if ($tarefa['idDemanda'] !== null) {
                             //$tituloTarefa = empty($tarefa['tituloTarefa']) ? $tarefa['tituloDemanda'] . " (" . $tarefa['nomeUsuario'] . ")" : $tarefa['tituloTarefa'];
@@ -360,6 +360,9 @@ $demandas = buscaDemandasAbertas();
 
                         } else {
                             $tituloTarefa = empty($tarefa['tituloTarefa']) ? $tarefa['tituloTarefa'] . " (" . $tarefa['nomeUsuario'] . ")" : $tarefa['tituloTarefa'];
+                        }
+                        if ($tarefa['tituloContrato'] !== null) {
+                            $tituloTarefa = $tituloTarefa . '/' . $tarefa['tituloContrato'];
                         }
 
                         // substituindo dataPrevisto por Real, quando Real existir
