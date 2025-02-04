@@ -478,6 +478,27 @@ if (isset($_GET['operacao'])) {
 		
 	}
 
+	if ($operacao == "tempoatendimento") {
+
+		$idContratoTipo = isset($_POST["idContratoTipo"]) && $_POST["idContratoTipo"] !== "" ? $_POST["idContratoTipo"] : null;
+		$idCliente = isset($_POST["idCliente"]) && $_POST["idCliente"] !== "" ? $_POST["idCliente"] : null;
+		
+		$apiEntrada = array(
+			'idEmpresa' => $_SESSION['idEmpresa'],
+			'idCliente'=> $idCliente,
+			'idContratoTipo'=> $idContratoTipo,
+			'mes'=> $_POST["mes"],
+			'ano'=> $_POST["ano"]
+		);
+
+		$dashboard = chamaAPI(null, '/servicos/tempoatendimento', json_encode($apiEntrada), 'GET');
+
+		echo json_encode($dashboard);
+		return $dashboard;
+
+		
+	}
+
 
 	//Gabriel 22092023 id544 operação grava origem em session 
 	if ($operacao == "origem") {
