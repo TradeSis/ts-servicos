@@ -100,7 +100,7 @@ $totalTempo = 0;
 $totalCobrado = 0;
 
 foreach ($demandaArray as $idDemanda => &$demandasPorId) {
-    $cumulativeCobrado = 0;
+    $cobrado = 0;
     $count = count($demandasPorId);
 
     for ($i = 0; $i < $count; $i++) {
@@ -108,20 +108,21 @@ foreach ($demandaArray as $idDemanda => &$demandasPorId) {
         $demanda['TEMPO'] = gmdate('H:i:s', $demanda['TEMPO']);
         
         $tempo = strtotime($demanda['TEMPO']) - strtotime('TODAY');
-        $cumulativeCobrado += $tempo;
+        $cobrado += $tempo;
 
         $totalTempo += $tempo;
 
-        if ($i == $count - 1) {  
-            if ($cumulativeCobrado < 1800) { 
-                $demanda['tempoCobrado'] = "00:30:00";
+        if ($i < $count - 1) {  
+            $demanda['tempoCobrado'] = gmdate('H:i:s', $cobrado);
+            $totalCobrado += $tempo;
+        } else {  
+            if ($cobrado < 1800) { 
+                $tempoRestante = 1800 - $cobrado; 
+                $demanda['tempoCobrado'] = gmdate('H:i:s', $tempo + $tempoRestante); 
             } else {
-                $demanda['tempoCobrado'] = gmdate('H:i:s', $cumulativeCobrado);
+                $demanda['tempoCobrado'] = gmdate('H:i:s', $tempo); 
             }
-            
             $totalCobrado += strtotime($demanda['tempoCobrado']) - strtotime('TODAY');
-        } else {
-            $demanda['tempoCobrado'] = gmdate('H:i:s', $cumulativeCobrado);
         }
     }
     unset($demanda); 
