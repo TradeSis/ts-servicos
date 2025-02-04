@@ -226,8 +226,8 @@ if ($usuario["idCliente"] == null) {
                     linha = linha + "<td>" + formattedFechamento + "</td>";
                     linha = linha + "<td>" + formatDate(object.dataReal) + "</td>";
                     <?php if ($_SESSION['administradora'] == 1) { ?>
-                        linha = linha + "<td>" + "Inicio: " + formatTime(object.horaInicioReal) + "<br>";
-                        linha = linha + "Fim: " + formatTime(object.horaFinalReal) + "</td>";
+                        linha = linha + "<td>" + formatTime(object.horaInicioReal) + "<br>";
+                        linha = linha + " " + formatTime(object.horaFinalReal) + "</td>";
                         linha = linha + "<td>" + formatTime(object.TEMPO) + "</td>";
                     <?php } ?>
                     linha = linha + "<td>" + formatTime(object.tempoCobrado) + "</td>";
