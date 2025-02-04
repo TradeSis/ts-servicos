@@ -19,6 +19,11 @@ if (isset($_GET["tipo"])) {
   $contratoTipo = buscaContratoTipos('contratos');
 }
 
+if ($_SESSION['administradora'] == 0) { 
+  $contratoDemanda = buscaContratoTipos('contratos');
+  $idContratoTipo = 'contratos';
+} 
+
 //Lucas 22112023 id 688 - Removido visão do cliente ($ClienteSession)
 
 $usuario = buscaUsuarios(null, $_SESSION['idLogin']);
@@ -64,6 +69,7 @@ if (isset($_SESSION['filtro_demanda'])) {
   $idServico = $filtroEntrada['idServico'];
   $statusDemanda = $filtroEntrada['statusDemanda'];
 }
+$origem = "demandas";
 ?>
 
 <!doctype html>
@@ -164,7 +170,11 @@ if (isset($_SESSION['filtro_demanda'])) {
         <div class="input-group">
           <input type="text" class="form-control ts-input" id="buscaDemanda" placeholder="Buscar por id ou titulo">
           <button class="btn btn-primary rounded" type="button" id="buscar"><i class="bi bi-search"></i></button>
-          <button type="button" class="ms-4 btn btn-success ml-4" data-bs-toggle="modal" data-bs-target="#novoinserirDemandaModal"><i class="bi bi-plus-square"></i>&nbsp Novo</button>
+          <?php if ($_SESSION['administradora'] == 1) { ?>
+            <button type="button" class="ms-4 btn btn-success ml-4" data-bs-toggle="modal" data-bs-target="#novoinserirDemandaModal"><i class="bi bi-plus-square"></i>&nbsp Novo</button>
+          <?php } else { ?>
+            <button type="button" class="ms-4 btn btn-success ml-4" data-bs-toggle="modal" data-bs-target="#inserirDemandaCliente"><i class="bi bi-plus-square"></i>&nbsp Novo</button>
+          <?php } ?>
         </div>
       </div>
 
@@ -330,7 +340,11 @@ if (isset($_SESSION['filtro_demanda'])) {
       </table>
     </div>
 
-    <?php include_once 'modalDemanda_inserir.php' ?>
+    <?php if ($_SESSION['administradora'] == 1) { 
+      include_once 'modalDemanda_inserir.php';
+    } else { 
+      include_once '../visaocli/modalDemanda_inserir.php';
+    } ?>
 
 
 
@@ -430,8 +444,14 @@ if (isset($_SESSION['filtro_demanda'])) {
             linha += "<div class='btn-group dropstart'><button type='button' class='btn' data-toggle='tooltip' data-placement='left' title='Opções' data-bs-toggle='dropdown' " +
             " aria-expanded='false' style='box-shadow:none'><i class='bi bi-three-dots-vertical'></i></button><ul class='dropdown-menu'>"
 
-            linha += "<li class='ms-1 me-1 mt-1'><a class='btn btn-warning btn-sm w-100 text-start' href='visualizar.php?idDemanda=" + object.idDemanda + 
-            "' role='button'><i class='bi bi-pencil-square'></i> Alterar</a></li>";
+            <?php if ($_SESSION['administradora'] == 1) { ?>
+              linha += "<li class='ms-1 me-1 mt-1'><a class='btn btn-warning btn-sm w-100 text-start' href='visualizar.php?idDemanda=" + object.idDemanda + 
+              "' role='button'><i class='bi bi-pencil-square'></i> Alterar</a></li>";
+            <?php } else { ?>
+
+              linha += "<li class='ms-1 me-1 mt-1'><a class='btn btn-warning btn-sm w-100 text-start' href='../visaocli/visualizar.php?idDemanda=" + object.idDemanda + 
+              "' role='button'><i class='bi bi-pencil-square'></i> Alterar</a></li>";
+            <?php } ?>
 
             linha += "</tr>";
             linha +="</ul></div>"
@@ -449,7 +469,11 @@ if (isset($_SESSION['filtro_demanda'])) {
 
     /* helio 09112023 - ao clicar em ts-click, chama visualizar */
     $(document).on('click', '.ts-click', function() {
+      <?php if ($_SESSION['administradora'] == 1) { ?>
         window.location.href='visualizar.php?idDemanda=' + $(this).attr('data-idDemanda');
+      <?php } else { ?>
+        window.location.href='../visaocli/visualizar.php?idDemanda=' + $(this).attr('data-idDemanda');
+      <?php } ?>
     });
 
 

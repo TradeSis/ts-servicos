@@ -16,8 +16,8 @@ if(isset($_SESSION['idContratoTipo'])){
 if (isset($_GET["idContratoTipo"])) {
     $idContratoTipo = $_GET["idContratoTipo"];
     $_SESSION['idContratoTipo'] = $idContratoTipo;
-    $contratoDemanda = buscaContratoTipos($idContratoTipo);
 } 
+$contratoDemanda = buscaContratoTipos($idContratoTipo);
 
 /*gabriel 14032024 - $contratotipo para ser usado no select e $contratoDemanda para ser usado no modal */
 $contratoTipo = buscaContratoTipos();
@@ -40,6 +40,7 @@ if ($usuario["idCliente"] == null) {
 } else {
     $clientes = array(buscaClientes($usuario["idCliente"]));
 }
+$origem = "fila";
 
 ?>
 
