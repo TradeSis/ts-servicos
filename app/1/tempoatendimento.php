@@ -88,11 +88,10 @@ $demandaArray = array();
 while ($row = mysqli_fetch_array($buscar, MYSQLI_ASSOC)) {
     $idDemanda = $row['iddemanda'];
     if (!isset($demandaArray[$idDemanda])) {
-        $demandaArray[$idDemanda] = $row;
-        $demandaArray[$idDemanda]['TEMPO'] = strtotime($row['TEMPO']) - strtotime('TODAY');
-    } else {
-        $demandaArray[$idDemanda]['TEMPO'] += strtotime($row['TEMPO']) - strtotime('TODAY');
+        $demandaArray[$idDemanda] = array();
     }
+    $row['TEMPO'] = strtotime($row['TEMPO']) - strtotime('TODAY');
+    $demandaArray[$idDemanda][] = $row;
     $rows++;
 }
 
@@ -100,22 +99,38 @@ $demandas = array();
 $totalTempo = 0;
 $totalCobrado = 0;
 
-foreach ($demandaArray as &$demanda) {
-    $demanda['TEMPO'] = gmdate('H:i:s', $demanda['TEMPO']);
-    $tempo = strtotime($demanda['TEMPO']) - strtotime('TODAY');
-    
-    if ($tempo < 1800) { 
-        $demanda['tempoCobrado'] = "00:30:00";
-    } else {
-        $demanda['tempoCobrado'] = $demanda['TEMPO'];
-    }
+foreach ($demandaArray as $idDemanda => &$demandasPorId) {
+    $cumulativeCobrado = 0;
+    $count = count($demandasPorId);
 
-    $totalTempo += $tempo;
-    $cobrado = strtotime($demanda['tempoCobrado']) - strtotime('TODAY');
-    $totalCobrado += $cobrado;
+    for ($i = 0; $i < $count; $i++) {
+        $demanda = &$demandasPorId[$i];
+        $demanda['TEMPO'] = gmdate('H:i:s', $demanda['TEMPO']);
+        
+        $tempo = strtotime($demanda['TEMPO']) - strtotime('TODAY');
+        $cumulativeCobrado += $tempo;
+
+        $totalTempo += $tempo;
+
+        if ($i == $count - 1) {  
+            if ($cumulativeCobrado < 1800) { 
+                $demanda['tempoCobrado'] = "00:30:00";
+            } else {
+                $demanda['tempoCobrado'] = gmdate('H:i:s', $cumulativeCobrado);
+            }
+            
+            $totalCobrado += strtotime($demanda['tempoCobrado']) - strtotime('TODAY');
+        } else {
+            $demanda['tempoCobrado'] = gmdate('H:i:s', $cumulativeCobrado);
+        }
+    }
+    unset($demanda); 
 }
 
-$demandas = array_values($demandaArray);
+$demandas = array();
+foreach ($demandaArray as $demandasPorId) {
+    $demandas = array_merge($demandas, $demandasPorId);
+}
 
 $jsonSaida = [
     "demandas" => $demandas,
