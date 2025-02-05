@@ -403,8 +403,8 @@ $origem = "demandas";
             linha += "<tr>";  
             /* helio 09112023 - classe ts-click para quando clicar,
                data-idDemanda para guardar o id da demanda */
-            linha += "<td class='ts-click' data-idDemanda='" + object.idDemanda + "'>" + object.prioridade + "</td>";
-            linha += "<td class='ts-click' data-idDemanda='" + object.idDemanda + "'>";
+            linha += "<td class='ts-click' data-idDemanda='" + object.idDemanda + "' data-idContratoTipo='" + object.idContratoTipo + "'>" + object.prioridade + "</td>";
+            linha += "<td class='ts-click' data-idDemanda='" + object.idDemanda + "' data-idContratoTipo='" + object.idContratoTipo + "'>";
             if ((object.idDemanda !== null) && (object.idContrato !== null)) {
               linha += object.nomeContrato + " : " + " " + object.idContrato + "  " + object.tituloContrato + "<br>";
               linha += object.idDemanda + "  " +  object.tituloDemanda; 
@@ -414,11 +414,11 @@ $origem = "demandas";
             }
             datas = '';
             datas += "</td>";
-            datas += "<td class='ts-click' data-idDemanda='" + object.idDemanda + "'>" + object.nomeAtendente + "</td>";
-            datas += "<td class='ts-click' data-idDemanda='" + object.idDemanda + "'>" + object.nomeCliente + "</td>";
-            datas += "<td class='ts-click' data-idDemanda='" + object.idDemanda + "'>" + object.nomeSolicitante + "</td>";
-            datas += "<td class='ts-click' data-idDemanda='" + object.idDemanda + "'>" + object.nomeServico + "</td>";
-            datas += "<td class='ts-click' data-idDemanda='" + object.idDemanda + "'" 
+            datas += "<td class='ts-click' data-idDemanda='" + object.idDemanda + "' data-idContratoTipo='" + object.idContratoTipo + "'>" + object.nomeAtendente + "</td>";
+            datas += "<td class='ts-click' data-idDemanda='" + object.idDemanda + "' data-idContratoTipo='" + object.idContratoTipo + "'>" + object.nomeCliente + "</td>";
+            datas += "<td class='ts-click' data-idDemanda='" + object.idDemanda + "' data-idContratoTipo='" + object.idContratoTipo + "'>" + object.nomeSolicitante + "</td>";
+            datas += "<td class='ts-click' data-idDemanda='" + object.idDemanda + "' data-idContratoTipo='" + object.idContratoTipo + "'>" + object.nomeServico + "</td>";
+            datas += "<td class='ts-click' data-idDemanda='" + object.idDemanda + "' data-idContratoTipo='" + object.idContratoTipo + "'" 
 
             if((object.atrasada == true) && (object.dataPrevisaoEntregaFormatada != null)){
               datas += " style='background:firebrick;color:white'";
@@ -438,7 +438,7 @@ $origem = "demandas";
             linha += datas;
             linha +=  "</td>";
 
-            linha += "<td  data-idDemanda='" + object.idDemanda + "' class='" + object.idTipoStatus + "'>" + object.nomeTipoStatus + "</td>";
+            linha += "<td  data-idDemanda='" + object.idDemanda + "' data-idContratoTipo='" + object.idContratoTipo + "' class='" + object.idTipoStatus + "'>" + object.nomeTipoStatus + "</td>";
 
             linha += "<td>"; 
             linha += "<div class='btn-group dropstart'><button type='button' class='btn' data-toggle='tooltip' data-placement='left' title='Opções' data-bs-toggle='dropdown' " +
@@ -449,10 +449,9 @@ $origem = "demandas";
               "' role='button'><i class='bi bi-pencil-square'></i> Alterar</a></li>";
             <?php } else { ?>
 
-              linha += "<li class='ms-1 me-1 mt-1'><a class='btn btn-warning btn-sm w-100 text-start' href='../visaocli/visualizar.php?idDemanda=" + object.idDemanda + 
+              linha += "<li class='ms-1 me-1 mt-1'><a class='btn btn-warning btn-sm w-100 text-start' href='../visaocli/visualizar.php?idDemanda=" + object.idDemanda + "&&origem=demandas&&idContratoTipo=" + object.idContratoTipo + 
               "' role='button'><i class='bi bi-pencil-square'></i> Alterar</a></li>";
             <?php } ?>
-
             linha += "</tr>";
             linha +="</ul></div>"
             linha += "</td>";
@@ -472,7 +471,7 @@ $origem = "demandas";
       <?php if ($_SESSION['administradora'] == 1) { ?>
         window.location.href='visualizar.php?idDemanda=' + $(this).attr('data-idDemanda');
       <?php } else { ?>
-        window.location.href='../visaocli/visualizar.php?idDemanda=' + $(this).attr('data-idDemanda');
+        window.location.href='../visaocli/visualizar.php?idDemanda=' + $(this).attr('data-idDemanda') + '&&origem=demandas&&idContratoTipo=' + $(this).attr('data-idContratoTipo');
       <?php } ?>
     });
 

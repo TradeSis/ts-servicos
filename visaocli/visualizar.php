@@ -45,14 +45,17 @@ $statusEncerrar = array(
     TIPOSTATUS_RESPONDIDO,
     TIPOSTATUS_AGENDADO
 );
-//lucas 28032024 - adicionado na url idContratoTipo
-$URL_ATUAL = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-$url_parametros = (parse_url($URL_ATUAL, PHP_URL_QUERY));
-$url_idTipoContrato = explode("&", $url_parametros);
 
+$origem = null;
+if(isset($_GET['origem'])){
+    $origem = $_GET['origem'];  
+}
+/* gabriel 20250205 idcontratotipo ja estava sendo mandado na url mas sem identificar, agora o valor não se perde */
+$idContratoTipo = null;
+if(isset($_GET['idContratoTipo'])){
+    $idContratoTipo = $_GET['idContratoTipo'];  
+}
 
-
-$origem = "visaocli";
 ?>
 
 <!doctype html>
@@ -79,10 +82,12 @@ $origem = "visaocli";
                             </div>
                             <div class="col-md-2 border-start d-flex me-2">
                                 <!-- Lucas 10062024 - adicionado condi��o para voltar ao programa de dashboard -->
-                                <?php if($url_idTipoContrato[2] == 'dashboard'){ ?>
+                                <?php if($origem == 'dashboard'){ ?>
                                     <a href="../demandas/dashboard.php" role="button" class="btn-close"></a>
-                                <?php } else{?>
-                                <a href="index.php?idContratoTipo=<?php echo $url_idTipoContrato[2] ?>" role="button" class="btn-close"></a>
+                                <?php } elseif($origem == 'demandas') { ?>
+                                    <a href="../demandas/index.php" role="button" class="btn-close"></a>
+                                <?php } else { ?>
+                                    <a href="index.php?idContratoTipo=<?php echo $idContratoTipo ?>" role="button" class="btn-close"></a>
                                 <?php } ?>
                             </div>
                         </div>

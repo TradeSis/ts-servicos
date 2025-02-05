@@ -205,7 +205,7 @@ $origem = "fila";
     <script>
         //lucas 28032024 - adicionado na url idContratoTipo
         $(document).on('click', '#kanbanCard', function() {
-            window.location.href = 'visualizar.php?idDemanda=' + $(this).attr('data-idDemanda') + '&&' + $(this).attr('data-idContratoTipo');
+            window.location.href = 'visualizar.php?idDemanda=' + $(this).attr('data-idDemanda') + '&&origem=visaocli&&idContratoTipo=' + $(this).attr('data-idContratoTipo');
         });
     </script>
 </body>
