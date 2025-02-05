@@ -44,32 +44,39 @@ if ($mesprox == 13) {
 $sqldtf = $anoprox."-".$mesprox."-"."01";
 
 
-$sql = "SELECT contratotipos.nomeContrato , contrato.tituloContrato,
-        demanda.iddemanda, demanda.tituloDemanda, demanda.dataFechamento, dataReal, tarefa.horaInicioReal, tarefa.horaFinalReal,
-        TIMEDIFF(tarefa.horaFinalReal, tarefa.horaInicioReal) as TEMPO
-        from tarefa , demanda, contrato, contratotipos ";
+$sql = "SELECT contratotipos.nomeContrato, contrato.tituloContrato,demanda.idDemanda, 
+        demanda.tituloDemanda, demanda.dataFechamento, tipoocorrencia.nomeTipoOcorrencia, 
+        usuario.nomeUsuario AS nomeAtendente, tarefa.dataReal, tarefa.horaInicioReal, 
+        tarefa.horaFinalReal,TIMEDIFF(tarefa.horaFinalReal, tarefa.horaInicioReal) AS tempo FROM tarefa
+        INNER JOIN demanda ON tarefa.idDemanda = demanda.idDemanda
+        INNER JOIN contrato ON demanda.idContrato = contrato.idContrato
+        INNER JOIN contratotipos ON demanda.idContratoTipo = contratotipos.idContratoTipo
+        INNER JOIN tipoocorrencia ON tarefa.idTipoOcorrencia = tipoocorrencia.idTipoOcorrencia
+        INNER JOIN usuario ON tarefa.idAtendente = usuario.idUsuario
+        WHERE   tarefa.dataReal >= '" . $sqldti . "'
+                AND tarefa.dataReal < '" . $sqldtf . "'
+                AND tarefa.horaFinalReal IS NOT NULL";
 
-$where = " where ";
-
-$sql = $sql . $where . " demanda.idContratoTipo = contratotipos.idContratoTipo AND
-                        demanda.idContrato = contrato.idContrato and
-                        tarefa.idDemanda = demanda.idDemanda and
-                        not tarefa.idDemanda is null ";
-$where = " and ";
+$where = " AND ";
 if (isset($jsonEntrada["idContratoTipo"])) {
-    $sql = $sql . $where . " demanda.idContratoTipo = '" . $jsonEntrada["idContratoTipo"] . "'";
-    $where = " and ";
-} else {
-    $sql = $sql . $where . " demanda.idContratoTipo = contratotipos.idContratoTipo ";
-    $where = " and ";
-}
+    $sql .= $where . " demanda.idContratoTipo = '" . $jsonEntrada["idContratoTipo"] . "'";
+    $where = " AND ";
+} 
+if (isset($jsonEntrada["idTipoOcorrencia"])) {
+    $sql .= $where . " tarefa.idTipoOcorrencia = '" . $jsonEntrada["idTipoOcorrencia"] . "'";
+    $where = " AND ";
+} 
+if (isset($jsonEntrada["idAtendente"])) {
+    $sql .= $where . " tarefa.idAtendente = '" . $jsonEntrada["idAtendente"] . "'";
+    $where = " AND ";
+} 
 if (isset($jsonEntrada["idCliente"])) {
-    $sql = $sql . $where . " tarefa.idcliente = " . $jsonEntrada["idCliente"];
-    $where = " and ";
+    $sql .= $where . " tarefa.idCliente = " . $jsonEntrada["idCliente"];
+    $where = " AND ";
 }
-$sql = $sql . " and dataReal >= '" . $sqldti . "' and dataReal < '" . $sqldtf . "' and not horaFinalReal is null ";
-$sql = $sql . "group by demanda.idContratoTipo , demanda.idDemanda, dataReal, tarefa.horaInicioReal, tarefa.horaFinalReal
-               order by contratotipos.nomeContrato, demanda.idDemanda, dataReal, tarefa.horaInicioReal";
+
+$sql .= " GROUP BY demanda.idContratoTipo, demanda.idDemanda, tarefa.dataReal, tarefa.horaInicioReal, tarefa.horaFinalReal
+          ORDER BY contratotipos.nomeContrato, demanda.idDemanda, tarefa.dataReal, tarefa.horaInicioReal";
 
 
 //echo "-SQL->".$sql."\n"; 
@@ -86,11 +93,11 @@ $buscar = mysqli_query($conexao, $sql);
 $demandaArray = array();
 
 while ($row = mysqli_fetch_array($buscar, MYSQLI_ASSOC)) {
-    $idDemanda = $row['iddemanda'];
+    $idDemanda = $row['idDemanda'];
     if (!isset($demandaArray[$idDemanda])) {
         $demandaArray[$idDemanda] = array();
     }
-    $row['TEMPO'] = strtotime($row['TEMPO']) - strtotime('TODAY');
+    $row['tempo'] = strtotime($row['tempo']) - strtotime('TODAY');
     $demandaArray[$idDemanda][] = $row;
     $rows++;
 }
@@ -105,9 +112,9 @@ foreach ($demandaArray as $idDemanda => &$demandasPorId) {
 
     for ($i = 0; $i < $count; $i++) {
         $demanda = &$demandasPorId[$i];
-        $demanda['TEMPO'] = gmdate('H:i:s', $demanda['TEMPO']);
+        $demanda['tempo'] = gmdate('H:i:s', $demanda['tempo']);
         
-        $tempo = strtotime($demanda['TEMPO']) - strtotime('TODAY');
+        $tempo = strtotime($demanda['tempo']) - strtotime('TODAY');
         $cobrado += $tempo;
 
         $totalTempo += $tempo;

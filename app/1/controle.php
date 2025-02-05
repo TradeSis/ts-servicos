@@ -160,6 +160,10 @@ if ($metodo == "GET") {
     case "tempoatendimento":
       include 'tempoatendimento.php';
       break;
+
+    case "tempoocorrencia":
+      include 'tempoatendimento_totais.php';
+      break;
     
     case"demandatabela_dashboard":
       include 'demandatabela_dashboard.php';
