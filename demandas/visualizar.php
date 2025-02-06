@@ -66,6 +66,7 @@ $statusEncerrar = array(
 );
 
 $origem = "demandas";
+$acao = "demandas";
 ?>
 
 <!doctype html>

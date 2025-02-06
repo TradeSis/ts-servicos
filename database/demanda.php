@@ -221,9 +221,10 @@ if (isset($_GET['operacao'])) {
 		$demanda = chamaAPI(null, '/servicos/demanda', json_encode($apiEntrada), 'POST');
 
 		if($acao == "visaocli"){
-			header('Location: ../visaocli/visualizar.php?idDemanda=' . $apiEntrada['idDemanda']);
+			header('Location: ../visaocli/visualizar.php?' . $_POST['url']);
+		} else {
+			header('Location: ../demandas/visualizar.php?idDemanda=' . $apiEntrada['idDemanda']);
 		}
-		header('Location: ../demandas/visualizar.php?idDemanda=' . $apiEntrada['idDemanda']);
 	}
 	
 	if ($operacao == "atualizar") {
@@ -261,11 +262,11 @@ if (isset($_GET['operacao'])) {
 		}
 		
 		$demanda = chamaAPI(null, '/servicos/demanda/atualizar', json_encode($apiEntrada), 'POST');
-		if ($_POST['origem'] == "demandas") {
+
+		if($_POST['origem'] == "visaocli"){
+			header('Location: ../visaocli/visualizar.php?' . $_POST['url']);
+		} else {
 			header('Location: ../demandas/visualizar.php?idDemanda=' . $apiEntrada['idDemanda']);
-		}
-		if ($_POST['origem'] == "visaocli")  {
-			header('Location: ../visaocli/visualizar.php?idDemanda=' . $apiEntrada['idDemanda'] . '&&' . $_POST['idTipoContrato']);
 		}
 
 	}
@@ -273,6 +274,11 @@ if (isset($_GET['operacao'])) {
 
 	// lucas 22112023 id 688 - removido operação comentarioAtendente
 	if ($operacao == "comentar") {
+
+		$acao = "";
+        if (isset($_GET['acao'])) {
+            $acao = $_GET['acao'];
+        }
 	
 		$enviaEmailComentario = '';
 		if(isset($enviaEmailComentario)){
@@ -292,16 +298,19 @@ if (isset($_GET['operacao'])) {
 		);
 
 		$comentario = chamaAPI(null, '/servicos/comentario', json_encode($apiEntrada), 'PUT');
-		
-		if ($_POST['origem'] == "demandas") {
+		if($acao == "visaocli"){
+			header('Location: ../visaocli/visualizar.php?' . $_POST['url']);
+		} else {
 			header('Location: ../demandas/visualizar.php?idDemanda=' . $apiEntrada['idDemanda']);
-		}
-		if ($_POST['origem'] == "visaocli")  {
-			header('Location: ../visaocli/visualizar.php?idDemanda=' . $apiEntrada['idDemanda'] . '&&' . $_POST['idTipoContrato']);
 		}
 	}
 
 	if ($operacao == "descricao") {
+
+		$acao = "";
+        if (isset($_GET['acao'])) {
+            $acao = $_GET['acao'];
+        }
 		
 		$apiEntrada = array(
 			'idEmpresa' => $_SESSION['idEmpresa'],
@@ -310,7 +319,11 @@ if (isset($_GET['operacao'])) {
 		);
 		$demanda = chamaAPI(null, '/servicos/demanda_descricao', json_encode($apiEntrada), 'POST');
 
-		header('Location: ../demandas/visualizar.php?idDemanda=' . $apiEntrada['idDemanda']);
+		if($acao == "visaocli"){
+			header('Location: ../visaocli/visualizar.php?' . $_POST['url']);
+		} else {
+			header('Location: ../demandas/visualizar.php?idDemanda=' . $apiEntrada['idDemanda']);
+		}
 	}
 
 	if ($operacao == "filtrar") {

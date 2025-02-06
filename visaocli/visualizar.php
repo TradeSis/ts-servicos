@@ -46,6 +46,7 @@ $statusEncerrar = array(
     TIPOSTATUS_AGENDADO
 );
 
+$acao = 'visaocli';
 $origem = null;
 if(isset($_GET['origem'])){
     $origem = $_GET['origem'];  
@@ -55,6 +56,9 @@ $idContratoTipo = null;
 if(isset($_GET['idContratoTipo'])){
     $idContratoTipo = $_GET['idContratoTipo'];  
 }
+
+$URL_ATUAL = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+$url_parametros = (parse_url($URL_ATUAL, PHP_URL_QUERY));
 
 ?>
 
@@ -74,7 +78,7 @@ if(isset($_GET['idContratoTipo'])){
         <div class="modal" id="modalDemandaVizualizar" tabindex="-1" aria-hidden="true" style="margin: 5px;">
             <div class="col-12 col-md-3 float-end ts-divLateralModalDemanda">
                 <div class="col ">
-                    <form id="my-form" action="../database/demanda.php?operacao=alterar&acao=visaocli" method="post">
+                    <form id="my-form" action="../database/demanda.php?operacao=alterar&acao=<?php echo $acao?>" method="post">
                         <div class="modal-header p-2 pe-3 border-start">
                             <div class="col-md-6 d-flex pt-1">
                                 <label class='form-label ts-label'>Prioridade</label>
@@ -192,6 +196,7 @@ if(isset($_GET['idContratoTipo'])){
                         <div class="row g-3">
                             <div class="col-md-9 d-flex">
                                 <span class="ts-tituloPrincipalModal"><?php echo $demanda['idDemanda'] ?></span>
+                                <input type="hidden" class="form-control ts-inputSemBorda" name="url" value="<?php echo $url_parametros ?>">
                                 <input type="hidden" class="form-control ts-inputSemBorda" name="idDemanda" value="<?php echo $demanda['idDemanda'] ?>">
                                 <span class="ms-3 ts-tituloPrincipalModal"><?php echo $demanda['tituloDemanda'] ?></span>
                             </div>
@@ -263,11 +268,8 @@ if(isset($_GET['idContratoTipo'])){
             myModal.show();
         };
 
-        function refreshPage(tab, idDemanda) {
+        function refreshPage() {
             window.location.reload();
-            var url = window.location.href.split('?')[0];
-            var newUrl = url + '?id=' + tab + '&&idDemanda=' + idDemanda;
-            window.location.href = newUrl;
         }
 
     </script>
