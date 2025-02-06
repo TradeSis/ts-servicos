@@ -135,9 +135,8 @@ foreach ($demandaArray as $idDemanda => &$demandasPorId) {
     unset($demanda); 
 }
 
-$demandas = array();
-foreach ($demandaArray as $demandasPorId) {
-    $demandas = array_merge($demandas, $demandasPorId);
+foreach ($demandaArray as $demandasPorIdDemanda) {
+    $demandas = array_merge($demandas, $demandasPorIdDemanda);
 }
 
 $jsonSaida = [
