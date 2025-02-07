@@ -62,14 +62,6 @@ if (isset($jsonEntrada["idContratoTipo"])) {
     $sql .= $where . " demanda.idContratoTipo = '" . $jsonEntrada["idContratoTipo"] . "'";
     $where = " AND ";
 } 
-if (isset($jsonEntrada["idTipoOcorrencia"])) {
-    $sql .= $where . " tarefa.idTipoOcorrencia = '" . $jsonEntrada["idTipoOcorrencia"] . "'";
-    $where = " AND ";
-} 
-if (isset($jsonEntrada["idAtendente"])) {
-    $sql .= $where . " tarefa.idAtendente = '" . $jsonEntrada["idAtendente"] . "'";
-    $where = " AND ";
-} 
 if (isset($jsonEntrada["idCliente"])) {
     $sql .= $where . " tarefa.idCliente = " . $jsonEntrada["idCliente"];
     $where = " AND ";
@@ -120,8 +112,7 @@ foreach ($demandaArray as $idDemanda => &$demandasPorId) {
         $totalTempo += $tempo;
 
         if ($i < $count - 1) {  
-            $demanda['tempoCobrado'] = gmdate('H:i:s', $cobrado);
-            $totalCobrado += $tempo;
+            $demanda['tempoCobrado'] = gmdate('H:i:s', $tempo);
         } else {  
             if ($cobrado < 1800) { 
                 $tempoRestante = 1800 - $cobrado; 
@@ -129,8 +120,8 @@ foreach ($demandaArray as $idDemanda => &$demandasPorId) {
             } else {
                 $demanda['tempoCobrado'] = gmdate('H:i:s', $tempo); 
             }
-            $totalCobrado += strtotime($demanda['tempoCobrado']) - strtotime('TODAY');
         }
+        $totalCobrado += strtotime($demanda['tempoCobrado']) - strtotime('TODAY');
     }
     unset($demanda); 
 }

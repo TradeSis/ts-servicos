@@ -482,15 +482,11 @@ if (isset($_GET['operacao'])) {
 
 		$idContratoTipo = isset($_POST["idContratoTipo"]) && $_POST["idContratoTipo"] !== "" ? $_POST["idContratoTipo"] : null;
 		$idCliente = isset($_POST["idCliente"]) && $_POST["idCliente"] !== "" ? $_POST["idCliente"] : null;
-		$idAtendente = isset($_POST["idAtendente"]) && $_POST["idAtendente"] !== "" ? $_POST["idAtendente"] : null;
-		$idTipoOcorrencia = isset($_POST["idTipoOcorrencia"]) && $_POST["idTipoOcorrencia"] !== "" ? $_POST["idTipoOcorrencia"] : null;
 		
 		$apiEntrada = array(
 			'idEmpresa' => $_SESSION['idEmpresa'],
 			'idCliente'=> $idCliente,
 			'idContratoTipo'=> $idContratoTipo,
-			'idAtendente'=> $idAtendente,
-			'idTipoOcorrencia'=> $idTipoOcorrencia,
 			'mes'=> $_POST["mes"],
 			'ano'=> $_POST["ano"]
 		);
@@ -504,15 +500,11 @@ if (isset($_GET['operacao'])) {
 
 		$idContratoTipo = isset($_POST["idContratoTipo"]) && $_POST["idContratoTipo"] !== "" ? $_POST["idContratoTipo"] : null;
 		$idCliente = isset($_POST["idCliente"]) && $_POST["idCliente"] !== "" ? $_POST["idCliente"] : null;
-		$idAtendente = isset($_POST["idAtendente"]) && $_POST["idAtendente"] !== "" ? $_POST["idAtendente"] : null;
-		$idTipoOcorrencia = isset($_POST["idTipoOcorrencia"]) && $_POST["idTipoOcorrencia"] !== "" ? $_POST["idTipoOcorrencia"] : null;
 		
 		$apiEntrada = array(
 			'idEmpresa' => $_SESSION['idEmpresa'],
 			'idCliente'=> $idCliente,
 			'idContratoTipo'=> $idContratoTipo,
-			'idAtendente'=> $idAtendente,
-			'idTipoOcorrencia'=> $idTipoOcorrencia,
 			'mes'=> $_POST["mes"],
 			'ano'=> $_POST["ano"]
 		);

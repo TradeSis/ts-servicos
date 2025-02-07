@@ -1,31 +1,39 @@
 <?php
-//Gabriel 20250205
+// Gabriel 26022024 criacao
 
-//LOG 
+//LOG
 $LOG_CAMINHO = defineCaminhoLog();
 if (isset($LOG_CAMINHO)) {
-  $LOG_NIVEL = defineNivelLog();
-  $identificacao = date("dmYHis") . "-PID" . getmypid() . "-" . "tarefa_dashboard";
-  if (isset($LOG_NIVEL)) {
-    if ($LOG_NIVEL >= 1) {
-      $arquivo = fopen(defineCaminhoLog() . "servicos_dashboard_" . date("dmY") . ".log", "a");
+    $LOG_NIVEL = defineNivelLog();
+    $identificacao = date("dmYHis") . "-PID" . getmypid() . "-" . "tempoatendimento";
+    if (isset($LOG_NIVEL)) {
+        if ($LOG_NIVEL >= 1) {
+            $arquivo = fopen(defineCaminhoLog() . "tempoatendimento_" . date("dmY") . ".log", "a");
+        }
     }
-  }
 }
-
 if (isset($LOG_NIVEL)) {
-  if ($LOG_NIVEL == 1) {
-    fwrite($arquivo, $identificacao . "\n");
-  }
-  if ($LOG_NIVEL >= 3) {
-    fwrite($arquivo, $identificacao . "-ENTRADA->" . json_encode($jsonEntrada) . "\n");
-  }
+    if ($LOG_NIVEL == 1) {
+        fwrite($arquivo, $identificacao . "\n");
+    }
+    if ($LOG_NIVEL >= 2) {
+        fwrite($arquivo, $identificacao . "-ENTRADA->" . json_encode($jsonEntrada) . "\n");
+    }
 }
 //LOG
 
+$idEmpresa = null;
+if (isset($jsonEntrada["idEmpresa"])) {
+    $idEmpresa = $jsonEntrada["idEmpresa"];
+}
+
+$conexao = conectaMysql($idEmpresa);
+
+$demandas = array();
+
 $mes = isset($jsonEntrada["mes"])  ? $jsonEntrada["mes"]  : date('m');
 $ano = isset($jsonEntrada["ano"])  ? $jsonEntrada["ano"]  : date('Y');
-$dia = date("t", mktime(0,0,0,$mes,'01',$ano)); // Mágica, plim!
+$dia = date("t", mktime(0,0,0,$mes,'01',$ano)); 
 $sqldti = $ano."-".$mes."-"."01";
 $mesprox = $mes + 1;
 $anoprox = $ano;
@@ -35,73 +43,132 @@ if ($mesprox == 13) {
 }
 $sqldtf = $anoprox."-".$mesprox."-"."01";
 
-$idEmpresa = 1;
-if (isset($jsonEntrada["idEmpresa"])) {
-  $idEmpresa = $jsonEntrada["idEmpresa"];
-}
 
-$conexao = conectaMysql($idEmpresa);
+$sql = "SELECT demanda.idDemanda, tipoocorrencia.nomeTipoOcorrencia, tarefa.idTipoOcorrencia, 
+        TIMEDIFF(tarefa.horaFinalReal, tarefa.horaInicioReal) AS tempo FROM tarefa
+        INNER JOIN demanda ON tarefa.idDemanda = demanda.idDemanda
+        INNER JOIN tipoocorrencia ON tarefa.idTipoOcorrencia = tipoocorrencia.idTipoOcorrencia
+        WHERE   tarefa.dataReal >= '" . $sqldti . "'
+                AND tarefa.dataReal < '" . $sqldtf . "'
+                AND tarefa.horaFinalReal IS NOT NULL";
 
-//GRAFICO 
-$totaisTabela = array();
-
-$sql = " SELECT tarefa.idTipoOcorrencia, tipoocorrencia.nomeTipoOcorrencia, count(*) as Total 
-         FROM tarefa
-         INNER JOIN demanda ON tarefa.idDemanda = demanda.idDemanda
-         INNER JOIN contrato ON demanda.idContrato = contrato.idContrato
-         INNER JOIN contratotipos ON demanda.idContratoTipo = contratotipos.idContratoTipo
-         INNER JOIN tipoocorrencia ON tarefa.idTipoOcorrencia = tipoocorrencia.idTipoOcorrencia
-         INNER JOIN usuario ON tarefa.idAtendente = usuario.idUsuario
-         WHERE   tarefa.dataReal >= '" . $sqldti . "'
-                 AND tarefa.dataReal < '" . $sqldtf . "'
-                 AND tarefa.horaFinalReal IS NOT NULL";
 $where = " AND ";
 if (isset($jsonEntrada["idContratoTipo"])) {
     $sql .= $where . " demanda.idContratoTipo = '" . $jsonEntrada["idContratoTipo"] . "'";
     $where = " AND ";
 } 
-if (isset($jsonEntrada["idTipoOcorrencia"])) {
-    $sql .= $where . " tarefa.idTipoOcorrencia = '" . $jsonEntrada["idTipoOcorrencia"] . "'";
-    $where = " AND ";
-} 
-if (isset($jsonEntrada["idAtendente"])) {
-    $sql .= $where . " tarefa.idAtendente = '" . $jsonEntrada["idAtendente"] . "'";
-    $where = " AND ";
-} 
 if (isset($jsonEntrada["idCliente"])) {
     $sql .= $where . " tarefa.idCliente = " . $jsonEntrada["idCliente"];
+    $where = " AND ";
 }
 
-$sql = $sql . " group by tarefa.idTipoOcorrencia, tipoocorrencia.nomeTipoOcorrencia
-order by Total" ;
+$sql .= " GROUP BY demanda.idDemanda, tarefa.idTipoOcorrencia, tipoocorrencia.nomeTipoOcorrencia
+          ORDER BY demanda.idDemanda, tarefa.idTipoOcorrencia";
 
-$total = 0;
+
+//echo "-SQL->".$sql."\n"; 
+//LOG
+if (isset($LOG_NIVEL)) {
+    if ($LOG_NIVEL >= 3) {
+        fwrite($arquivo, $identificacao . "-SQL->" . $sql . "\n");
+    }
+}
+//LOG
+
+$rows = 0;
 $buscar = mysqli_query($conexao, $sql);
+$demandaArray = array();
+
 while ($row = mysqli_fetch_array($buscar, MYSQLI_ASSOC)) {
-  array_push($totaisTabela, $row);
-  $total = $total + $row["Total"];
+    $idDemanda = $row['idDemanda'];
+    if (!isset($demandaArray[$idDemanda])) {
+        $demandaArray[$idDemanda] = array();
+    }
+    $row['tempo'] = strtotime($row['tempo']) - strtotime('TODAY');
+    $demandaArray[$idDemanda][] = $row;
+    $rows++;
 }
 
-//TRY-CATCH
-try {
-  $jsonSaida = $totaisTabela;
-} catch (Exception $e) {
-  $jsonSaida = array(
-    "status" => 500,
-    "retorno" => $e->getMessage()
-  );
-  if ($LOG_NIVEL >= 1) {
-    fwrite($arquivo, $identificacao . "-ERRO->" . $e->getMessage() . "\n");
-  }
-} finally {
-  // ACAO EM CASO DE ERRO (CATCH), que mesmo assim precise
+$demandas = array();
+$totalTempo = 0;
+$totalCobrado = 0;
+
+foreach ($demandaArray as $idDemanda => &$demandasPorId) {
+    $cobrado = 0;
+    $count = count($demandasPorId);
+
+    for ($i = 0; $i < $count; $i++) {
+        $demanda = &$demandasPorId[$i];
+        $demanda['tempo'] = gmdate('H:i:s', $demanda['tempo']);
+        
+        $tempo = strtotime($demanda['tempo']) - strtotime('TODAY');
+        $cobrado += $tempo;
+
+        $totalTempo += $tempo;
+
+        if ($i < $count - 1) {  
+            $demanda['tempoCobrado'] = gmdate('H:i:s', $tempo);
+        } else {  
+            if ($cobrado < 1800) { 
+                $tempoRestante = 1800 - $cobrado; 
+                $demanda['tempoCobrado'] = gmdate('H:i:s', $tempo + $tempoRestante); 
+            } else {
+                $demanda['tempoCobrado'] = gmdate('H:i:s', $tempo); 
+            }
+        }
+        $totalCobrado += strtotime($demanda['tempoCobrado']) - strtotime('TODAY');
+    }
+    unset($demanda); 
 }
-//TRY-CATCH
+
+foreach ($demandaArray as $demandasPorIdDemanda) {
+    $demandas = array_merge($demandas, $demandasPorIdDemanda);
+}
+
+
+$sums = [];
+
+foreach ($demandas as $demanda) {
+    $idTipoOcorrencia = $demanda['idTipoOcorrencia'];
+    $tempoCobrado = $demanda['tempoCobrado'];
+
+    list($h, $m, $s) = explode(':', $tempoCobrado);
+    $seconds = $h * 3600 + $m * 60 + $s;
+
+    $sums[$idTipoOcorrencia] = isset($sums[$idTipoOcorrencia]) ? $sums[$idTipoOcorrencia] + $seconds : $seconds;
+}
+
+$result = [];
+foreach ($sums as $idTipoOcorrencia => $totalSeconds) {
+    $hours = floor($totalSeconds / 3600);
+    $minutes = floor(($totalSeconds % 3600) / 60);
+    $seconds = $totalSeconds % 60;
+    
+    $totalTime = sprintf("%02d:%02d:%02d", $hours, $minutes, $seconds);
+    
+    $nomeTipoOcorrencia = '';
+    foreach ($demandas as $demanda) {
+        if ($demanda['idTipoOcorrencia'] == $idTipoOcorrencia) {
+            $nomeTipoOcorrencia = $demanda['nomeTipoOcorrencia'];
+            break;
+        }
+    }
+
+    $result[] = [
+        "idTipoOcorrencia" => $idTipoOcorrencia,
+        "nomeTipoOcorrencia" => $nomeTipoOcorrencia,
+        "Total" => $totalTime
+    ];
+}
+
+$jsonSaida = $result;
+
+//echo "-SAIDA->".json_encode($jsonSaida)."\n";
 
 //LOG
 if (isset($LOG_NIVEL)) {
-  if ($LOG_NIVEL >= 3) {
-    fwrite($arquivo, $identificacao . "-SAIDA->" . json_encode($jsonSaida) . "\n\n");
-  }
+    if ($LOG_NIVEL >= 2) {
+        fwrite($arquivo, $identificacao . "-SAIDA->" . json_encode($jsonSaida) . "\n\n");
+    }
 }
 //LOG

@@ -7,15 +7,12 @@ include_once '../head.php';
 include_once '../database/tarefas.php';
 include_once '../database/demanda.php';
 
-include_once '../database/tipoocorrencia.php';
 include_once '../database/contratotipos.php';
 include_once(ROOT . '/cadastros/database/clientes.php');
 include_once(ROOT . '/cadastros/database/usuario.php');
 
 
 $contratotipos = buscaContratoTipos();
-$ocorrencias = buscaTipoOcorrencia();
-$atendentes = buscaAtendente();
 $usuario = buscaUsuarios(null, $_SESSION['idLogin']);
 // Helio 29/07/2024 - quando está gravanbco novo login, não está gravando o usuario no mysql
 // paliativo
@@ -91,45 +88,16 @@ if ($usuario["idCliente"] == null) {
                     <?php } ?>
                 </select>
             </div>
-            <div class="col-2">
-                <select class="form-select ts-input mt-1 pt-1" name="idAtendente" id="FiltroAtendente">
-                    <option value="<?php echo null ?>">
-                        <?php echo "Todos Atendentes" ?>
-                    </option>
-                    <?php
-                    foreach ($atendentes as $atendente) {
-                        ?>
-                        <option <?php
-                        ?> value="<?php echo $atendente['idUsuario'] ?>">
-                            <?php echo $atendente['nomeUsuario'] ?>
-                        </option>
-                    <?php } ?>
-                </select>
-            </div>
-            <div class="col-2">
-                <select class="form-select ts-input mt-1 pt-1" name="idTipoOcorrencia" id="FiltroOcorrencia">
-                    <option value="<?php echo null ?>">
-                        <?php echo "Todas Ocorrências" ?>
-                    </option>
-                    <?php
-                    foreach ($ocorrencias as $ocorrencia) {
-                        ?>
-                        <option <?php
-                        ?> value="<?php echo $ocorrencia['idTipoOcorrencia'] ?>">
-                            <?php echo $ocorrencia['nomeTipoOcorrencia'] ?>
-                        </option>
-                    <?php } ?>
-                </select>
-            </div>
+            
             
 
-            <div class="col-4 d-flex gap-2 align-items-end justify-content-end">
-                <div class="col-2 p-0">
+            <div class="col-8 d-flex gap-2 align-items-end justify-content-end">
+                <div class="col-1 p-0">
                     <input type="text" class="form-control ts-input" name="anoImposto" id="FiltroDataAno"
                         placeholder="Ano" autocomplete="off" required>
                 </div>
 
-                <div class="col-4">
+                <div class="col-2">
                     <select class="form-select ts-input" name="mesImposto" id="FiltroDataMes">
                         <option value="01">Janeiro</option>
                         <option value="02">Fevereiro</option>
@@ -145,7 +113,7 @@ if ($usuario["idCliente"] == null) {
                         <option value="12">Dezembro</option>
                     </select>
                 </div>
-                <div class="col-2">
+                <div class="col-1">
                     <button type="submit" class="btn btn-primary btn-sm" id="filtrardata">Filtrar </button>
                 </div>
             </div>
@@ -212,9 +180,9 @@ if ($usuario["idCliente"] == null) {
         }
     });
 
-    buscar($("#FiltroContratoTipo").val(), $("#FiltroCliente").val(), $("#FiltroOcorrencia").val(), $("#FiltroAtendente").val(), $("#FiltroDataAno").val(), $("#FiltroDataMes").val());
+    buscar($("#FiltroContratoTipo").val(), $("#FiltroCliente").val(), $("#FiltroDataAno").val(), $("#FiltroDataMes").val());
 
-    function buscar(FiltroContratoTipo, FiltroCliente, FiltroOcorrencia, FiltroAtendente, FiltroDataAno, FiltroDataMes) {
+    function buscar(FiltroContratoTipo, FiltroCliente, FiltroDataAno, FiltroDataMes) {
         $('#tabelaAno').val($("#FiltroDataAno").val());
         $('#tabelaMes').val($("#FiltroDataMes").val());
         $('#tabelaTipoContrato').val($("#FiltroContratoTipo").val());
@@ -229,8 +197,6 @@ if ($usuario["idCliente"] == null) {
             data: {
                 idContratoTipo: FiltroContratoTipo,
                 idCliente: FiltroCliente,
-                idAtendente: FiltroAtendente,
-                idTipoOcorrencia: FiltroOcorrencia,
                 ano: FiltroDataAno,
                 mes: FiltroDataMes
             },
@@ -239,13 +205,6 @@ if ($usuario["idCliente"] == null) {
                 var linha = "";
                 for (var $i = 0; $i < json.demandas.length; $i++) {
                     var object = json.demandas[$i];
-                    
-                    let formatTime = (time) => time.split(':').slice(0, 2).join(':');
-                    
-                    let tempoParts = object.tempo.split(":");
-                    let hours = parseInt(tempoParts[0]);
-                    let minutes = parseInt(tempoParts[1]);
-                    let totalMinutes = (hours * 60) + minutes;
                     
                     linha = linha + "<tr>";
                     linha = linha + "<td>" + object.nomeContrato + ": " + object.tituloContrato + "<br>";
@@ -298,62 +257,70 @@ if ($usuario["idCliente"] == null) {
             data: {
                 idContratoTipo: FiltroContratoTipo,
                 idCliente: FiltroCliente,
-                idAtendente: FiltroAtendente,
-                idTipoOcorrencia: FiltroOcorrencia,
                 ano: FiltroDataAno,
                 mes: FiltroDataMes
             },
             success: function (msg) {
                 $('#piechart').hide();
                 var json = JSON.parse(msg);
-                for (var $i = 0; $i < json.length; $i++) {
-                    var object = json;
-                    //console.log(JSON.stringify(object, null, 2));
-                    if (object.length > 0) {
-                        google.charts.load('current', {
-                            'packages': ['corechart']
+
+                if (json.length > 0) {
+                    google.charts.load('current', {'packages':['corechart']});
+                    google.charts.setOnLoadCallback(drawPieChart);
+
+                    function drawPieChart() {
+                        var jsonDataObj = json;
+                        var totalSeconds = 0;
+
+                        jsonDataObj.forEach(function(row) {
+                            var timeParts = row.Total.split(':');
+                            var seconds = (+timeParts[0]) * 60 * 60 + (+timeParts[1]) * 60 + (+timeParts[2]);
+                            totalSeconds += seconds;
+                            row.seconds = seconds; 
                         });
-                        google.charts.setOnLoadCallback(drawPieChart);
-                        function drawPieChart() {
-                            var jsonDataObj = object;
-                            var data = new google.visualization.DataTable();
-                            data.addColumn('string', 'Nome');
-                            data.addColumn('number', 'Total');
-                            for (var i = 0; i < jsonDataObj.length; i++) {
-                                var row = jsonDataObj[i];
-                                data.addRow([row.nomeTipoOcorrencia, parseInt(row.Total)]);
-                            }
-                            var options = {
-                                width: 500,
-                                height: 400,
-                            };
-                            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-                            chart.draw(data, options);
+
+                        var data = new google.visualization.DataTable();
+                        data.addColumn('string', 'Nome');
+                        data.addColumn('number', 'Porcentagem');
+                        data.addColumn({type: 'string', role: 'tooltip', 'p': {'html': true}}); 
+
+                        for (var i = 0; i < jsonDataObj.length; i++) {
+                            var row = jsonDataObj[i];
+                            var percentage = (row.seconds / totalSeconds) * 100;
+                            var formattedTime = formatTime(row.Total);
+                            data.addRow([row.nomeTipoOcorrencia, percentage, '<div><b>' + row.nomeTipoOcorrencia + '</b><br>' + formattedTime + '</div>']);
                         }
-                        $('#piechart').show();
+
+                        var options = {
+                            title: 'Distribuição por Tipo de Ocorrência',
+                            width: 500,
+                            height: 400,
+                            pieSliceText: 'percentage',
+                            sliceVisibilityThreshold: 0,
+                            tooltip: {isHtml: true} 
+                        };
+
+                        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                        chart.draw(data, options);
                     }
-                };
+                    $('#piechart').show();
+                }
             }
         });
+        let formatTime = (time) => time.split(':').slice(0, 2).join(':');
     }
     $("#FiltroContratoTipo").change(function () {
-        buscar($("#FiltroContratoTipo").val(), $("#FiltroCliente").val(), $("#FiltroOcorrencia").val(), $("#FiltroAtendente").val(), $("#FiltroDataAno").val(), $("#FiltroDataMes").val());
+        buscar($("#FiltroContratoTipo").val(), $("#FiltroCliente").val(), $("#FiltroDataAno").val(), $("#FiltroDataMes").val());
     });
     $("#FiltroCliente").change(function () {
-        buscar($("#FiltroContratoTipo").val(), $("#FiltroCliente").val(), $("#FiltroOcorrencia").val(), $("#FiltroAtendente").val(), $("#FiltroDataAno").val(), $("#FiltroDataMes").val());
-    });
-    $("#FiltroOcorrencia").change(function () {
-        buscar($("#FiltroContratoTipo").val(), $("#FiltroCliente").val(), $("#FiltroOcorrencia").val(), $("#FiltroAtendente").val(), $("#FiltroDataAno").val(), $("#FiltroDataMes").val());
-    });
-    $("#FiltroAtendente").change(function () {
-        buscar($("#FiltroContratoTipo").val(), $("#FiltroCliente").val(), $("#FiltroOcorrencia").val(), $("#FiltroAtendente").val(), $("#FiltroDataAno").val(), $("#FiltroDataMes").val());
+        buscar($("#FiltroContratoTipo").val(), $("#FiltroCliente").val(), $("#FiltroDataAno").val(), $("#FiltroDataMes").val());
     });
     $("#filtrardata").click(function () {
-        buscar($("#FiltroContratoTipo").val(), $("#FiltroCliente").val(), $("#FiltroOcorrencia").val(), $("#FiltroAtendente").val(), $("#FiltroDataAno").val(), $("#FiltroDataMes").val());
+        buscar($("#FiltroContratoTipo").val(), $("#FiltroCliente").val(), $("#FiltroDataAno").val(), $("#FiltroDataMes").val());
     });
     document.addEventListener("keypress", function (e) {
         if (e.key === "Enter") {
-            buscar($("#FiltroContratoTipo").val(), $("#FiltroCliente").val(), $("#FiltroOcorrencia").val(), $("#FiltroAtendente").val(), $("#FiltroDataAno").val(), $("#FiltroDataMes").val());
+            buscar($("#FiltroContratoTipo").val(), $("#FiltroCliente").val(), $("#FiltroDataAno").val(), $("#FiltroDataMes").val());
         }
     });
 
