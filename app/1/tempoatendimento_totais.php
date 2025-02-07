@@ -99,21 +99,26 @@ foreach ($demandaArray as $idDemanda => &$demandasPorId) {
 
     for ($i = 0; $i < $count; $i++) {
         $demanda = &$demandasPorId[$i];
-        $demanda['tempo'] = gmdate('H:i:s', $demanda['tempo']);
         
-        $tempo = strtotime($demanda['tempo']) - strtotime('TODAY');
+        $tempo = $demanda['tempo'];
+        $horas = floor($tempo / 3600);
+        $minutos = floor(($tempo - ($horas*3600)) / 60);
+        $segundos = $tempo % 60;
+        $demanda['tempo'] = sprintf('%02d:%02d:%02d', $horas, $minutos, $segundos);
+        
         $cobrado += $tempo;
 
         $totalTempo += $tempo;
 
         if ($i < $count - 1) {  
-            $demanda['tempoCobrado'] = gmdate('H:i:s', $tempo);
+            $demanda['tempoCobrado'] = sprintf('%02d:%02d:%02d', floor($tempo / 3600), floor(($tempo % 3600) / 60), $tempo % 60);
         } else {  
             if ($cobrado < 1800) { 
                 $tempoRestante = 1800 - $cobrado; 
-                $demanda['tempoCobrado'] = gmdate('H:i:s', $tempo + $tempoRestante); 
+                $totalCobradoSegundos = $tempo + $tempoRestante;
+                $demanda['tempoCobrado'] = sprintf('%02d:%02d:%02d', floor($totalCobradoSegundos / 3600), floor(($totalCobradoSegundos % 3600) / 60), $totalCobradoSegundos % 60);
             } else {
-                $demanda['tempoCobrado'] = gmdate('H:i:s', $tempo); 
+                $demanda['tempoCobrado'] = sprintf('%02d:%02d:%02d', floor($tempo / 3600), floor(($tempo % 3600) / 60), $tempo % 60);
             }
         }
         $totalCobrado += strtotime($demanda['tempoCobrado']) - strtotime('TODAY');
@@ -140,11 +145,11 @@ foreach ($demandas as $demanda) {
 
 $result = [];
 foreach ($sums as $idTipoOcorrencia => $totalSeconds) {
-    $hours = floor($totalSeconds / 3600);
-    $minutes = floor(($totalSeconds % 3600) / 60);
-    $seconds = $totalSeconds % 60;
+    $horasOcorrencia = floor($totalSeconds / 3600);
+    $minutosOcorrencia = floor(($totalSeconds % 3600) / 60);
+    $segundosOcorrencia = $totalSeconds % 60;
     
-    $totalTime = sprintf("%02d:%02d:%02d", $hours, $minutes, $seconds);
+    $totalTime = sprintf("%02d:%02d:%02d", $horasOcorrencia, $minutosOcorrencia, $segundosOcorrencia);
     
     $nomeTipoOcorrencia = '';
     foreach ($demandas as $demanda) {

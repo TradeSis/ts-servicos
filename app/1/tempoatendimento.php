@@ -104,21 +104,26 @@ foreach ($demandaArray as $idDemanda => &$demandasPorId) {
 
     for ($i = 0; $i < $count; $i++) {
         $demanda = &$demandasPorId[$i];
-        $demanda['tempo'] = gmdate('H:i:s', $demanda['tempo']);
         
-        $tempo = strtotime($demanda['tempo']) - strtotime('TODAY');
+        $tempo = $demanda['tempo'];
+        $horas = floor($tempo / 3600);
+        $minutos = floor(($tempo - ($horas*3600)) / 60);
+        $segundos = $tempo % 60;
+        $demanda['tempo'] = sprintf('%02d:%02d:%02d', $horas, $minutos, $segundos);
+        
         $cobrado += $tempo;
 
         $totalTempo += $tempo;
 
         if ($i < $count - 1) {  
-            $demanda['tempoCobrado'] = gmdate('H:i:s', $tempo);
+            $demanda['tempoCobrado'] = sprintf('%02d:%02d:%02d', floor($tempo / 3600), floor(($tempo % 3600) / 60), $tempo % 60);
         } else {  
             if ($cobrado < 1800) { 
                 $tempoRestante = 1800 - $cobrado; 
-                $demanda['tempoCobrado'] = gmdate('H:i:s', $tempo + $tempoRestante); 
+                $totalCobradoSegundos = $tempo + $tempoRestante;
+                $demanda['tempoCobrado'] = sprintf('%02d:%02d:%02d', floor($totalCobradoSegundos / 3600), floor(($totalCobradoSegundos % 3600) / 60), $totalCobradoSegundos % 60);
             } else {
-                $demanda['tempoCobrado'] = gmdate('H:i:s', $tempo); 
+                $demanda['tempoCobrado'] = sprintf('%02d:%02d:%02d', floor($tempo / 3600), floor(($tempo % 3600) / 60), $tempo % 60);
             }
         }
         $totalCobrado += strtotime($demanda['tempoCobrado']) - strtotime('TODAY');
@@ -130,12 +135,20 @@ foreach ($demandaArray as $demandasPorIdDemanda) {
     $demandas = array_merge($demandas, $demandasPorIdDemanda);
 }
 
+$totalTempoHoras = floor($totalTempo / 3600);
+$totalTempoMinutos = floor(($totalTempo % 3600) / 60);
+$totalTempoSegundos = $totalTempo % 60;
+
+$totalCobradoHoras = floor($totalCobrado / 3600);
+$totalCobradoMinutos = floor(($totalCobrado % 3600) / 60);
+$totalCobradoSegundos = $totalCobrado % 60;
+
 $jsonSaida = [
     "demandas" => $demandas,
     "total" => [
         [
-            "totalTempo" => gmdate('H:i:s', $totalTempo),
-            "totalCobrado" => gmdate('H:i:s', $totalCobrado)
+            "totalTempo" => sprintf('%02d:%02d:%02d', $totalTempoHoras, $totalTempoMinutos, $totalTempoSegundos),
+            "totalCobrado" => sprintf('%02d:%02d:%02d', $totalCobradoHoras, $totalCobradoMinutos, $totalCobradoSegundos)
         ]
     ]
 ];
