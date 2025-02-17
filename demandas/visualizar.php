@@ -39,6 +39,7 @@ $atendentes = buscaAtendente();
 $cliente = buscaClientes($demanda["idCliente"]);
 $clientes = buscaClientes();
 $contratos = buscaContratosAbertos($demanda["idCliente"]);
+$acompanhantes = buscaUsuarios();
 $horasReal = buscaTotalHorasReal(null, $idDemanda);
 if ($horasReal['totalHorasReal'] !== null) {
     $totalHorasReal = date('H:i', strtotime($horasReal['totalHorasReal']));
@@ -64,6 +65,7 @@ $statusEncerrar = array(
     TIPOSTATUS_REVISAR,
     TIPOSTATUS_RETORNADO
 );
+$acompanhantesIds = explode(',', $demanda['acompanhantes']);
 
 $origem = "demandas";
 ?>
@@ -206,19 +208,21 @@ $origem = "demandas";
                             </div>
                             <button type="submit" form="my-form" class="btn btn-success">Atualizar</button>
                         </div>
-                        <?php
-                        if ($usuario['idCliente'] == null && $demanda['idDemandaSuperior'] == null) { ?>
-                            <div class="modal-footer">
-                                <div class="col align-self-start pl-0">
-                                    <button type="button" data-bs-toggle="modal" data-bs-target="#subdemandaModal" class="btn btn-info">Criar Subdemanda</button>
-                                </div>
+                        <div class="modal-footer">
+                            <?php
+                            if ($usuario['idCliente'] == null && $demanda['idDemandaSuperior'] == null) { ?>
+                            <div class="col align-self-start pl-0">
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#subdemandaModal" class="btn btn-info">Criar Subdemanda</button>
                             </div>
-                        <?php } ?>
+                            <?php } ?>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#acompanhanteModal" class="btn btn-warning">Adicionar Acompanhante</button>
+                        </div>
                 </div>
             </div>
 
             <div class="modal-dialog modal-dialog-scrollable modal-fullscreen"> <!-- Modal 1 -->
                 <div class="modal-content" style="background-color: #F1F2F4;">
+
 
                     <div class="container">
                         <div class="row pb-1">
@@ -255,12 +259,23 @@ $origem = "demandas";
                                 <input type="hidden" class="form-control ts-input" name="idCliente" value="<?php echo $demanda['idCliente'] ?>">
                                 <span class="ts-subTitulo"><strong>Cliente : </strong><span><?php echo $demanda['nomeCliente'] ?></span>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <input type="hidden" class="form-control ts-input" name="idSolicitante" id="idSolicitante" value="<?php echo $demanda['idSolicitante'] ?>" readonly>
                                 <span class="ts-subTitulo"><strong>Solicitante : </strong> <?php echo $demanda['nomeSolicitante'] ?></span>
                             </div>
+                            <div class="col-md-3 d-flex">
+                                <span class="ts-subTitulo"><strong>Acompanhantes: </strong></span>
+                                <select class="form-select ts-input ts-selectDemandaModalVisualizar" name="acompanhantes" id="acompanhantes" autocomplete="off">
+                                    <?php
+                                    foreach ($acompanhantes as $acompanhante) {
+                                        if (in_array($acompanhante['idUsuario'], $acompanhantesIds)) {
+                                    ?>
+                                        <option value="<?php echo $acompanhante['idUsuario'] ?>"><?php echo $acompanhante['nomeUsuario'] ?></option>
+                                    <?php } } ?>
+                                </select>
+                            </div>
 
-                            <div class="col-md-5 d-flex">
+                            <div class="col-md-3 d-flex">
                                 <span class="ts-subTitulo"><strong>Serviço: </strong></span>
                                 <select class="form-select ts-input ts-selectDemandaModalVisualizar" name="idServico" id="idServico" autocomplete="off">
                                     <?php foreach ($servicos as $servico) { ?>
@@ -343,6 +358,9 @@ $origem = "demandas";
 
         <!--------- MODAIS CHECKLIST --------->
         <?php include_once '../demandas/modaisChecklistDemanda.php' ?>
+
+        <!--------- MODAL ACOMPANHANTE --------->
+        <?php include_once 'modalDemanda_acompanhante.php' ?>
 
     </div><!--container-fluid-->
 

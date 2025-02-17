@@ -41,7 +41,7 @@ if (isset($jsonEntrada['idDemanda'])) {
 
 	//Gabriel 29052024 select unico para melhora de performance, busca demanda e dados do usuario
     //Busca dados Demanda e Usuario
-    $sql_demanda = "SELECT demanda.tituloDemanda, demanda.idContratoTipo, demanda.idSolicitante, demanda.idAtendente, cliente.nomeCliente, tipostatus.nomeTipoStatus, servicos.nomeServico, contrato.tituloContrato,
+    $sql_demanda = "SELECT demanda.tituloDemanda, demanda.idContratoTipo, demanda.idSolicitante, demanda.idAtendente, demanda.acompanhantes, cliente.nomeCliente, tipostatus.nomeTipoStatus, servicos.nomeServico, contrato.tituloContrato,
                            UsuarioC.nomeUsuario AS nomeUsuarioC, UsuarioC.email AS emailUsuarioC,
                            atendente.nomeUsuario AS nomeAtendente, atendente.email AS emailAtendente,
                            solicitante.nomeUsuario AS nomeSolicitante, solicitante.email AS emailSolicitante FROM demanda
@@ -70,6 +70,7 @@ if (isset($jsonEntrada['idDemanda'])) {
     $nomeSolicitante = $row_demanda["nomeSolicitante"];
     $emailSolicitante = $row_demanda["emailSolicitante"];
     $dataComentario = date('H:i d/m/Y');
+    $acompanhantes = $row_demanda["acompanhantes"];
 
     //Gabriel 28052024 removido $anexos pois nao esta sendo enviado do database
     $sql = "INSERT INTO comentario(idDemanda, comentario, idUsuario, dataComentario, interno) VALUES ($idDemanda,'$comentario',$idUsuario,CURRENT_TIMESTAMP(), $interno)";
@@ -119,6 +120,17 @@ if (isset($jsonEntrada['idDemanda'])) {
             $arrayPara[] = array(
                 'email' => $emailSolicitante,
                 'nome' => $nomeSolicitante
+            );
+        }
+    }
+    if ($acompanhantes !== null && $acompanhantes !== "") {
+        $idsAcompanhantes = explode(',', $acompanhantes);
+        $sql2 = "SELECT idUsuario, email, nomeUsuario FROM usuario WHERE idUsuario IN (" . implode(',', $idsAcompanhantes) . ")";
+        $buscar2 = mysqli_query($conexao, $sql2);
+        while($row = mysqli_fetch_array($buscar2, MYSQLI_ASSOC)) {
+            $arrayPara[] = array(
+                'email' => $row['email'],
+                'nome' => $row['nomeUsuario']
             );
         }
     }

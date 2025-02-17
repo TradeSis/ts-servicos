@@ -31,6 +31,7 @@ $usuario = buscaUsuarios(null, $_SESSION['idLogin']);
 $cliente = buscaClientes($demanda["idCliente"]);
 $clientes = buscaClientes();
 $contratos = buscaContratosAbertos($demanda["idCliente"]);
+$acompanhantes = buscaUsuarios();
 
 
 $dataFechamento = $demanda['dataFechamentoFormatada'] . ' ' . $demanda['horaFechamentoFormatada'];
@@ -172,6 +173,9 @@ $origem = "visaocli";
                         <div class="modal-footer">
                             <button type="submit" form="my-form" class="btn btn-success">Atualizar</button>
                         </div>
+                        <div class="modal-footer">
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#acompanhanteModal" class="btn btn-warning">Adicionar Acompanhante</button>
+                        </div>
                 </div>
             </div>
 
@@ -243,6 +247,9 @@ $origem = "visaocli";
 
         <!--------- MODAL RESPONDER --------->
         <?php include_once '../demandas/modalstatus_responder.php' ?>
+
+        <!--------- MODAL ACOMPANHANTE --------->
+        <?php include_once '../demandas/modalDemanda_acompanhante.php' ?>
 
     </div><!--container-fluid-->
 

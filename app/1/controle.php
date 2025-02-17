@@ -436,6 +436,10 @@ if ($metodo == "POST") {
         include 'demandachecklist_alterar.php';
         break;
 
+    case "demanda_acompanhante":
+        include 'demanda_acompanhante.php';
+        break;
+
     default:
       $jsonSaida = json_decode(
         json_encode(
