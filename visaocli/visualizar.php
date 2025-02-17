@@ -46,14 +46,21 @@ $statusEncerrar = array(
     TIPOSTATUS_RESPONDIDO,
     TIPOSTATUS_AGENDADO
 );
-//lucas 28032024 - adicionado na url idContratoTipo
+
+$acao = 'visaocli';
+$origem = null;
+if(isset($_GET['origem'])){
+    $origem = $_GET['origem'];  
+}
+/* gabriel 20250205 idcontratotipo ja estava sendo mandado na url mas sem identificar, agora o valor não se perde */
+$idContratoTipo = null;
+if(isset($_GET['idContratoTipo'])){
+    $idContratoTipo = $_GET['idContratoTipo'];  
+}
+
 $URL_ATUAL = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 $url_parametros = (parse_url($URL_ATUAL, PHP_URL_QUERY));
-$url_idTipoContrato = explode("&", $url_parametros);
 
-
-
-$origem = "visaocli";
 ?>
 
 <!doctype html>
@@ -72,7 +79,7 @@ $origem = "visaocli";
         <div class="modal" id="modalDemandaVizualizar" tabindex="-1" aria-hidden="true" style="margin: 5px;">
             <div class="col-12 col-md-3 float-end ts-divLateralModalDemanda">
                 <div class="col ">
-                    <form id="my-form" action="../database/demanda.php?operacao=alterar&acao=visaocli" method="post">
+                    <form id="my-form" action="../database/demanda.php?operacao=alterar&acao=<?php echo $acao?>" method="post">
                         <div class="modal-header p-2 pe-3 border-start">
                             <div class="col-md-6 d-flex pt-1">
                                 <label class='form-label ts-label'>Prioridade</label>
@@ -80,10 +87,12 @@ $origem = "visaocli";
                             </div>
                             <div class="col-md-2 border-start d-flex me-2">
                                 <!-- Lucas 10062024 - adicionado condi��o para voltar ao programa de dashboard -->
-                                <?php if($url_idTipoContrato[2] == 'dashboard'){ ?>
+                                <?php if($origem == 'dashboard'){ ?>
                                     <a href="../demandas/dashboard.php" role="button" class="btn-close"></a>
-                                <?php } else{?>
-                                <a href="index.php?idContratoTipo=<?php echo $url_idTipoContrato[2] ?>" role="button" class="btn-close"></a>
+                                <?php } elseif($origem == 'demandas') { ?>
+                                    <a href="../demandas/index.php" role="button" class="btn-close"></a>
+                                <?php } else { ?>
+                                    <a href="index.php?idContratoTipo=<?php echo $idContratoTipo ?>" role="button" class="btn-close"></a>
                                 <?php } ?>
                             </div>
                         </div>
@@ -191,6 +200,7 @@ $origem = "visaocli";
                         <div class="row g-3">
                             <div class="col-md-9 d-flex">
                                 <span class="ts-tituloPrincipalModal"><?php echo $demanda['idDemanda'] ?></span>
+                                <input type="hidden" class="form-control ts-inputSemBorda" name="url" value="<?php echo $url_parametros ?>">
                                 <input type="hidden" class="form-control ts-inputSemBorda" name="idDemanda" value="<?php echo $demanda['idDemanda'] ?>">
                                 <span class="ms-3 ts-tituloPrincipalModal"><?php echo $demanda['tituloDemanda'] ?></span>
                             </div>
@@ -265,11 +275,8 @@ $origem = "visaocli";
             myModal.show();
         };
 
-        function refreshPage(tab, idDemanda) {
+        function refreshPage() {
             window.location.reload();
-            var url = window.location.href.split('?')[0];
-            var newUrl = url + '?id=' + tab + '&&idDemanda=' + idDemanda;
-            window.location.href = newUrl;
         }
 
     </script>

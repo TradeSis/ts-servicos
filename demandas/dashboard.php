@@ -505,7 +505,7 @@ if ($usuario["idCliente"] == null) {
 
       //lucas 10062024 - abre o visualizar de visaocli/visualizar.php
       $(document).on('click', '#visualizar', function() {
-        window.location.href = '../visaocli/visualizar.php?idDemanda=' + $(this).attr('data-idDemanda') + '&&' + 'dashboard';
+        window.location.href = '../visaocli/visualizar.php?idDemanda=' + $(this).attr('data-idDemanda') + '&&origem=dashboard';
       });
     </script>
 

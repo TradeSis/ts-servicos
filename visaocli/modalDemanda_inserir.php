@@ -182,7 +182,7 @@
     $('select[name="idCliente"]').on('change', function() {
         var idCliente = this.value;
         //lucas 28032024 - adicionado idContratoTipo
-        var idContratoTipo = "<?php echo isset($_GET["idContratoTipo"]) && $_GET["idContratoTipo"] !== "null" ? $_GET["idContratoTipo"]  : null; ?>";
+        var idContratoTipo = "<?php echo $idContratoTipo ?>";
 
         $.ajax({
             type: 'POST',
@@ -271,7 +271,11 @@
                 try {
                     var msg = JSON.parse(response);
                     if (msg.status === 200) {
+                        <?php if ($origem == "fila") { ?>
                         window.location.href = '../visaocli/index.php?idContratoTipo=' + idContratoTipo;
+                        <?php }  else { ?>
+                            window.location.href = '../demandas/index.php';
+                        <?php } ?>
                     } else {
                         alert(msg.retorno); 
                     }

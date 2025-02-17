@@ -77,7 +77,7 @@ if (
                                 href="?tab=execucao" role="tab">Execução</a>
                             </li>
                         <?php }
-                        if ($_SESSION['nivelMenu'] >= 2) { ?>
+                        if ($_SESSION['nivelMenu'] >= 1) { ?>
                             <li class="nav-item mr-1">
                                 <a class="nav-link <?php if ($tab == "demandas") {echo " active ";} ?>" 
                                 href="?tab=demandas" role="tab">Demandas</a>
@@ -154,7 +154,7 @@ if (
                         <?php if ($getTab == "execucao") {echo " selected ";} ?>>Execução</option>
                         <?php }
 
-                        if ($_SESSION['nivelMenu'] >= 2) { ?>
+                        if ($_SESSION['nivelMenu'] >= 1) { ?>
                         <option value="<?php echo URLROOT ?>/servicos/?tab=demandas" 
                         <?php if ($getTab == "demandas") {echo " selected ";} ?>>Demandas</option>
                         <?php }

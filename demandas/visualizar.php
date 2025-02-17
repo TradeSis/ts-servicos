@@ -68,6 +68,7 @@ $statusEncerrar = array(
 $acompanhantesIds = explode(',', $demanda['acompanhantes']);
 
 $origem = "demandas";
+$acao = "demandas";
 ?>
 
 <!doctype html>

@@ -1,4 +1,4 @@
-<form action="../database/demanda.php?operacao=descricao" method="post">
+<form action="../database/demanda.php?operacao=descricao&acao=<?php echo $acao?>" method="post">
     <div class="col-md-12">
         <div class="container-fluid p-0 ts-containerDescricaoDemanda">
             <div class="row">
@@ -21,6 +21,9 @@
             </div>
             <textarea style="display: none" id="quill-demandadescricao" name="descricao"><?php echo $demanda['descricao'] ?></textarea>
             <input type="hidden" class="form-control ts-input" name="idDemanda" value="<?php echo $demanda['idDemanda'] ?>">
+            <?php if ($acao == 'visaocli') { ?>
+                <input type="hidden" class="form-control ts-inputSemBorda" name="url" value="<?php echo $url_parametros ?>">
+            <?php } ?>
         </div>
     </div>
 
