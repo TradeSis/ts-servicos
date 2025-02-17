@@ -92,6 +92,9 @@ if ($usuario["idCliente"] == null) {
             
 
             <div class="col-8 d-flex gap-2 align-items-end justify-content-end">
+                <div class="col-2 p-0">
+                    <button type="submit" class="btn btn-success btn-sm" id="exportCSV">Gerar CSV</button>
+                </div>
                 <div class="col-1 p-0">
                     <input type="text" class="form-control ts-input" name="anoImposto" id="FiltroDataAno"
                         placeholder="Ano" autocomplete="off" required>
@@ -307,8 +310,10 @@ if ($usuario["idCliente"] == null) {
                 }
             }
         });
-        let formatTime = (time) => time.split(':').slice(0, 2).join(':');
     }
+
+    let formatTime = (time) => time.split(':').slice(0, 2).join(':');
+
     $("#FiltroContratoTipo").change(function () {
         buscar($("#FiltroContratoTipo").val(), $("#FiltroCliente").val(), $("#FiltroDataAno").val(), $("#FiltroDataMes").val());
     });
@@ -334,7 +339,76 @@ if ($usuario["idCliente"] == null) {
         }
         return "";
     }
-    
+
+    $("#exportCSV").click(function () {
+        $.ajax({
+            type: 'POST',
+            dataType: 'html',
+            url: "<?php echo URLROOT ?>/servicos/database/demanda.php?operacao=tempoatendimento",
+            data: {
+                idContratoTipo: $("#FiltroContratoTipo").val(),
+                idCliente: $("#FiltroCliente").val(),
+                ano: $("#FiltroDataAno").val(),
+                mes: $("#FiltroDataMes").val()
+            },
+            success: function (msg) {
+                var json = JSON.parse(msg);
+                if (json.demandas && json.demandas.length > 0) {
+                    var csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+                    var mes = $("#FiltroDataMes").val();
+                    var ano = $("#FiltroDataAno").val();
+                    if (<?php echo $_SESSION['administradora'] == 1 ? 'true' : 'false'; ?>) {
+                        csvContent += "Titulo,Atendente,Ocorrencia,Fechamento,Data,HoraInicio,HoraFinal,Tempo,Cobrado;\n";
+                    } else {
+                        csvContent += "Titulo,Atendente,Ocorrencia,Fechamento,Data,Tempo,Cobrado;\n";
+                    }
+                    for (var i = 0; i < json.demandas.length; i++) {
+                        var object = json.demandas[i];
+                        var fechamento = object.dataFechamento ? new Date(object.dataFechamento).toLocaleString('pt-BR', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        }).replace(',', '') : '';
+                        var linha = [
+                            object.nomeContrato + ": " + object.tituloContrato + " " + object.idDemanda + " " + object.tituloDemanda,
+                            object.nomeAtendente,
+                            object.nomeTipoOcorrencia,
+                            fechamento,
+                            formatDate(object.dataReal)
+                        ];
+                        if (<?php echo $_SESSION['administradora'] == 1 ? 'true' : 'false'; ?>) {
+                            linha = linha.concat([
+                                formatTime(object.horaInicioReal),
+                                formatTime(object.horaFinalReal),
+                                formatTime(object.tempo),
+                                formatTime(object.tempoCobrado)
+                            ]);
+                        } else {
+                            linha = linha.concat([
+                                formatTime(object.tempoCobrado)
+                            ]);
+                        }
+                        csvContent += linha.join(',') + ";\n";
+                    }
+                    var encodedUri = encodeURI(csvContent);
+                    var link = document.createElement("a");
+                    link.setAttribute("href", encodedUri);
+                    link.setAttribute("download", "atendimento_" + mes + "_" + ano + ".csv");
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } else {
+                    console.log("Erro ao Buscar Dados");
+                }
+            },
+            error: function (e) {
+                alert('Erro: ' + JSON.stringify(e));
+            }
+        });
+    });
+
     
 </script>
 <!-- LOCAL PARA COLOCAR OS JS -FIM -->
