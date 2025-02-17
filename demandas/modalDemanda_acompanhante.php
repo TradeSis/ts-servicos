@@ -26,14 +26,13 @@
                             <input type="hidden" class="form-control" name="idDemanda" value="<?php echo $demanda['idDemanda'] ?>" readonly>
                             <input type="hidden" class="form-control" name="origem" value="<?php echo $origem ?>" readonly>
                             <?php if ($acao == 'visaocli') { ?>
-                                    <input type="hidden" class="form-control ts-inputSemBorda" name="url" value="<?php echo $url_parametros ?>">
-                                    <input type="hidden" class="form-control ts-inputSemBorda" name="origem" value="<?php echo $origem ?>">
-                                <?php } ?>
+                                <input type="hidden" class="form-control ts-inputSemBorda" name="url" value="<?php echo $url_parametros ?>">
+                            <?php } ?>
                         </div>
                 </div>
                 <div class="modal-footer">
                     <!-- lucas 22092023 ID 358 Modificado nome do botao-->
-                    <button type="submit" formaction="../database/demanda.php?operacao=acompanhantes" class="btn btn-success">Adicionar Acompanhante</button>
+                    <button type="submit" formaction="../database/demanda.php?operacao=acompanhantes&acao=<?php echo $acao?>" class="btn btn-success">Adicionar Acompanhante</button>
                 </div>
                 </form>
             </div>

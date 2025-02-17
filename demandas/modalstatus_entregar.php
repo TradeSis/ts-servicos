@@ -30,7 +30,6 @@
                         <input type="hidden" class="form-control" name="origem" value="<?php echo $origem ?>" readonly>
                         <?php if ($acao == 'visaocli') { ?>
                             <input type="hidden" class="form-control ts-inputSemBorda" name="url" value="<?php echo $url_parametros ?>">
-                            <input type="hidden" class="form-control ts-inputSemBorda" name="origem" value="<?php echo $origem ?>">
                         <?php } ?>
                     </div>
 

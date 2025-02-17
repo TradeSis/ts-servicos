@@ -327,19 +327,23 @@ if (isset($_GET['operacao'])) {
 	}
 
 	if ($operacao == "acompanhantes") {
-		
+
+		$acao = "";
+        if (isset($_GET['acao'])) {
+            $acao = $_GET['acao'];
+        }
+
 		$apiEntrada = array(
 			'idEmpresa' => $_SESSION['idEmpresa'],
 			'idDemanda' => $_POST['idDemanda'],
 			'idAcompanhante' => $_POST['idAcompanhante'],
 		);
 		$demanda = chamaAPI(null, '/servicos/demanda_acompanhante', json_encode($apiEntrada), 'POST');
-
-		if ($_POST['origem'] == "demandas") {
+		
+		if($acao == "visaocli"){
+			header('Location: ../visaocli/visualizar.php?' . $_POST['url']);
+		} else {
 			header('Location: ../demandas/visualizar.php?idDemanda=' . $apiEntrada['idDemanda']);
-		}
-		if ($_POST['origem'] == "visaocli")  {
-			header('Location: ../visaocli/visualizar.php?idDemanda=' . $apiEntrada['idDemanda'] . '&&' . $_POST['idTipoContrato']);
 		}
 	}
 

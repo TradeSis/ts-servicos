@@ -33,7 +33,6 @@ $clientes = buscaClientes();
 $contratos = buscaContratosAbertos($demanda["idCliente"]);
 $acompanhantes = buscaUsuarios();
 
-
 $dataFechamento = $demanda['dataFechamentoFormatada'] . ' ' . $demanda['horaFechamentoFormatada'];
 if ($demanda['dataFechamento'] == null) {
     $dataFechamento =  'dd/mm/aaaa';
@@ -46,6 +45,7 @@ $statusEncerrar = array(
     TIPOSTATUS_RESPONDIDO,
     TIPOSTATUS_AGENDADO
 );
+$acompanhantesIds = explode(',', $demanda['acompanhantes']);
 
 $acao = 'visaocli';
 $origem = null;
@@ -213,12 +213,24 @@ $url_parametros = (parse_url($URL_ATUAL, PHP_URL_QUERY));
                                 <input type="hidden" class="form-control ts-input" name="idCliente" value="<?php echo $demanda['idCliente'] ?>">
                                 <span class="ts-subTitulo"><strong>Cliente : </strong><span><?php echo $demanda['nomeCliente'] ?></span>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <input type="hidden" class="form-control ts-input" name="idSolicitante" id="idSolicitante" value="<?php echo $demanda['idSolicitante'] ?>" readonly>
                                 <span class="ts-subTitulo"><strong>Solicitante : </strong> <?php echo $demanda['nomeSolicitante'] ?></span>
                             </div>
-
-                            <div class="col-md-5 d-flex">
+                            <div class="col-md-3 d-flex">
+                                <?php if($demanda["acompanhantes"] !== null) {?>
+                                <span class="ts-subTitulo"><strong>Acompanhantes: </strong></span>
+                                <select class="form-select ts-input ts-selectDemandaModalVisualizar" name="acompanhantes" id="acompanhantes" autocomplete="off">
+                                    <?php
+                                    foreach ($acompanhantes as $acompanhante) {
+                                        if (in_array($acompanhante['idUsuario'], $acompanhantesIds)) {
+                                    ?>
+                                        <option value="<?php echo $acompanhante['idUsuario'] ?>"><?php echo $acompanhante['nomeUsuario'] ?></option>
+                                    <?php } } ?>
+                                </select>
+                                <?php }  ?>
+                            </div>
+                            <div class="col-md-3 d-flex">
                                 <input type="hidden" class="form-control ts-input" name="idServico" id="idServico" value="<?php echo $demanda['idServico'] ?>" readonly>
                                 <span class="ts-subTitulo"><strong>Serviço : </strong> <?php echo $demanda['nomeServico'] ?></span>
                             </div>

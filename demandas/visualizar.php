@@ -39,8 +39,8 @@ $atendentes = buscaAtendente();
 $cliente = buscaClientes($demanda["idCliente"]);
 $clientes = buscaClientes();
 $contratos = buscaContratosAbertos($demanda["idCliente"]);
-$acompanhantes = buscaUsuarios();
 $horasReal = buscaTotalHorasReal(null, $idDemanda);
+$acompanhantes = buscaUsuarios();
 if ($horasReal['totalHorasReal'] !== null) {
     $totalHorasReal = date('H:i', strtotime($horasReal['totalHorasReal']));
 } else {
@@ -223,7 +223,6 @@ $acao = "demandas";
 
             <div class="modal-dialog modal-dialog-scrollable modal-fullscreen"> <!-- Modal 1 -->
                 <div class="modal-content" style="background-color: #F1F2F4;">
-
 
                     <div class="container">
                         <div class="row pb-1">
