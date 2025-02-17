@@ -264,6 +264,7 @@ $acao = "demandas";
                                 <span class="ts-subTitulo"><strong>Solicitante : </strong> <?php echo $demanda['nomeSolicitante'] ?></span>
                             </div>
                             <div class="col-md-3 d-flex">
+                                <?php if($demanda["acompanhantes"] !== null) {?>
                                 <span class="ts-subTitulo"><strong>Acompanhantes: </strong></span>
                                 <select class="form-select ts-input ts-selectDemandaModalVisualizar" name="acompanhantes" id="acompanhantes" autocomplete="off">
                                     <?php
@@ -273,6 +274,7 @@ $acao = "demandas";
                                         <option value="<?php echo $acompanhante['idUsuario'] ?>"><?php echo $acompanhante['nomeUsuario'] ?></option>
                                     <?php } } ?>
                                 </select>
+                                <?php }  ?>
                             </div>
 
                             <div class="col-md-3 d-flex">
