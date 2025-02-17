@@ -436,8 +436,8 @@ if ($metodo == "POST") {
         include 'demandachecklist_alterar.php';
         break;
 
-    case "demanda_acompanhante":
-        include 'demanda_acompanhante.php';
+    case "demanda_associado":
+        include 'demanda_associado.php';
         break;
 
     default:

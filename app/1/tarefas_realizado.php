@@ -78,7 +78,7 @@ if (isset($jsonEntrada['idTarefa'])) {
 
     if ($idDemanda !== "null") {
         //Se tiver demanda, vai ser atribuido novo valor para variavel $tipoStatusDemanda
-        $sql_consulta ="SELECT demanda.idTipoStatus, demanda.tempoCobradoDigitado, demanda.tituloDemanda, demanda.acompanhantes,
+        $sql_consulta ="SELECT demanda.idTipoStatus, demanda.tempoCobradoDigitado, demanda.tituloDemanda, demanda.associados,
                                 cliente.nomeCliente, servicos.nomeServico, contrato.tituloContrato,
                                 atendente.nomeUsuario AS nomeAtendente, atendente.email AS emailAtendente,
                                 solicitante.nomeUsuario AS nomeSolicitante, solicitante.email AS emailSolicitante FROM demanda
@@ -101,7 +101,7 @@ if (isset($jsonEntrada['idTarefa'])) {
         $nomeSolicitante = $row_consulta["nomeSolicitante"];
         $emailSolicitante = $row_consulta["emailSolicitante"];
         $dataEmail= date('H:i d/m/Y');
-        $acompanhantes = $row_demanda["acompanhantes"];
+        $associados = $row_demanda["associados"];
 
     }
 
@@ -315,9 +315,9 @@ if (isset($jsonEntrada['idTarefa'])) {
                 'nome' => $nomeUsuario 
                 ),
             );
-            if ($acompanhantes !== null && $acompanhantes !== "") {
-                $idsAcompanhantes = explode(',', $acompanhantes);
-                $sql2 = "SELECT idUsuario, email, nomeUsuario FROM usuario WHERE idUsuario IN (" . implode(',', $idsAcompanhantes) . ")";
+            if ($associados !== null && $associados !== "") {
+                $idsAssociados = explode(',', $associados);
+                $sql2 = "SELECT idUsuario, email, nomeUsuario FROM usuario WHERE idUsuario IN (" . implode(',', $idsAssociados) . ")";
                 $buscar2 = mysqli_query($conexao, $sql2);
                 while($row = mysqli_fetch_array($buscar2, MYSQLI_ASSOC)) {
                     $arrayPara[] = array(

@@ -40,7 +40,7 @@ $cliente = buscaClientes($demanda["idCliente"]);
 $clientes = buscaClientes();
 $contratos = buscaContratosAbertos($demanda["idCliente"]);
 $horasReal = buscaTotalHorasReal(null, $idDemanda);
-$acompanhantes = buscaUsuarios();
+$associados = buscaUsuarios();
 if ($horasReal['totalHorasReal'] !== null) {
     $totalHorasReal = date('H:i', strtotime($horasReal['totalHorasReal']));
 } else {
@@ -65,7 +65,8 @@ $statusEncerrar = array(
     TIPOSTATUS_REVISAR,
     TIPOSTATUS_RETORNADO
 );
-$acompanhantesIds = explode(',', $demanda['acompanhantes']);
+$associadosIds = explode(',', $demanda['associados']);
+$demandaIds = array_merge($associadosIds, [$demanda['idAtendente'], $demanda['idSolicitante']]);
 
 $origem = "demandas";
 $acao = "demandas";
@@ -209,6 +210,22 @@ $acao = "demandas";
                             </div>
                             <button type="submit" form="my-form" class="btn btn-success">Atualizar</button>
                         </div>
+                        <div class="row mt-2">
+                            <div class="col-md-5 ps-3">
+                                <label class="form-label ts-label">Associados</label>
+                            </div>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control ts-inputSemBorda" name="Associados" value="<?php 
+                                    $associadosNomes = [];
+                                    foreach ($associados as $associado) {
+                                        if (in_array($associado['idUsuario'], $associadosIds)) {
+                                            $associadosNomes[] = $associado['nomeUsuario'];
+                                        }
+                                    }
+                                    echo htmlspecialchars(implode(', ', $associadosNomes));
+                                ?>">
+                            </div>
+                        </div>
                         <div class="modal-footer">
                             <?php
                             if ($usuario['idCliente'] == null && $demanda['idDemandaSuperior'] == null) { ?>
@@ -216,7 +233,10 @@ $acao = "demandas";
                                 <button type="button" data-bs-toggle="modal" data-bs-target="#subdemandaModal" class="btn btn-info">Criar Subdemanda</button>
                             </div>
                             <?php } ?>
-                            <button type="button" data-bs-toggle="modal" data-bs-target="#acompanhanteModal" class="btn btn-warning">Adicionar Acompanhante</button>
+                            <?php if($demanda["associados"] !== null) { ?>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#desassociarModal" class="btn btn-danger">Desassociar</button>
+                            <?php }  ?>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#associarModal" class="btn btn-warning">Associar</button>
                         </div>
                 </div>
             </div>
@@ -259,25 +279,12 @@ $acao = "demandas";
                                 <input type="hidden" class="form-control ts-input" name="idCliente" value="<?php echo $demanda['idCliente'] ?>">
                                 <span class="ts-subTitulo"><strong>Cliente : </strong><span><?php echo $demanda['nomeCliente'] ?></span>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <input type="hidden" class="form-control ts-input" name="idSolicitante" id="idSolicitante" value="<?php echo $demanda['idSolicitante'] ?>" readonly>
                                 <span class="ts-subTitulo"><strong>Solicitante : </strong> <?php echo $demanda['nomeSolicitante'] ?></span>
                             </div>
-                            <div class="col-md-3 d-flex">
-                                <?php if($demanda["acompanhantes"] !== null) {?>
-                                <span class="ts-subTitulo"><strong>Acompanhantes: </strong></span>
-                                <select class="form-select ts-input ts-selectDemandaModalVisualizar" name="acompanhantes" id="acompanhantes" autocomplete="off">
-                                    <?php
-                                    foreach ($acompanhantes as $acompanhante) {
-                                        if (in_array($acompanhante['idUsuario'], $acompanhantesIds)) {
-                                    ?>
-                                        <option value="<?php echo $acompanhante['idUsuario'] ?>"><?php echo $acompanhante['nomeUsuario'] ?></option>
-                                    <?php } } ?>
-                                </select>
-                                <?php }  ?>
-                            </div>
 
-                            <div class="col-md-3 d-flex">
+                            <div class="col-md-5 d-flex">
                                 <span class="ts-subTitulo"><strong>Serviço: </strong></span>
                                 <select class="form-select ts-input ts-selectDemandaModalVisualizar" name="idServico" id="idServico" autocomplete="off">
                                     <?php foreach ($servicos as $servico) { ?>
@@ -361,8 +368,11 @@ $acao = "demandas";
         <!--------- MODAIS CHECKLIST --------->
         <?php include_once '../demandas/modaisChecklistDemanda.php' ?>
 
-        <!--------- MODAL ACOMPANHANTE --------->
-        <?php include_once 'modalDemanda_acompanhante.php' ?>
+        <!--------- MODAL ASSOCIAR --------->
+        <?php include_once 'modalDemanda_associar.php' ?>
+
+        <!--------- MODAL DESASSOCIAR --------->
+        <?php include_once 'modalDemanda_desassociar.php' ?>
 
     </div><!--container-fluid-->
 

@@ -7,7 +7,7 @@
 $LOG_CAMINHO = defineCaminhoLog();
 if (isset($LOG_CAMINHO)) {
     $LOG_NIVEL = defineNivelLog();
-    $identificacao = date("dmYHis") . "-PID" . getmypid() . "-" . "demanda_acompanhante";
+    $identificacao = date("dmYHis") . "-PID" . getmypid() . "-" . "demanda_associado";
     if (isset($LOG_NIVEL)) {
         if ($LOG_NIVEL >= 1) {
             $arquivo = fopen(defineCaminhoLog() . "servicos_" . date("dmY") . ".log", "a");
@@ -32,23 +32,33 @@ $conexao = conectaMysql($idEmpresa);
 if (isset($jsonEntrada['idDemanda'])) {
 
     $idDemanda = $jsonEntrada['idDemanda'];
-    $idAcompanhante = $jsonEntrada['idAcompanhante'];
-    
-    $sql2 = "SELECT demanda.acompanhantes FROM demanda WHERE idDemanda = $idDemanda";
+    $idAssociado = $jsonEntrada['idAssociado'];
+    $acao = $jsonEntrada['acao'];
+
+    $sql2 = "SELECT demanda.associados FROM demanda WHERE idDemanda = $idDemanda";
     $buscar2 = mysqli_query($conexao, $sql2);
     $row = mysqli_fetch_array($buscar2, MYSQLI_ASSOC);
-    
-    if (isset($row['acompanhantes']) && $row['acompanhantes'] !== "" && $row['acompanhantes'] !== "null") {
-        $acompanhantesArray = explode(',', trim($row['acompanhantes'], "'"));
-        if (!in_array($idAcompanhante, $acompanhantesArray)) {
-            $acompanhantesArray[] = $idAcompanhante;
+
+    if (isset($row['associados']) && $row['associados'] !== "" && $row['associados'] !== "null") {
+        $associadosArray = explode(',', trim($row['associados'], "'"));
+        if ($acao == "associar" && !in_array($idAssociado, $associadosArray)) {
+            $associadosArray[] = $idAssociado;
+        } elseif ($acao == "desassociar") {
+            $key = array_search($idAssociado, $associadosArray);
+            if ($key !== false) {
+                unset($associadosArray[$key]);
+            }
         }
-        $acompanhantes = "'" . implode(',', $acompanhantesArray) . "'";
+        $associados = "'" . implode(',', $associadosArray) . "'";
     } else {
-        $acompanhantes = "'" . $idAcompanhante . "'";
+        if ($acao == "associar") {
+            $associados = "'" . $idAssociado . "'";
+        } else { 
+            $associados = "''";
+        }
     }
     
-    $sql = "UPDATE demanda SET acompanhantes = $acompanhantes WHERE idDemanda = $idDemanda";
+    $sql = "UPDATE demanda SET associados = $associados WHERE idDemanda = $idDemanda";
 
 
     //LOG

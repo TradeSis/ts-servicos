@@ -45,7 +45,7 @@ if (isset($jsonEntrada['idDemanda'])) {
 
 
     //Busca data de fechamento atual
-    $sql_consulta = "SELECT demanda.tituloDemanda, demanda.idAtendente, demanda.dataFechamento, demanda.acompanhantes,
+    $sql_consulta = "SELECT demanda.tituloDemanda, demanda.idAtendente, demanda.dataFechamento, demanda.associados,
                             cliente.nomeCliente, servicos.nomeServico, contrato.tituloContrato, 
                             atendente.nomeUsuario AS nomeAtendente, atendente.email AS emailAtendente,
                             solicitante.nomeUsuario AS nomeSolicitante FROM demanda
@@ -67,7 +67,7 @@ if (isset($jsonEntrada['idDemanda'])) {
     $nomeUsuario = $row_consulta["nomeAtendente"];
     $email = $row_consulta["emailAtendente"];
     $dataEmail= date('H:i d/m/Y');
-    $acompanhantes = $row_demanda["acompanhantes"];
+    $associados = $row_demanda["associados"];
 
     if ($idAtendenteEncaminhar !== null && $idAtendente !== $idAtendenteEncaminhar) { 
         $idAtendente = $idAtendenteEncaminhar; 
@@ -348,8 +348,8 @@ if (isset($jsonEntrada['idDemanda'])) {
                 'nome' => $nomeUsuario 
                 ),
             );
-            if ($acompanhantes !== null && $acompanhantes !== "") {
-                $idsAcompanhantes = explode(',', $acompanhantes);
+            if ($associados !== null && $associados !== "") {
+                $idsAcompanhantes = explode(',', $associados);
                 $sql2 = "SELECT idUsuario, email, nomeUsuario FROM usuario WHERE idUsuario IN (" . implode(',', $idsAcompanhantes) . ")";
                 $buscar2 = mysqli_query($conexao, $sql2);
                 while($row = mysqli_fetch_array($buscar2, MYSQLI_ASSOC)) {

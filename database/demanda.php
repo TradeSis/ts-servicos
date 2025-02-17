@@ -326,7 +326,7 @@ if (isset($_GET['operacao'])) {
 		}
 	}
 
-	if ($operacao == "acompanhantes") {
+	if ($operacao == "associados") {
 
 		$acao = "";
         if (isset($_GET['acao'])) {
@@ -336,9 +336,10 @@ if (isset($_GET['operacao'])) {
 		$apiEntrada = array(
 			'idEmpresa' => $_SESSION['idEmpresa'],
 			'idDemanda' => $_POST['idDemanda'],
-			'idAcompanhante' => $_POST['idAcompanhante'],
+			'idAssociado' => $_POST['idAssociado'],
+			'acao' => $_POST['acao']
 		);
-		$demanda = chamaAPI(null, '/servicos/demanda_acompanhante', json_encode($apiEntrada), 'POST');
+		$demanda = chamaAPI(null, '/servicos/demanda_associado', json_encode($apiEntrada), 'POST');
 		
 		if($acao == "visaocli"){
 			header('Location: ../visaocli/visualizar.php?' . $_POST['url']);
