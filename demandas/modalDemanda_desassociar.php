@@ -11,7 +11,7 @@
                     <form method="post">
                         <div class="container-fluid">
                             <div class="d-flex">
-                                <span style="white-space: nowrap; margin-right: 5px;"><strong>Desassociar Usuário da Demanda: </strong></span>
+                                <span style="white-space: nowrap; margin-right: 5px;"><strong>Usuários Associados: </strong></span>
                                 <select class="form-select ts-input" name="idAssociado">
                                 <?php foreach ($associados as $associado) {
                                 if (in_array($associado['idUsuario'], $associadosIds)) {
