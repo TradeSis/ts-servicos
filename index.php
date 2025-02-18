@@ -234,7 +234,7 @@ if (
                 $title = "Serviços/Execução";
             }
             if ($tab == "dashboard") {
-                $src = "demandas/dashboard.php";
+                $src = "demandas/dashboard_menu.php";
                 $title = "Serviços/Dashboard";
             }
             if ($tab == "agenda") {
