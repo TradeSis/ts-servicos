@@ -51,7 +51,8 @@ $statusStart = array(
     TIPOSTATUS_PAUSADO,
     TIPOSTATUS_RETORNO,
     TIPOSTATUS_RESPONDIDO,
-    TIPOSTATUS_AGENDADO
+    TIPOSTATUS_AGENDADO,
+    TIPOSTATUS_RETORNADO
 );
 
 date_default_timezone_set('America/Sao_Paulo');
