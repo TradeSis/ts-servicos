@@ -210,12 +210,22 @@ $acao = "demandas";
                             </div>
                             <button type="submit" form="my-form" class="btn btn-success btn-sm">Atualizar</button>
                         </div>
-                        <?php if($demanda["associados"] !== null) { ?>
-                        <div class="row mt-2">
-                            <div class="col-md-3 ps-3">
-                                <label class="form-label ts-label">Associados</label>
+                        <div class="modal-footer">
+                            <?php
+                            if ($usuario['idCliente'] == null && $demanda['idDemandaSuperior'] == null) { ?>
+                            <div class="col align-self-start pl-0">
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#subdemandaModal" class="btn btn-info btn-sm">Subdemanda</button>
                             </div>
-                            <div class="col-md-8">
+                            <?php } ?>
+                            <?php if($demanda["associados"] !== null) { ?>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#desassociarModal" class="btn btn-danger btn-sm">Associados</button>
+                            <?php }  ?>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#associarModal" class="btn btn-warning btn-sm">Associar</button>
+                        </div>
+                        <?php if($demanda["associados"] !== null) { ?>
+                        <div class="row mb-2">
+                            <div class="col-11">
+                                <label class="form-label ts-label">Associados</label>
                                 <textarea class="form-control ts-inputSemBorda ts-noScroll" name="Associados" rows="<?php 
                                     $associadosNomes = [];
                                     foreach ($associados as $associado) {
@@ -223,10 +233,10 @@ $acao = "demandas";
                                             $associadosNomes[] = $associado['nomeUsuario'];
                                         }
                                     }
-                                    $maxLength = 30;
+                                    $maxLength = 40;
                                     $associadosString = '';
                                     $linha = '';
-                                    $rows = 1; 
+                                    $rows = 2; 
                                     foreach ($associadosNomes as $index => $nome) {
                                         if (strlen($linha . $nome . ($index < count($associadosNomes) - 1 ? ', ' : '')) <= $maxLength) {
                                             $linha .= $nome . ($index < count($associadosNomes) - 1 ? ', ' : '');
@@ -244,18 +254,6 @@ $acao = "demandas";
                             </div>
                         </div>
                         <?php }  ?>
-                        <div class="modal-footer">
-                            <?php
-                            if ($usuario['idCliente'] == null && $demanda['idDemandaSuperior'] == null) { ?>
-                            <div class="col align-self-start pl-0">
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#subdemandaModal" class="btn btn-info btn-sm"><i class="bi bi-plus-square"></i>&nbsp Subdemanda</button>
-                            </div>
-                            <?php } ?>
-                            <?php if($demanda["associados"] !== null) { ?>
-                            <button type="button" data-bs-toggle="modal" data-bs-target="#desassociarModal" class="btn btn-danger btn-sm">Associados</button>
-                            <?php }  ?>
-                            <button type="button" data-bs-toggle="modal" data-bs-target="#associarModal" class="btn btn-warning btn-sm">Associar</button>
-                        </div>
                 </div>
             </div>
 

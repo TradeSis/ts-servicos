@@ -183,12 +183,16 @@ $url_parametros = (parse_url($URL_ATUAL, PHP_URL_QUERY));
                         <div class="modal-footer">
                             <button type="submit" form="my-form" class="btn btn-success btn-sm">Atualizar</button>
                         </div>
+                        <div class="modal-footer">
+                            <?php if($demanda["associados"] !== null) { ?>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#desassociarModal" class="btn btn-danger btn-sm">Associados</button>
+                            <?php }  ?>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#associarModal" class="btn btn-warning btn-sm">Associar</button>
+                        </div>
                         <?php if($demanda["associados"] !== null) { ?>
-                        <div class="row mt-2">
-                            <div class="col-md-3 ps-3">
+                        <div class="row mb-2">
+                            <div class="col-11">
                                 <label class="form-label ts-label">Associados</label>
-                            </div>
-                            <div class="col-md-8">
                                 <textarea class="form-control ts-inputSemBorda ts-noScroll" name="Associados" rows="<?php 
                                     $associadosNomes = [];
                                     foreach ($associados as $associado) {
@@ -196,10 +200,10 @@ $url_parametros = (parse_url($URL_ATUAL, PHP_URL_QUERY));
                                             $associadosNomes[] = $associado['nomeUsuario'];
                                         }
                                     }
-                                    $maxLength = 30;
+                                    $maxLength = 40;
                                     $associadosString = '';
                                     $linha = '';
-                                    $rows = 1; 
+                                    $rows = 2; 
                                     foreach ($associadosNomes as $index => $nome) {
                                         if (strlen($linha . $nome . ($index < count($associadosNomes) - 1 ? ', ' : '')) <= $maxLength) {
                                             $linha .= $nome . ($index < count($associadosNomes) - 1 ? ', ' : '');
@@ -217,12 +221,6 @@ $url_parametros = (parse_url($URL_ATUAL, PHP_URL_QUERY));
                             </div>
                         </div>
                         <?php }  ?>
-                        <div class="modal-footer">
-                            <?php if($demanda["associados"] !== null) { ?>
-                            <button type="button" data-bs-toggle="modal" data-bs-target="#desassociarModal" class="btn btn-danger btn-sm">Associados</button>
-                            <?php }  ?>
-                            <button type="button" data-bs-toggle="modal" data-bs-target="#associarModal" class="btn btn-warning btn-sm">Associar</button>
-                        </div>
                 </div>
             </div>
 
