@@ -86,7 +86,7 @@ $acao = "demandas";
 
         <!-- Modal -->
         <div class="modal" id="modalDemandaVizualizar" tabindex="-1" aria-hidden="true" style="margin: 5px;">
-            <div class="col-12 col-md-3 float-end ts-divLateralModalDemanda">
+            <div class="col-12 col-md-3 float-end ts-divLateralModalDemanda ts-noScroll">
                 <div class="col ">
                     <form id="my-form" action="../database/demanda.php?operacao=alterar" method="post">
                         <div class="modal-header p-2 pe-3 border-start">
@@ -206,9 +206,9 @@ $acao = "demandas";
 
                         <div class="modal-footer">
                             <div class="col align-self-start pl-0">
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#encaminharModal" class="btn btn-warning">Encaminhar</button>
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#encaminharModal" class="btn btn-warning btn-sm">Encaminhar</button>
                             </div>
-                            <button type="submit" form="my-form" class="btn btn-success">Atualizar</button>
+                            <button type="submit" form="my-form" class="btn btn-success btn-sm">Atualizar</button>
                         </div>
                         <?php if($demanda["associados"] !== null) { ?>
                         <div class="row mt-2">
@@ -216,25 +216,29 @@ $acao = "demandas";
                                 <label class="form-label ts-label">Associados</label>
                             </div>
                             <div class="col-md-8">
-                                <textarea class="form-control ts-inputSemBorda ts-noScroll" name="Associados" rows="1" readonly><?php 
+                                <textarea class="form-control ts-inputSemBorda ts-noScroll" name="Associados" rows="<?php 
                                     $associadosNomes = [];
                                     foreach ($associados as $associado) {
                                         if (in_array($associado['idUsuario'], $associadosIds)) {
                                             $associadosNomes[] = $associado['nomeUsuario'];
                                         }
                                     }
-                                    $maxLength = 40;
+                                    $maxLength = 30;
                                     $associadosString = '';
                                     $linha = '';
+                                    $rows = 1; 
                                     foreach ($associadosNomes as $index => $nome) {
                                         if (strlen($linha . $nome . ($index < count($associadosNomes) - 1 ? ', ' : '')) <= $maxLength) {
                                             $linha .= $nome . ($index < count($associadosNomes) - 1 ? ', ' : '');
                                         } else {
                                             $associadosString .= $linha . "\n";
                                             $linha = $nome . ($index < count($associadosNomes) - 1 ? ', ' : '');
+                                            $rows++; 
                                         }
                                     }
                                     $associadosString .= $linha;
+                                    echo $rows; 
+                                ?>" readonly><?php 
                                     echo htmlspecialchars($associadosString);
                                 ?></textarea>
                             </div>
@@ -244,7 +248,7 @@ $acao = "demandas";
                             <?php
                             if ($usuario['idCliente'] == null && $demanda['idDemandaSuperior'] == null) { ?>
                             <div class="col align-self-start pl-0">
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#subdemandaModal" class="btn btn-info btn-sm">Criar Subdemanda</button>
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#subdemandaModal" class="btn btn-info btn-sm"><i class="bi bi-plus-square"></i>&nbsp Subdemanda</button>
                             </div>
                             <?php } ?>
                             <?php if($demanda["associados"] !== null) { ?>
