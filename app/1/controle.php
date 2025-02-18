@@ -156,8 +156,13 @@ if ($metodo == "GET") {
       include 'contratochecklist.php';
       break;
 
-    case "demanda_dashboard":
-      include 'demanda_dashboard.php';
+    /* gabriel 20240131 - id1600 troquei para tempoatendimento pois demanda_dashboard estava duplicado */ 
+    case "tempoatendimento":
+      include 'tempoatendimento.php';
+      break;
+
+    case "tempoocorrencia":
+      include 'tempoatendimento_totais.php';
       break;
     
     case"demandatabela_dashboard":
