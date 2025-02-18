@@ -360,7 +360,7 @@ if ($usuario["idCliente"] == null) {
                     if (<?php echo $_SESSION['administradora'] == 1 ? 'true' : 'false'; ?>) {
                         csvContent += "Titulo,Atendente,Ocorrencia,Fechamento,Data,HoraInicio,HoraFinal,Tempo,Cobrado;\n";
                     } else {
-                        csvContent += "Titulo,Atendente,Ocorrencia,Fechamento,Data,Tempo,Cobrado;\n";
+                        csvContent += "Titulo,Atendente,Ocorrencia,Fechamento,Data,Cobrado;\n";
                     }
                     for (var i = 0; i < json.demandas.length; i++) {
                         var object = json.demandas[i];
