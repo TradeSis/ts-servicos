@@ -40,6 +40,7 @@ $cliente = buscaClientes($demanda["idCliente"]);
 $clientes = buscaClientes();
 $contratos = buscaContratosAbertos($demanda["idCliente"]);
 $horasReal = buscaTotalHorasReal(null, $idDemanda);
+$associados = buscaUsuarios();
 if ($horasReal['totalHorasReal'] !== null) {
     $totalHorasReal = date('H:i', strtotime($horasReal['totalHorasReal']));
 } else {
@@ -64,8 +65,11 @@ $statusEncerrar = array(
     TIPOSTATUS_REVISAR,
     TIPOSTATUS_RETORNADO
 );
+$associadosIds = explode(',', $demanda['associados']);
+$demandaIds = array_merge($associadosIds, [$demanda['idAtendente'], $demanda['idSolicitante']]);
 
 $origem = "demandas";
+$acao = "demandas";
 ?>
 
 <!doctype html>
@@ -82,7 +86,7 @@ $origem = "demandas";
 
         <!-- Modal -->
         <div class="modal" id="modalDemandaVizualizar" tabindex="-1" aria-hidden="true" style="margin: 5px;">
-            <div class="col-12 col-md-3 float-end ts-divLateralModalDemanda">
+            <div class="col-12 col-md-3 float-end ts-divLateralModalDemanda ts-noScroll">
                 <div class="col ">
                     <form id="my-form" action="../database/demanda.php?operacao=alterar" method="post">
                         <div class="modal-header p-2 pe-3 border-start">
@@ -202,18 +206,54 @@ $origem = "demandas";
 
                         <div class="modal-footer">
                             <div class="col align-self-start pl-0">
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#encaminharModal" class="btn btn-warning">Encaminhar</button>
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#encaminharModal" class="btn btn-warning btn-sm">Encaminhar</button>
                             </div>
-                            <button type="submit" form="my-form" class="btn btn-success">Atualizar</button>
+                            <button type="submit" form="my-form" class="btn btn-success btn-sm">Atualizar</button>
                         </div>
-                        <?php
-                        if ($usuario['idCliente'] == null && $demanda['idDemandaSuperior'] == null) { ?>
-                            <div class="modal-footer">
-                                <div class="col align-self-start pl-0">
-                                    <button type="button" data-bs-toggle="modal" data-bs-target="#subdemandaModal" class="btn btn-info">Criar Subdemanda</button>
-                                </div>
+                        <div class="modal-footer">
+                            <?php
+                            if ($usuario['idCliente'] == null && $demanda['idDemandaSuperior'] == null) { ?>
+                            <div class="col align-self-start pl-0">
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#subdemandaModal" class="btn btn-info btn-sm">Subdemanda</button>
                             </div>
-                        <?php } ?>
+                            <?php } ?>
+                            <?php if($demanda["associados"] !== null) { ?>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#desassociarModal" class="btn btn-danger btn-sm">Associados</button>
+                            <?php }  ?>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#associarModal" class="btn btn-warning btn-sm">Associar</button>
+                        </div>
+                        <?php if($demanda["associados"] !== null) { ?>
+                        <div class="row mb-2">
+                            <div class="col-11">
+                                <label class="form-label ts-label">Associados</label>
+                                <textarea class="form-control ts-inputSemBorda ts-noScroll" name="Associados" rows="<?php 
+                                    $associadosNomes = [];
+                                    foreach ($associados as $associado) {
+                                        if (in_array($associado['idUsuario'], $associadosIds)) {
+                                            $associadosNomes[] = $associado['nomeUsuario'];
+                                        }
+                                    }
+                                    $maxLength = 40;
+                                    $associadosString = '';
+                                    $linha = '';
+                                    $rows = 2; 
+                                    foreach ($associadosNomes as $index => $nome) {
+                                        if (strlen($linha . $nome . ($index < count($associadosNomes) - 1 ? ', ' : '')) <= $maxLength) {
+                                            $linha .= $nome . ($index < count($associadosNomes) - 1 ? ', ' : '');
+                                        } else {
+                                            $associadosString .= $linha . "\n";
+                                            $linha = $nome . ($index < count($associadosNomes) - 1 ? ', ' : '');
+                                            $rows++; 
+                                        }
+                                    }
+                                    $associadosString .= $linha;
+                                    echo $rows; 
+                                ?>" readonly><?php 
+                                    echo htmlspecialchars($associadosString);
+                                ?></textarea>
+                            </div>
+                        </div>
+                        <?php }  ?>
                 </div>
             </div>
 
@@ -343,6 +383,12 @@ $origem = "demandas";
 
         <!--------- MODAIS CHECKLIST --------->
         <?php include_once '../demandas/modaisChecklistDemanda.php' ?>
+
+        <!--------- MODAL ASSOCIAR --------->
+        <?php include_once 'modalDemanda_associar.php' ?>
+
+        <!--------- MODAL DESASSOCIAR --------->
+        <?php include_once 'modalDemanda_desassociar.php' ?>
 
     </div><!--container-fluid-->
 

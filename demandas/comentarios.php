@@ -20,7 +20,6 @@ include_once '../header.php';
                     } ?>
                     <input type="hidden" class="form-control ts-label" name="idCliente" value="<?php echo $usuario['idCliente'] ?>" readonly>
                     <input type="hidden" class="form-control ts-label" name="idUsuario" value="<?php echo $usuario['idUsuario'] ?>" readonly>
-                    <input type="hidden" class="form-control" name="origem" value="<?php echo $origem ?>" readonly>
                     <!-- <input type="text" class="form-control ts-input" value="<?php echo $_SESSION['usuario'] ?> - <?php echo $nomeCliente ?>" readonly> -->
                 </div>
                 <div class="form-group">
@@ -59,9 +58,12 @@ include_once '../header.php';
                             </div>
                         </div>
                         <?php } ?>
+                        <?php if ($acao == 'visaocli') { ?>
+                            <input type="hidden" class="form-control ts-inputSemBorda" name="url" value="<?php echo $url_parametros ?>">
+                        <?php } ?>
                         <div class="col-md">
                             <!-- Lucas 22112023 id 688 - Removido visão do cliente -->
-                            <button type="submit" formaction="../database/demanda.php?operacao=comentar" class="btn btn-success" style="float: right;">Salvar</button>
+                            <button type="submit" formaction="../database/demanda.php?operacao=comentar&acao=<?php echo $acao?>" class="btn btn-success" style="float: right;">Salvar</button>
                         </div>
                     </div>
 

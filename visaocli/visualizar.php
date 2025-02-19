@@ -31,7 +31,7 @@ $usuario = buscaUsuarios(null, $_SESSION['idLogin']);
 $cliente = buscaClientes($demanda["idCliente"]);
 $clientes = buscaClientes();
 $contratos = buscaContratosAbertos($demanda["idCliente"]);
-
+$associados = buscaUsuarios();
 
 $dataFechamento = $demanda['dataFechamentoFormatada'] . ' ' . $demanda['horaFechamentoFormatada'];
 if ($demanda['dataFechamento'] == null) {
@@ -45,14 +45,23 @@ $statusEncerrar = array(
     TIPOSTATUS_RESPONDIDO,
     TIPOSTATUS_AGENDADO
 );
-//lucas 28032024 - adicionado na url idContratoTipo
+$associadosIds = explode(',', $demanda['associados']);
+$demandaIds = array_merge($associadosIds, [$demanda['idAtendente'], $demanda['idSolicitante']]);
+
+$acao = 'visaocli';
+$origem = null;
+if(isset($_GET['origem'])){
+    $origem = $_GET['origem'];  
+}
+/* gabriel 20250205 idcontratotipo ja estava sendo mandado na url mas sem identificar, agora o valor não se perde */
+$idContratoTipo = null;
+if(isset($_GET['idContratoTipo'])){
+    $idContratoTipo = $_GET['idContratoTipo'];  
+}
+
 $URL_ATUAL = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 $url_parametros = (parse_url($URL_ATUAL, PHP_URL_QUERY));
-$url_idTipoContrato = explode("&", $url_parametros);
 
-
-
-$origem = "visaocli";
 ?>
 
 <!doctype html>
@@ -69,9 +78,9 @@ $origem = "visaocli";
 
         <!-- Modal -->
         <div class="modal" id="modalDemandaVizualizar" tabindex="-1" aria-hidden="true" style="margin: 5px;">
-            <div class="col-12 col-md-3 float-end ts-divLateralModalDemanda">
+            <div class="col-12 col-md-3 float-end ts-divLateralModalDemanda ts-noScroll">
                 <div class="col ">
-                    <form id="my-form" action="../database/demanda.php?operacao=alterar&acao=visaocli" method="post">
+                    <form id="my-form" action="../database/demanda.php?operacao=alterar&acao=<?php echo $acao?>" method="post">
                         <div class="modal-header p-2 pe-3 border-start">
                             <div class="col-md-6 d-flex pt-1">
                                 <label class='form-label ts-label'>Prioridade</label>
@@ -79,10 +88,12 @@ $origem = "visaocli";
                             </div>
                             <div class="col-md-2 border-start d-flex me-2">
                                 <!-- Lucas 10062024 - adicionado condi��o para voltar ao programa de dashboard -->
-                                <?php if($url_idTipoContrato[2] == 'dashboard'){ ?>
+                                <?php if($origem == 'dashboard'){ ?>
                                     <a href="../demandas/dashboard.php" role="button" class="btn-close"></a>
-                                <?php } else{?>
-                                <a href="index.php?idContratoTipo=<?php echo $url_idTipoContrato[2] ?>" role="button" class="btn-close"></a>
+                                <?php } elseif($origem == 'demandas') { ?>
+                                    <a href="../demandas/index.php" role="button" class="btn-close"></a>
+                                <?php } else { ?>
+                                    <a href="index.php?idContratoTipo=<?php echo $idContratoTipo ?>" role="button" class="btn-close"></a>
                                 <?php } ?>
                             </div>
                         </div>
@@ -159,7 +170,7 @@ $origem = "visaocli";
                             if ($demanda['idTipoStatus'] == TIPOSTATUS_REALIZADO) { ?>
                                 <button type="button" data-bs-toggle="modal" data-bs-target="#encerrarModal" class="btn btn-sm btn-danger">Encerrar</button>
                             <?php }
-                            if ($demanda['idTipoStatus'] == TIPOSTATUS_REALIZADO || $demanda['idTipoStatus'] == TIPOSTATUS_VALIDADO) { ?>
+                            if ($demanda['idTipoStatus'] == TIPOSTATUS_REALIZADO /* helio 190225 - retirado quando ENCERRADO*/ ) { ?>
                                 <button type="button" data-bs-toggle="modal" data-bs-target="#reabrirModal" class="btn btn-sm btn-warning">Reabrir</button>
                             <?php } 
                             if ($demanda['idTipoStatus'] == TIPOSTATUS_AGUARDANDOSOLICITANTE) { ?>
@@ -170,8 +181,46 @@ $origem = "visaocli";
                         </div>
 
                         <div class="modal-footer">
-                            <button type="submit" form="my-form" class="btn btn-success">Atualizar</button>
+                            <button type="submit" form="my-form" class="btn btn-success btn-sm">Atualizar</button>
                         </div>
+                        <div class="modal-footer">
+                            <?php if($demanda["associados"] !== null) { ?>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#desassociarModal" class="btn btn-danger btn-sm">Associados</button>
+                            <?php }  ?>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#associarModal" class="btn btn-warning btn-sm">Associar</button>
+                        </div>
+                        <?php if($demanda["associados"] !== null) { ?>
+                        <div class="row mb-2">
+                            <div class="col-11">
+                                <label class="form-label ts-label">Associados</label>
+                                <textarea class="form-control ts-inputSemBorda ts-noScroll" name="Associados" rows="<?php 
+                                    $associadosNomes = [];
+                                    foreach ($associados as $associado) {
+                                        if (in_array($associado['idUsuario'], $associadosIds)) {
+                                            $associadosNomes[] = $associado['nomeUsuario'];
+                                        }
+                                    }
+                                    $maxLength = 40;
+                                    $associadosString = '';
+                                    $linha = '';
+                                    $rows = 2; 
+                                    foreach ($associadosNomes as $index => $nome) {
+                                        if (strlen($linha . $nome . ($index < count($associadosNomes) - 1 ? ', ' : '')) <= $maxLength) {
+                                            $linha .= $nome . ($index < count($associadosNomes) - 1 ? ', ' : '');
+                                        } else {
+                                            $associadosString .= $linha . "\n";
+                                            $linha = $nome . ($index < count($associadosNomes) - 1 ? ', ' : '');
+                                            $rows++; 
+                                        }
+                                    }
+                                    $associadosString .= $linha;
+                                    echo $rows; 
+                                ?>" readonly><?php 
+                                    echo htmlspecialchars($associadosString);
+                                ?></textarea>
+                            </div>
+                        </div>
+                        <?php }  ?>
                 </div>
             </div>
 
@@ -187,6 +236,7 @@ $origem = "visaocli";
                         <div class="row g-3">
                             <div class="col-md-9 d-flex">
                                 <span class="ts-tituloPrincipalModal"><?php echo $demanda['idDemanda'] ?></span>
+                                <input type="hidden" class="form-control ts-inputSemBorda" name="url" value="<?php echo $url_parametros ?>">
                                 <input type="hidden" class="form-control ts-inputSemBorda" name="idDemanda" value="<?php echo $demanda['idDemanda'] ?>">
                                 <span class="ms-3 ts-tituloPrincipalModal"><?php echo $demanda['tituloDemanda'] ?></span>
                             </div>
@@ -244,6 +294,12 @@ $origem = "visaocli";
         <!--------- MODAL RESPONDER --------->
         <?php include_once '../demandas/modalstatus_responder.php' ?>
 
+        <!--------- MODAL ASSOCIAR --------->
+        <?php include_once '../demandas/modalDemanda_associar.php' ?>
+        
+        <!--------- MODAL DESASSOCIAR --------->
+        <?php include_once '../demandas/modalDemanda_desassociar.php' ?>
+
     </div><!--container-fluid-->
 
     <!-- LOCAL PARA COLOCAR OS JS -->
@@ -258,11 +314,8 @@ $origem = "visaocli";
             myModal.show();
         };
 
-        function refreshPage(tab, idDemanda) {
+        function refreshPage() {
             window.location.reload();
-            var url = window.location.href.split('?')[0];
-            var newUrl = url + '?id=' + tab + '&&idDemanda=' + idDemanda;
-            window.location.href = newUrl;
         }
 
     </script>

@@ -18,7 +18,7 @@ if (isset($LOG_CAMINHO)) {
     $identificacao = date("dmYHis") . "-PID" . getmypid() . "-" . "demanda_atualizar";
     if (isset($LOG_NIVEL)) {
         if ($LOG_NIVEL >= 1) {
-            $arquivo = fopen(defineCaminhoLog() . "servicos_" . date("dmY") . ".log", "a");
+            $arquivo = fopen(defineCaminhoLog() . "servicos_demanda_atualizar" . date("dmY") . ".log", "a");
         }
     }
 }
@@ -45,7 +45,7 @@ if (isset($jsonEntrada['idDemanda'])) {
 
 
     //Busca data de fechamento atual
-    $sql_consulta = "SELECT demanda.tituloDemanda, demanda.idAtendente, demanda.dataFechamento,
+    $sql_consulta = "SELECT demanda.tituloDemanda, demanda.idAtendente, demanda.dataFechamento, demanda.associados,
                             cliente.nomeCliente, servicos.nomeServico, contrato.tituloContrato, 
                             atendente.nomeUsuario AS nomeAtendente, atendente.email AS emailAtendente,
                             solicitante.nomeUsuario AS nomeSolicitante FROM demanda
@@ -67,6 +67,8 @@ if (isset($jsonEntrada['idDemanda'])) {
     $nomeUsuario = $row_consulta["nomeAtendente"];
     $email = $row_consulta["emailAtendente"];
     $dataEmail= date('H:i d/m/Y');
+    $associados = $row_demanda["associados"];
+
     if ($idAtendenteEncaminhar !== null && $idAtendente !== $idAtendenteEncaminhar) { 
         $idAtendente = $idAtendenteEncaminhar; 
         //Busca dados de usuario
@@ -346,8 +348,22 @@ if (isset($jsonEntrada['idDemanda'])) {
                 'nome' => $nomeUsuario 
                 ),
             );
+            fwrite($arquivo, $identificacao . "-Enviar para->" . json_encode($arrayPara) . "\n");
+            if ($associados !== null && $associados !== "") {
+                $idsAcompanhantes = explode(',', $associados);
+                $sql2 = "SELECT idUsuario, email, nomeUsuario FROM usuario WHERE idUsuario IN (" . implode(',', $idsAcompanhantes) . ")";
+                $buscar2 = mysqli_query($conexao, $sql2);
+                while($row = mysqli_fetch_array($buscar2, MYSQLI_ASSOC)) {
+                    $arrayPara[] = array(
+                        'email' => $row['email'],
+                        'nome' => $row['nomeUsuario']
+                    );
+                }
+            }
             //gabriel 03062024 id 999 adicionado $idEmpresa
+            fwrite($arquivo, $identificacao . "-Enviar para 2->" . json_encode($arrayPara) . "\n");
             $envio = emailEnviar(null,null,$arrayPara,$tituloEmail,$corpoEmail,$idEmpresa,$enviarTradesis);
+            fwrite($arquivo, $identificacao . "-retorno emailEnviar->" . json_encode($envio) . "\n");
         }
 
         $jsonSaida = array(

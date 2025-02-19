@@ -11,7 +11,7 @@ if (isset($LOG_CAMINHO)) {
     $identificacao = date("dmYHis") . "-PID" . getmypid() . "-" . "comentario_inserir";
     if (isset($LOG_NIVEL)) {
         if ($LOG_NIVEL >= 1) {
-            $arquivo = fopen(defineCaminhoLog() . "servicos_" . date("dmY") . ".log", "a");
+            $arquivo = fopen(defineCaminhoLog() . "servicos_comentario_inserir" . date("dmY") . ".log", "a");
         }
     }
 }
@@ -41,7 +41,7 @@ if (isset($jsonEntrada['idDemanda'])) {
 
 	//Gabriel 29052024 select unico para melhora de performance, busca demanda e dados do usuario
     //Busca dados Demanda e Usuario
-    $sql_demanda = "SELECT demanda.tituloDemanda, demanda.idContratoTipo, demanda.idSolicitante, demanda.idAtendente, cliente.nomeCliente, tipostatus.nomeTipoStatus, servicos.nomeServico, contrato.tituloContrato,
+    $sql_demanda = "SELECT demanda.tituloDemanda, demanda.idContratoTipo, demanda.idSolicitante, demanda.idAtendente, demanda.associados, cliente.nomeCliente, tipostatus.nomeTipoStatus, servicos.nomeServico, contrato.tituloContrato,
                            UsuarioC.nomeUsuario AS nomeUsuarioC, UsuarioC.email AS emailUsuarioC,
                            atendente.nomeUsuario AS nomeAtendente, atendente.email AS emailAtendente,
                            solicitante.nomeUsuario AS nomeSolicitante, solicitante.email AS emailSolicitante FROM demanda
@@ -70,6 +70,7 @@ if (isset($jsonEntrada['idDemanda'])) {
     $nomeSolicitante = $row_demanda["nomeSolicitante"];
     $emailSolicitante = $row_demanda["emailSolicitante"];
     $dataComentario = date('H:i d/m/Y');
+    $associados = $row_demanda["associados"];
 
     //Gabriel 28052024 removido $anexos pois nao esta sendo enviado do database
     $sql = "INSERT INTO comentario(idDemanda, comentario, idUsuario, dataComentario, interno) VALUES ($idDemanda,'$comentario',$idUsuario,CURRENT_TIMESTAMP(), $interno)";
@@ -122,9 +123,25 @@ if (isset($jsonEntrada['idDemanda'])) {
             );
         }
     }
+    if ($associados !== null && $associados !== "") {
+        $idsAssociados = explode(',', $associados);
+        if ($interno == "0") {
+            $sql2 = "SELECT idUsuario, email, nomeUsuario FROM usuario WHERE idUsuario IN (" . implode(',', $idsAssociados) . ")";
+        } else {
+            $sql2 = "SELECT idUsuario, email, nomeUsuario FROM usuario WHERE idUsuario IN (" . implode(',', $idsAssociados) . ") and idcliente is null ";    
+        }
+        $buscar2 = mysqli_query($conexao, $sql2);
+        while($row = mysqli_fetch_array($buscar2, MYSQLI_ASSOC)) {
+            $arrayPara[] = array(
+                'email' => $row['email'],
+                'nome' => $row['nomeUsuario']
+            );
+        }
+    }
     //gabriel 03062024 id 999 adicionado $idEmpresa
+    fwrite($arquivo, $identificacao . "-Enviar para->". $interno . " " . json_encode($arrayPara) . "\n");
     $envio = emailEnviar(null, null,$arrayPara,$tituloEmail,$corpoEmail,$idEmpresa,null);
-
+    fwrite($arquivo, $identificacao . "-retorno emailEnviar->" . json_encode($envio) . "\n");
 
     //LOG
     if (isset($LOG_NIVEL)) {
