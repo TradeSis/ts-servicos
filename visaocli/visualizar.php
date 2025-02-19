@@ -170,7 +170,7 @@ $url_parametros = (parse_url($URL_ATUAL, PHP_URL_QUERY));
                             if ($demanda['idTipoStatus'] == TIPOSTATUS_REALIZADO) { ?>
                                 <button type="button" data-bs-toggle="modal" data-bs-target="#encerrarModal" class="btn btn-sm btn-danger">Encerrar</button>
                             <?php }
-                            if ($demanda['idTipoStatus'] == TIPOSTATUS_REALIZADO || $demanda['idTipoStatus'] == TIPOSTATUS_VALIDADO) { ?>
+                            if ($demanda['idTipoStatus'] == TIPOSTATUS_REALIZADO /* helio 190225 - retirado quando ENCERRADO*/ ) { ?>
                                 <button type="button" data-bs-toggle="modal" data-bs-target="#reabrirModal" class="btn btn-sm btn-warning">Reabrir</button>
                             <?php } 
                             if ($demanda['idTipoStatus'] == TIPOSTATUS_AGUARDANDOSOLICITANTE) { ?>
