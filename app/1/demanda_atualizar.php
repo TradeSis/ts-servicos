@@ -18,7 +18,7 @@ if (isset($LOG_CAMINHO)) {
     $identificacao = date("dmYHis") . "-PID" . getmypid() . "-" . "demanda_atualizar";
     if (isset($LOG_NIVEL)) {
         if ($LOG_NIVEL >= 1) {
-            $arquivo = fopen(defineCaminhoLog() . "servicos_" . date("dmY") . ".log", "a");
+            $arquivo = fopen(defineCaminhoLog() . "servicos_demanda_atualizar" . date("dmY") . ".log", "a");
         }
     }
 }
@@ -348,6 +348,7 @@ if (isset($jsonEntrada['idDemanda'])) {
                 'nome' => $nomeUsuario 
                 ),
             );
+            fwrite($arquivo, $identificacao . "-Enviar para->" . json_encode($arrayPara) . "\n");
             if ($associados !== null && $associados !== "") {
                 $idsAcompanhantes = explode(',', $associados);
                 $sql2 = "SELECT idUsuario, email, nomeUsuario FROM usuario WHERE idUsuario IN (" . implode(',', $idsAcompanhantes) . ")";
@@ -360,7 +361,9 @@ if (isset($jsonEntrada['idDemanda'])) {
                 }
             }
             //gabriel 03062024 id 999 adicionado $idEmpresa
+            fwrite($arquivo, $identificacao . "-Enviar para 2->" . json_encode($arrayPara) . "\n");
             $envio = emailEnviar(null,null,$arrayPara,$tituloEmail,$corpoEmail,$idEmpresa,$enviarTradesis);
+            fwrite($arquivo, $identificacao . "-retorno emailEnviar->" . json_encode($envio) . "\n");
         }
 
         $jsonSaida = array(
